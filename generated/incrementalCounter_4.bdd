@@ -1,0 +1,96 @@
+model CounterSite using widgets
+
+entity counter {
+    actions: increment counter value,
+    states: current_value,
+    properties: count
+}
+
+Scenario: Increment counter - initial value
+Given the count of the counter is 0
+    which means
+        Given the BrowserWindow "Counter Page" is displayed
+        When I look at the "Counter Value"
+        Then the value of the Text "Counter Value" is "0"
+When I increment counter value
+    which means
+        Given the BrowserWindow "Counter Page" is displayed
+        When I press the Button "Increment"
+        Then the value of the Text "Counter Value" is "1"
+Then the count of the counter is 1
+    which means
+        Given the BrowserWindow "Counter Page" is displayed
+        When I look at the "Counter Value"
+        Then the value of the Text "Counter Value" is "1"
+
+Scenario: Increment counter - from existing value
+Given the count of the counter is 5
+    which means
+        Given the BrowserWindow "Counter Page" is displayed
+        When I look at the "Counter Value"
+        Then the value of the Text "Counter Value" is "5"
+When I increment counter value
+    which means
+        Given the BrowserWindow "Counter Page" is displayed
+        When I press the Button "Increment"
+        Then the value of the Text "Counter Value" is "6"
+Then the count of the counter is 6
+    which means
+        Given the BrowserWindow "Counter Page" is displayed
+        When I look at the "Counter Value"
+        Then the value of the Text "Counter Value" is "6"
+
+Scenario: Multiple increments
+Given the count of the counter is 10
+    which means
+        Given the BrowserWindow "Counter Page" is displayed
+        When I look at the "Counter Value"
+        Then the value of the Text "Counter Value" is "10"
+When I increment counter value
+    And I increment counter value
+    And I increment counter value
+    which means
+        Given the BrowserWindow "Counter Page" is displayed
+        When I press the Button "Increment"
+        And press the Button "Increment"
+        And press the Button "Increment"
+        Then the value of the Text "Counter Value" is "13"
+Then the count of the counter is 13
+    which means
+        Given the BrowserWindow "Counter Page" is displayed
+        When I look at the "Counter Value"
+        Then the value of the Text "Counter Value" is "13"
+
+Scenario: Increment counter - visual feedback
+Given the count of the counter is 20
+    which means
+        Given the BrowserWindow "Counter Page" is displayed
+        When I look at the "Counter Value"
+        Then the value of the Text "Counter Value" is "20"
+When I increment counter value
+    which means
+        Given the BrowserWindow "Counter Page" is displayed
+        When I press the Button "Increment"
+        Then the Button "Increment" appears pressed
+Then the count of the counter is 21
+    which means
+        Given the BrowserWindow "Counter Page" is displayed
+        When I look at the "Counter Value"
+        Then the value of the Text "Counter Value" is "21"
+
+Scenario: Reset counter value
+Given the count of the counter is 30
+    which means
+        Given the BrowserWindow "Counter Page" is displayed
+        When I look at the "Counter Value"
+        Then the value of the Text "Counter Value" is "30"
+When I press reset
+    which means
+        Given the BrowserWindow "Counter Page" is displayed
+        When I press the Button "Reset"
+        Then the value of the Text "Counter Value" is "0"
+Then the count of the counter is 0
+    which means
+        Given the BrowserWindow "Counter Page" is displayed
+        When I look at the "Counter Value"
+        Then the value of the Text "Counter Value" is "0"

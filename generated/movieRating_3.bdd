@@ -1,0 +1,68 @@
+model MovieRatingSite using widgets
+
+entity movie {
+    actions: select movie, rate movie
+    states: rated, not_rated
+    properties: title, poster, rating
+}
+
+entity user {
+    actions: view home page, view movie details
+    states: void
+    properties: void
+}
+
+Scenario: View home page with movies
+Given the user is viewing the home page
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+    When the user views home page
+    Then the BrowserWindow "Home Page" is displayed
+    And all movie posters with their titles are displayed
+
+Scenario: Select a movie to view details
+Given the user is viewing the home page
+    And a movie title is "Inception"
+    And the poster of "Inception" is displayed
+        which means
+            Given the BrowserWindow "Home Page" is displayed
+            When the user selects movie "Inception"
+            Then the BrowserWindow "Movie Details" for "Inception" is displayed
+When the user selects movie "Inception"
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When the user clicks on the poster of "Inception"
+        Then the BrowserWindow "Movie Details" for "Inception" is displayed
+Then the user is viewing movie details for "Inception"
+    And the rating of "Inception" is displayed
+
+Scenario: Rate a movie
+Given the user is viewing movie details for "Inception"
+    And "Inception" is not rated
+        which means
+            Given the BrowserWindow "Movie Details" for "Inception" is displayed
+            When the user views the rating section
+            Then the Button "Rate" is displayed
+When the user rates "Inception" with 5 stars
+    which means
+        Given the BrowserWindow "Movie Details" for "Inception" is displayed
+        When the user clicks on the 5th star in the rating section
+        Then the Notification "Your rating has been submitted" is displayed
+Then "Inception" is rated
+    And the rating of "Inception" includes the user's rating
+
+Scenario: View a list of all movies on home page
+Given the user is viewing the home page
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+    When the user views home page
+    Then the BrowserWindow "Home Page" is displayed
+    And a long list of all movie posters along with their titles is displayed
+
+Scenario: View movie rating on details page
+Given the user is viewing movie details for "Inception"
+        which means
+            Given the BrowserWindow "Movie Details" for "Inception" is displayed
+    When the user views movie details for "Inception"
+    Then the rating of "Inception" is displayed
+    And the user can rate "Inception"

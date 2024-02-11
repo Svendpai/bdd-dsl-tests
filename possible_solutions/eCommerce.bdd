@@ -1,0 +1,121 @@
+model eCommerce using widgets
+
+entity item {
+    actions: view details, add item to the cart, add item to the wishlist
+    states: in_cart, in_wishlist
+    properties: picture, name, price, details
+}
+
+entity cart {
+    actions: view cart, checkout
+    states: contains_items, empty
+    properties: items*
+}
+
+entity wishlist {
+    actions: view wishlist
+    states: contains_items, empty
+    properties: items*
+}
+
+Scenario: View item details
+Given the name of the item "123" is "Herman Miller Aeron"
+And the price of the item "123" is 1800
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click on the item "123"
+        Then the BrowserWindow "Herman Miller Aeron" is displayed
+When I view details of the item "123"
+    which means
+    	Given the BrowserWindow "Home Page" is displayed
+        When I click on the item "123"
+        Then the value of the TextField "Name" is "Herman Miller Aeron"
+        And the value of the TextField "Price" is "1800"
+Then the name of the item "123" is "Herman Miller Aeron"
+And the price of the item "123" is 1800
+	which means
+    	Given the BrowserWindow "Home Page" is displayed
+        When I click on the item "123"
+        Then the value of the TextField "Name" is "Herman Miller Aeron"
+        And the value of the TextField "Price" is "1800"	
+
+Scenario: Add item to cart
+Given the item "123" is not in_cart
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click the Button "Cart"
+        And view the cart "main"
+        Then the BrowserWindow "Cart Page" is displayed
+        And the item "123" is not in_cart
+When I add the item "123" to the cart "main"
+    which means
+        Given the BrowserWindow "Herman Miller Aeron" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "Herman Miller Aeron has been added to the cart" is displayed
+Then the item "123" is in_cart
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click the Button "Cart"
+        And view the cart "main"
+        Then the BrowserWindow "Cart Page" is displayed
+        And the item "123" is in_cart
+
+Scenario: Checkout cart
+Given the cart "main" is contains_items
+    which means
+        Given the BrowserWindow "Cart Page" is displayed
+        When I view the cart "main"
+        Then the items of the cart "main" is not "None"
+When I checkout the cart "main"
+    which means
+        Given the BrowserWindow "Checkout Page" is displayed
+        And the items of the cart "main" is not "None"
+        When I click on "Confirm Checkout"
+        Then the Notification "Checkout successful" is displayed
+Then the cart "main" is empty
+    which means
+        Given the BrowserWindow "Cart Page" is displayed
+        When I view the cart "main"
+        Then the items of the cart "main" is "None"
+
+Scenario: Add item to wishlist
+Given the item "123" is not in_wishlist
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click the Button "My Wishlist"
+        And view the wishlist "main"
+        Then the BrowserWindow "Wishlist Page" is displayed
+        And the item "123" is not in_wishlist
+When I add the item "123" to the wishlist "main"
+    which means
+        Given the BrowserWindow "Herman Miller Aeron" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "Herman Miller Aeron has been added to your wishlist" is displayed
+Then the item "123" is in_wishlist
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click the Button "Cart"
+        And view the wishlist "main"
+        Then the BrowserWindow "Wishlist Page" is displayed
+        And the item "123" is in_wishlist
+
+Scenario: Transfer an item between wishlist - cart
+Given the item "123" is in_wishlist
+And the item "123" is not in_cart
+    which means
+        Given the BrowserWindow "Wishlist Page" is displayed
+        When I view the wishlist "main"
+        Then the item "123" is in_wishlist
+        And the item "123" is not in_cart
+When I add the item "123" to the cart "main"
+    which means
+        Given the BrowserWindow "Wishlist Page" is displayed
+        When I click on the Button "Add to Cart" for the item "123"
+        Then the Notification "Herman Miller Aeron moved to cart" is displayed
+Then the item "123" is in_cart
+And the item "123" is not in_wishlist
+    which means
+        Given the BrowserWindow "Cart Page" is displayed
+        When I view the cart "main"
+        Then the item "123" is in_cart
+        And the item "123" is not in_wishlist

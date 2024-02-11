@@ -1,0 +1,103 @@
+model movieRating using widgets
+
+entity rating {
+	actions: rate
+	states: void
+	properties: score
+}
+
+entity movie {
+	actions: void
+	states: reviewed, unreviewed
+	properties: rating, your_rating, amount_of_ratings
+}
+
+Scenario: Rate a movie ten - successful
+Given the rating of the movie "Titanic" is 1
+And the amount_of_ratings of the movie "Titanic" is 1
+And the movie "Titanic" is unreviewed
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the movie "Titanic"
+		Then the value of the TextField "Rating" is "1/10"
+		And the value of the TextField "Number of ratings" is "1"
+		And the value of the TextField "Your rating" is "None"
+When I rate the movie "Titanic" 10
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the movie "Titanic"
+		And click on the Button "Rate 10/10"
+		Then the value of the TextField "Rating" is "5/10"
+		And the value of the TextField "Your rating" is "10/10"
+Then the rating of the movie "Titanic" is 5
+And the amount_of_ratings of the movie "Titanic" is 2
+And the movie "Titanic" is reviewed
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the movie "Titanic"
+		Then the value of the TextField "Rating" is "5/10"
+		And the value of the TextField "Number of ratings" is "2"
+		
+Scenario: Rate a movie four - successful
+Given your_rating of the movie "Titanic" is "None"
+And the movie "Titanic" is unreviewed
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the movie "Titanic"
+		Then the value of the TextField "Your rating" is "None"
+When I rate the movie "Titanic" 4
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the movie "Titanic"
+		And click on the Button "Rate 4/10"
+		Then the value of the TextField "Your rating" is "4/10"
+Then your_rating of the movie "Titanic" is 4
+And the movie "Titanic" is reviewed
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the movie "Titanic"
+		Then the value of the TextField "Rating" is "4/10"
+		
+Scenario: Rate a movie one - successful
+Given your_rating of the movie "Titanic" is "None"
+And the movie "Titanic" is unreviewed
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the movie "Titanic"
+		Then the value of the TextField "Your rating" is "None"
+When I rate the movie "Titanic" 1
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the movie "Titanic"
+		And click on the Button "Rate 1/10"
+		Then the value of the TextField "Your rating" is "1/10"
+Then your_rating of the movie "Titanic" is 1
+And the movie "Titanic" is reviewed
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the movie "Titanic"
+		Then the value of the TextField "Rating" is "1/10"
+		
+Scenario: Change rating
+Given the movie "Titanic" is reviewed
+And your_rating of the movie "Titanic" is 10
+And the amount_of_ratings of the movie "Titanic" is 1
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the movie "Titanic"
+		Then the value of the TextField "Your Rating" is "10/10"
+		And the value of the TextField "Number of ratings" is "1"
+When I rate the movie "Titanic" 5
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the movie "Titanic"
+		And click on the Button "Rate 5/10"
+		Then the value of the TextField "Your Rating" is "5/10"
+Then the movie "Titanic" is reviewed
+And your_rating of the movie "Titanic" is 5
+And the amount_of_ratings of the movie "Titanic" is 1
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the movie "Titanic"
+		Then the value of the TextField "Your Rating" is "5/10"
+		And the value of the TextField "Number of ratings" is "1"

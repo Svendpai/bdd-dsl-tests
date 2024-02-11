@@ -1,0 +1,97 @@
+model IncrementalCounter using widgets
+
+entity counter {
+    actions: press button,
+    states: number_displayed,
+    properties: number_value
+}
+
+Scenario: Initial number display
+Given the number_value of the counter "1" is 0
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I view the number above the button
+        Then the value of the TextField "Number" is "0"
+When I press the button of the counter "1"
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I click on "Increment Button"
+        Then the Notification "Number incremented" is displayed
+Then the number_value of the counter "1" is 1
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I view the number above the button
+        Then the value of the TextField "Number" is "1"
+
+Scenario: Increment number once
+Given the number_value of the counter "1" is 1
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I view the number above the button
+        Then the value of the TextField "Number" is "1"
+When I press the button of the counter "1"
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I click on "Increment Button"
+        Then the Notification "Number incremented" is displayed
+Then the number_value of the counter "1" is 2
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I view the number above the button
+        Then the value of the TextField "Number" is "2"
+
+Scenario: Increment number twice consecutively
+Given the number_value of the counter "1" is 2
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I view the number above the button
+        Then the value of the TextField "Number" is "2"
+When I press the button of the counter "1"
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I click on "Increment Button"
+        Then the Notification "Number incremented" is displayed
+And I press the button of the counter "1" again
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I click on "Increment Button" again
+        Then the Notification "Number incremented again" is displayed
+Then the number_value of the counter "1" is 4
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I view the number above the button
+        Then the value of the TextField "Number" is "4"
+
+Scenario: View updated number after multiple increments
+Given the number_value of the counter "1" is 4
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I view the number above the button
+        Then the value of the TextField "Number" is "4"
+When I press the button of the counter "1"
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I click on "Increment Button"
+        Then the Notification "Number incremented" is displayed
+Then the number_value of the counter "1" is 5
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I view the number above the button
+        Then the value of the TextField "Number" is "5"
+
+Scenario: Ensure number persists after refresh
+Given the number_value of the counter "1" is 5
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I view the number above the button
+        Then the value of the TextField "Number" is "5"
+When I refresh the BrowserWindow "Main Page"
+    which means
+        Given the BrowserWindow "Main Page" is displayed again
+        When I press "Refresh"
+        Then the Notification "Page refreshed" is displayed
+Then the number_value of the counter "1" is still 5
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I view the number above the button
+        Then the value of the TextField "Number" remains "5"

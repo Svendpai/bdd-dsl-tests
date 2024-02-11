@@ -1,0 +1,110 @@
+model ECommerceSite using widgets
+
+entity item {
+    actions: view details, add to cart, add to wishlist, checkout
+    states: in_cart, in_wishlist, available
+    properties: picture, name, price, description, reviews
+}
+
+entity cart {
+    actions: view cart, add item, remove item, checkout
+    states: empty, contains_items
+    properties: total_items, total_price
+}
+
+entity wishlist {
+    actions: view wishlist, add item, remove item
+    states: empty, contains_items
+    properties: total_items
+}
+
+entity checkout {
+    actions: proceed to checkout, confirm purchase, cancel purchase
+    states: pending, completed, cancelled
+    properties: total_price, items
+}
+
+Scenario: Viewing item details
+Given the item "123" is available
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click on the item "123"
+        Then the BrowserWindow "Item Details" is displayed
+When I view details of the item "123"
+    which means
+        Given the BrowserWindow "Item Details" is displayed for the item "123"
+        When I observe the details
+        Then the description and reviews of the item "123" are displayed
+Then the item "123" is available
+    which means
+        Given the BrowserWindow "Item Details" is displayed for the item "123"
+        When I observe the details
+        Then the option to add the item "123" to cart or wishlist is displayed
+
+Scenario: Adding item to cart
+Given the item "123" is available
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click on the item "123"
+        Then the BrowserWindow "Item Details" is displayed
+When I add the item "123" to cart
+    which means
+        Given the BrowserWindow "Item Details" is displayed for the item "123"
+        When I click on "Add to Cart"
+        Then the Notification "Item added to cart" is displayed
+Then the item "123" is in_cart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the cart
+        Then the item "123" is listed in the cart
+
+Scenario: Checking out from cart
+Given the cart contains_items
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the cart
+        Then multiple items are listed in the cart
+When I checkout from the cart
+    which means
+        Given the BrowserWindow "Checkout" is displayed
+        When I click on "Proceed to Checkout"
+        Then the BrowserWindow "Order Summary" is displayed
+Then the checkout is completed
+    which means
+        Given the BrowserWindow "Order Confirmation" is displayed
+        When I review the order summary
+        Then the Notification "Purchase successful" is displayed
+
+Scenario: Adding item to wishlist
+Given the item "456" is available
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click on the item "456"
+        Then the BrowserWindow "Item Details" is displayed
+When I add the item "456" to wishlist
+    which means
+        Given the BrowserWindow "Item Details" is displayed for the item "456"
+        When I click on "Add to Wishlist"
+        Then the Notification "Item added to wishlist" is displayed
+Then the item "456" is in_wishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I view the wishlist
+        Then the item "456" is listed in the wishlist
+
+Scenario: Removing item from cart
+Given the cart contains_items including the item "789"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the cart
+        Then the item "789" is listed in the cart
+When I remove the item "789" from cart
+    which means
+        Given the BrowserWindow "Cart" is displayed with the item "789" listed
+        When I click on "Remove" for the item "789"
+        Then the Notification "Item removed from cart" is displayed
+Then the cart does not contain the item "789"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the cart
+        Then the item "789" is not listed in the cart

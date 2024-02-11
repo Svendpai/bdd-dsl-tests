@@ -1,0 +1,94 @@
+model MovieRatingSite using widgets
+
+entity movie {
+    actions: select movie, rate movie
+    states: rated_by_user
+    properties: title, poster, rating
+}
+
+Scenario: View movie details
+Given the title of the movie "001" is "Inception"
+And the poster of the movie "001" is "inception_poster.jpg"
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I select movie "Inception"
+        Then the BrowserWindow "Movie Details" is displayed
+When I select movie "001"
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click on "Inception"
+        Then the BrowserWindow "Movie Details" is displayed
+        And the value of the TextField "Title" is "Inception"
+        And the Image "Poster" is "inception_poster.jpg"
+Then the title of the movie "001" is "Inception"
+And the poster of the movie "001" is "inception_poster.jpg"
+    which means
+        Given the BrowserWindow "Movie Details" is displayed
+        When I view the movie "001"
+        Then the value of the TextField "Title" is "Inception"
+        And the Image "Poster" is "inception_poster.jpg"
+
+Scenario: Rate a movie
+Given the movie "002" is not rated_by_user
+    which means
+        Given the BrowserWindow "Movie Details" for the movie "002" is displayed
+        When I view the rating section
+        Then the Button "Rate This Movie" is enabled
+When I rate movie "002" with 5 stars
+    which means
+        Given the BrowserWindow "Movie Details" for the movie "002" is displayed
+        When I click on the Button "Rate This Movie"
+        And I select "5 stars" in the Rating Widget
+        Then the Notification "Thank you for rating!" is displayed
+Then the movie "002" is rated_by_user
+    which means
+        Given the BrowserWindow "Movie Details" for the movie "002" is displayed
+        When I view the rating section
+        Then the Button "Rate This Movie" is disabled
+        And the Label "Your Rating" shows "5 stars"
+
+Scenario: Display list of movies on home page
+Given the movie "003" is not rated_by_user
+And the movie "004" is not rated_by_user
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I scroll through the list of movies
+        Then the movie "003" with the title "The Matrix" and poster "matrix_poster.jpg" is displayed
+        And the movie "004" with the title "Avatar" and poster "avatar_poster.jpg" is displayed
+When I view the home page
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I scroll through the list of movies
+        Then the movie "003" with the title "The Matrix" and poster "matrix_poster.jpg" is displayed
+        And the movie "004" with the title "Avatar" and poster "avatar_poster.jpg" is displayed
+Then the list of movies includes "The Matrix" and "Avatar"
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I scroll through the list of movies
+        Then the movie "003" with the title "The Matrix" and poster "matrix_poster.jpg" is displayed
+        And the movie "004" with the title "Avatar" and poster "avatar_poster.jpg" is displayed
+
+Scenario: Movie rating updates after user rates
+Given the rating of the movie "005" is 4.0
+    which means
+        Given the BrowserWindow "Movie Details" for the movie "005" is displayed
+        When I view the rating section
+        Then the Label "Average Rating" shows "4.0"
+When I rate movie "005" with 5 stars
+    which means
+        Given the BrowserWindow "Movie Details" for the movie "005" is displayed
+        When I click on the Button "Rate This Movie"
+        And I select "5 stars" in the Rating Widget
+        Then the Notification "Thank you for rating!" is displayed
+Then the rating of the movie "005" is updated
+    which means
+        Given the BrowserWindow "Movie Details" for the movie "005" is displayed
+        When I refresh the rating section
+        Then the Label "Average Rating" shows an updated value
+
+Scenario: Navigate from home page to movie details
+Given the movie "006" with the title "Jurassic Park" is displayed on the home page
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I scroll through the list of movies
+        Then the movie "006" with the title "Jurassic Park" and poster "jurassic

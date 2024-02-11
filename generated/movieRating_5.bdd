@@ -1,0 +1,102 @@
+model MovieRatingSite using widgets
+
+entity movie {
+    actions: select movie, rate movie
+    states: rated, unrated
+    properties: title, poster, rating
+}
+
+entity home_page {
+    actions: display movies
+    states: visible
+    properties: movie_list*
+}
+
+entity details_page {
+    actions: display details, submit rating
+    states: visible
+    properties: movie_title, movie_poster, current_rating, user_rating
+}
+
+Scenario: Navigate to movie details
+Given the home_page is visible
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+    When I select movie "Inception"
+        which means
+            Given the movie "Inception" poster is visible on the "Home Page"
+            When I click on the poster of "Inception"
+    Then the details_page for "Inception" is visible
+        which means
+            Given the BrowserWindow "Movie Details" is displayed for "Inception"
+            Then the movie_title is "Inception"
+            And the movie_poster corresponds to "Inception"
+            And the current_rating displays the rating for "Inception"
+
+Scenario: Rate a movie
+Given the details_page for "Inception" is visible
+    And the movie "Inception" is unrated by the user
+        which means
+            Given the BrowserWindow "Movie Details" for "Inception" is displayed
+            And the user_rating field is empty
+    When I rate movie "Inception" with 5 stars
+        which means
+            Given the rating stars for "Inception" are displayed
+            When I click on the 5th star
+            And I submit the rating
+    Then the movie "Inception" is rated by the user with 5 stars
+        which means
+            Given the BrowserWindow "Movie Details" for "Inception" is displayed
+            When I check the user_rating field
+            Then the user_rating is "5 stars"
+
+Scenario: Display all movies on home page
+Given the home_page is visible
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+    When I display movies
+        which means
+            Given the BrowserWindow "Home Page" is loaded
+            When I scroll through the movie_list
+    Then each movie in movie_list has a title and poster
+        which means
+            Given the BrowserWindow "Home Page" is displaying movies
+            When I observe each movie entry
+            Then the title and poster are visible for each movie
+
+Scenario: Update movie rating after user submission
+Given the details_page for "Inception" is visible
+    And the current_rating for "Inception" is 4 stars
+    And the movie "Inception" is unrated by the user
+        which means
+            Given the BrowserWindow "Movie Details" for "Inception" is displayed
+            And the current_rating displays "4 stars"
+            And the user_rating field is empty
+    When I rate movie "Inception" with 5 stars
+        which means
+            Given the rating stars for "Inception" are displayed
+            When I click on the 5th star
+            And I submit the rating
+    Then the current_rating for "Inception" updates based on the new user rating
+        which means
+            Given the BrowserWindow "Movie Details" for "Inception" is displayed
+            When I refresh the page after rating
+            Then the current_rating reflects the updated rating including the new user submission
+
+Scenario: View movie details without rating
+Given the details_page for "Inception" is visible
+    And the movie "Inception" is unrated by the user
+        which means
+            Given the BrowserWindow "Movie Details" for "Inception" is displayed
+            And the user_rating field is empty
+    When I display details of "Inception"
+        which means
+            Given the BrowserWindow "Movie Details" for "Inception" is displayed
+            When I observe the details without interacting
+    Then the movie_title is "Inception"
+    And the movie_poster corresponds to "Inception"
+    And the current_rating displays the rating for "Inception"
+        which means
+            Given the BrowserWindow "Movie Details" for "Inception" is displayed
+            When I check each detail field
+            Then the movie_title, movie_poster, and current_rating are correctly displayed

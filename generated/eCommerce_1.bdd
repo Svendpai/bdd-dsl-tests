@@ -1,0 +1,132 @@
+model ECommerce using widgets
+
+entity item {
+    actions: 
+        select item for details, 
+        add item to cart, 
+        add item to wishlist
+    states: 
+        in_catalog, 
+        in_cart, 
+        in_wishlist, 
+        purchased
+    properties: 
+        picture, 
+        name, 
+        price, 
+        details, 
+        reviews
+}
+
+entity cart {
+    actions: 
+        checkout items
+    states: 
+        empty, 
+        contains_items
+    properties: 
+        total_items, 
+        total_price
+}
+
+entity wishlist {
+    actions: 
+        add item to cart from wishlist
+    states: 
+        empty, 
+        contains_items
+    properties: 
+        total_items
+}
+
+Scenario: Viewing item details
+Given the item "123" is in_catalog
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I select item "123" for details
+        Then the BrowserWindow "Item Details" is displayed
+When I select item "123" for details
+    which means
+        Given the BrowserWindow "Item Details" is displayed
+        When I click on the item "123"
+        Then the details and reviews of the item "123" are displayed
+Then the item "123" remains in_catalog
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I view the catalog
+        Then the item "123" is listed with picture, name, and price
+
+Scenario: Adding item to cart
+Given the item "123" is in_catalog
+And the cart is empty
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I view the cart
+        Then the BrowserWindow "Your Cart is Empty" is displayed
+When I add item "123" to cart
+    which means
+        Given the BrowserWindow "Item Details" is displayed
+        When I click on "Add to Cart" for the item "123"
+        Then the Notification "Item added to cart" is displayed
+Then the item "123" is in_cart
+And the cart contains_items
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the cart
+        Then the item "123" is listed with quantity "1"
+
+Scenario: Checking out
+Given the cart contains_items
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the cart
+        Then the list of items in the cart is displayed
+When I checkout items
+    which means
+        Given the BrowserWindow "Checkout" is displayed
+        When I click on "Checkout"
+        Then the BrowserWindow "Order Confirmation" is displayed
+Then the cart is empty
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I view the cart
+        Then the BrowserWindow "Your Cart is Empty" is displayed
+
+Scenario: Adding item to wishlist
+Given the item "456" is in_catalog
+And the wishlist is empty
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I view the wishlist
+        Then the BrowserWindow "Your Wishlist is Empty" is displayed
+When I add item "456" to wishlist
+    which means
+        Given the BrowserWindow "Item Details" is displayed
+        When I click on "Add to Wishlist" for the item "456"
+        Then the Notification "Item added to wishlist" is displayed
+Then the item "456" is in_wishlist
+And the wishlist contains_items
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I view the wishlist
+        Then the item "456" is listed
+
+Scenario: Moving item from wishlist to cart
+Given the item "789" is in_wishlist
+And the cart is empty
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I view the wishlist
+        Then the item "789" is listed
+When I add item "789" to cart from wishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I click on "Move to Cart" for the item "789"
+        Then the Notification "Item moved to cart" is displayed
+Then the item "789" is in_cart
+And the wishlist is empty
+And the cart contains_items
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the cart
+        Then the item "789" is listed with quantity "1"

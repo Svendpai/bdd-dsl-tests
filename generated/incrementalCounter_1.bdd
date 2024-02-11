@@ -1,0 +1,110 @@
+model CounterSite using widgets
+
+entity counter {
+    actions:
+        press button
+    states:
+        number_shown
+    properties:
+        value
+}
+
+Scenario: Increase number by pressing button
+Given the value of the counter is 0
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I see the Text "0" above the Button "Press"
+        Then the value of the TextField "Counter Value" is "0"
+When I press button of the counter
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I click on the Button "Press"
+        Then the Notification "Counter Increased" is displayed
+Then the value of the counter is 1
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I see the Text "1" above the Button "Press"
+        Then the value of the TextField "Counter Value" is "1"
+
+Scenario: Continuous increase on multiple presses
+Given the value of the counter is 5
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I see the Text "5" above the Button "Press"
+        Then the value of the TextField "Counter Value" is "5"
+When I press button of the counter
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I click on the Button "Press"
+        Then the Notification "Counter Increased" is displayed
+And I press button of the counter
+    which means
+        Given the Notification "Counter Increased" is displayed
+        When I click on the Button "Press" again
+        Then another Notification "Counter Increased" is displayed
+Then the value of the counter is 7
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I see the Text "7" above the Button "Press"
+        Then the value of the TextField "Counter Value" is "7"
+
+Scenario: Display updated number after each press
+Given the value of the counter is 10
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I see the Text "10" above the Button "Press"
+        Then the value of the TextField "Counter Value" is "10"
+When I press button of the counter
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I click on the Button "Press"
+        Then the Notification "Counter Increased" is displayed
+Then the value of the counter is 11
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I see the Text "11" above the Button "Press"
+        Then the value of the TextField "Counter Value" is "11"
+
+Scenario: Verify counter value before and after pressing
+Given the value of the counter is 20
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I see the Text "20" above the Button "Press"
+        Then the value of the TextField "Counter Value" is "20"
+When I press button of the counter
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I click on the Button "Press"
+        Then the Notification "Counter Increased" is displayed
+Then the value of the counter is 21
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I see the Text "21" above the Button "Press"
+        Then the value of the TextField "Counter Value" is "21"
+
+Scenario: Counter increments correctly over multiple presses
+Given the value of the counter is 30
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I see the Text "30" above the Button "Press"
+        Then the value of the TextField "Counter Value" is "30"
+When I press button of the counter
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I click on the Button "Press"
+        Then the Notification "Counter Increased" is displayed
+And I press button of the counter
+    which means
+        Given the Notification "Counter Increased" is displayed
+        When I click on the Button "Press" again
+        Then another Notification "Counter Increased" is displayed
+And I press button of the counter
+    which means
+        Given another Notification "Counter Increased" is displayed
+        When I click on the Button "Press" again
+        Then a third Notification "Counter Increased" is displayed
+Then the value of the counter is 33
+    which means
+        Given the BrowserWindow "Main Page" is displayed
+        When I see the Text "33" above the Button "Press"
+        Then the value of the TextField "Counter Value" is "33"

@@ -1,0 +1,109 @@
+model ECommerce using widgets
+
+entity item {
+    actions: view details, add to cart, add to wishlist
+    states: viewed, in_cart, in_wishlist
+    properties: picture, name, price, description, reviews
+}
+
+entity cart {
+    actions: checkout
+    states: contains_items, checked_out
+    properties: total_items, total_price
+}
+
+entity wishlist {
+    actions: add item to cart
+    states: contains_items
+    properties: total_items
+}
+
+Scenario: View item details
+Given the name of the item "123" is "Widget"
+And the price of the item "123" is "19.99"
+And the picture of the item "123" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the item "123"
+        Then the BrowserWindow "Item Details" is displayed
+        And the description of the item "123" is visible
+        And the reviews of the item "123" are visible
+When I view details of the item "123"
+    which means
+        Given the BrowserWindow "Item Details" is displayed
+        When I click on "More Information"
+        Then the detailed information of the item "123" is displayed
+Then the item "123" is viewed
+    which means
+        Given the BrowserWindow "Item Details" is displayed
+        Then the detailed information of the item "123" is visible
+
+Scenario: Add item to cart
+Given the item "123" is viewed
+    which means
+        Given the BrowserWindow "Item Details" is displayed
+        Then the detailed information of the item "123" is visible
+When I add the item "123" to cart
+    which means
+        Given the BrowserWindow "Item Details" is displayed
+        When I click on "Add to Cart"
+        Then the Notification "Item added to cart" is displayed
+Then the item "123" is in_cart
+And the total_items of the cart is 1
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click on "View Cart"
+        Then the item "123" is listed in the cart
+
+Scenario: Checkout cart
+Given the total_items of the cart is 1
+And the total_price of the cart is "19.99"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        Then the item "123" is listed in the cart
+        And the total price is "19.99"
+When I checkout the cart
+    which means
+        Given the BrowserWindow "Checkout" is displayed
+        When I click on "Checkout"
+        Then the BrowserWindow "Order Confirmation" is displayed
+Then the cart is checked_out
+    which means
+        Given the BrowserWindow "Order Confirmation" is displayed
+        Then the Notification "Order placed successfully" is displayed
+
+Scenario: Add item to wishlist
+Given the item "123" is viewed
+    which means
+        Given the BrowserWindow "Item Details" is displayed
+        Then the detailed information of the item "123" is visible
+When I add the item "123" to wishlist
+    which means
+        Given the BrowserWindow "Item Details" is displayed
+        When I click on "Add to Wishlist"
+        Then the Notification "Item added to wishlist" is displayed
+Then the item "123" is in_wishlist
+And the total_items of the wishlist is 1
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I click on "View Wishlist"
+        Then the item "123" is listed in the wishlist
+
+Scenario: Move item from wishlist to cart
+Given the item "123" is in_wishlist
+And the total_items of the wishlist is 1
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I click on "View Wishlist"
+        Then the item "123" is listed in the wishlist
+When I add item "123" to cart from wishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I click on "Move to Cart" for the item "123"
+        Then the Notification "Item moved to cart" is displayed
+Then the item "123" is in_cart
+And the total_items of the cart is 1
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click on "View Cart"
+        Then the item "123" is listed in the cart
