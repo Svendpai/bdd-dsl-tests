@@ -2,6 +2,7 @@ import os
 import subprocess
 import argparse
 
+DSL_AST_EXTRACTOR_PATH = os.path.join(".","compiler", "DSL_AST_Extractor.jar")
 SOURCE_EXTENSION = '.bdd'
 ESCAPE_MAPPINGS = {
     '\\': '\\\\',  # Escape backslashes
@@ -50,7 +51,7 @@ def get_ast(folder_path: str) -> None:
     for file in os.listdir(folder_path):
         if file.endswith(SOURCE_EXTENSION):
             source_path = os.path.join(folder_path, file)
-            completed_process = subprocess.run(["java", "-jar", "./DSL_AST_Extractor.jar", source_path], stdout=subprocess.PIPE, text=True)
+            completed_process = subprocess.run(["java", "-jar", DSL_AST_EXTRACTOR_PATH, source_path], stdout=subprocess.PIPE, text=True)
             target_path = source_path.replace(SOURCE_EXTENSION, "_ast.txt")
 
             try:
