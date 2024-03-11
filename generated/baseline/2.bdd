@@ -1,0 +1,61 @@
+To represent the requirements of the e-commerce website for selling high-end office chairs using the provided DSL grammar, we'll define entities for the homepage catalog, product details page, shopping cart, and wishlist. We'll also specify actions like viewing items, adding to cart or wishlist, and checking out. Here's how the DSL code might look:
+
+```dsl
+model ECommerceWebsite
+
+entity HomePageCatalog {
+    properties:
+        items* // Represents the collection of items on the home page, showing picture, name, and price
+}
+
+entity Item {
+    properties:
+        picture
+        name
+        price
+        details
+        reviews*
+    actions:
+        viewDetails // Action to view full details of an item
+        addToCart
+        addToWishlist
+}
+
+entity ShoppingCart {
+    properties:
+        items* // Items added to the shopping cart
+    actions:
+        checkout // Action to check out the items in the cart
+}
+
+entity Wishlist {
+    properties:
+        items* // Items added to the wishlist
+}
+
+// Scenario for viewing an item's details
+Scenario: ViewItemDetails
+    Given the HomePageCatalog
+    When I viewDetails on the Item
+    Then the Item details page is shown with details, reviews, and buy option
+
+// Scenario for adding an item to the shopping cart
+Scenario: AddItemToCart
+    Given the Item details page
+    When I addToCart the Item
+    Then the Item is in the ShoppingCart
+
+// Scenario for adding an item to the wishlist
+Scenario: AddItemToWishlist
+    Given the Item details page
+    When I addToWishlist the Item
+    Then the Item is in the Wishlist
+
+// Scenario for checking out items from the shopping cart
+Scenario: CheckoutItems
+    Given the ShoppingCart with items
+    When I checkout
+    Then the Checkout page is shown with a summary of items and total price
+```
+
+This DSL code defines the basic structure and functionality of the e-commerce website, focusing on the main entities and interactions specified in the requirements. Each entity is defined with its properties and actions, and scenarios outline how users interact with these entities. The `HomePageCatalog` entity represents the catalog on the home page, showing only the picture, name, and price of each item. The `Item` entity includes actions for viewing more details, adding to the cart, and adding to the wishlist. The `ShoppingCart` and `Wishlist` entities manage the items added by the user, with the shopping cart including a checkout action. The scenarios describe the flow of viewing item details, adding items to the cart or wishlist, and checking out.

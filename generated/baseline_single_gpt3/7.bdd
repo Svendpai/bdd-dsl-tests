@@ -1,0 +1,46 @@
+Based on the provided DSL grammar, here is the DSL code that satisfies your requirements:
+
+```plaintext
+model ECommerceWebsite
+
+entity Product {
+    actions:
+        Display - on the - page
+        Go - to - the - details - page
+        Buy
+    states:
+        Listed
+        Detailed
+        Sold
+    properties:
+        Name
+        Picture
+        Price
+}
+
+entity Cart {
+    actions:
+        Add - to - cart
+        Remove - from - cart
+        View - cart
+}
+
+entity Wishlist {
+    actions:
+        Add - to - wishlist
+        Remove - from - wishlist
+        View - wishlist
+}
+
+Scenario: View Catalog
+Given I view all the listed products on the home page
+When I click on a product
+Then I should be directed to the details page of the product
+
+Scenario: Buy Product
+Given I am viewing the details page of a product
+When I click "Buy"
+Then the product should be marked as sold
+```
+
+This DSL code defines an e-commerce website with entities for products, a shopping cart, and a wishlist. It also includes scenarios for viewing the catalog and buying a product.

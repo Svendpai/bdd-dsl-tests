@@ -1,0 +1,83 @@
+To fulfill your requirements using the DSL grammar provided, we need to create entities for products, users, shopping cart, and wishlist. We also need to define actions for browsing products, adding products to the cart and wishlist, viewing product details, and checking out. Below is the generated DSL code:
+
+```plaintext
+model ECommerceWebsite
+
+entity Product {
+    actions:
+        Browse and the Product - is presented,
+        View and the Product on the details page,
+        Add and the Product to the Cart,
+        Add and the Product to the Wishlist;
+    states: available/off, out of stock;
+    properties: Name, Picture, Price;
+}
+
+entity User {
+    actions:
+        View and the Cart,
+        View and the Wishlist,
+        Add and the Product to the Cart,
+        Add and the Product to the Wishlist,
+        Remove and the Product from the Cart,
+        Remove and the Product from the Wishlist,
+        Proceed to Checkout;
+}
+
+entity Cart {
+    actions:
+        Add and the Product to the Cart,
+        Remove and the Product from the Cart,
+        View and the Cart,
+        Proceed to Checkout;
+}
+
+entity Wishlist {
+    actions:
+        Add and the Product to the Wishlist,
+        Remove and the Product from the Wishlist,
+        View and the Wishlist,
+        Add and the Product to the Cart;
+}
+
+Scenario: 
+    Scenario for browsing products:
+        Given I browse the available products
+        When I click on the Product
+        Then I should be redirected to the Product details page
+    
+    Scenario for adding a product to the cart:
+        Given I view the Product on the details page
+        When I add the Product to the Cart
+        Then the Product should be added to my Cart
+    
+    Scenario for adding a product to the wishlist:
+        Given I view the Product on the details page
+        When I add the Product to the Wishlist
+        Then the Product should be added to my Wishlist
+    
+    Scenario for viewing cart:
+        Given I view the Cart
+        Then I should see all the items in my Cart
+    
+    Scenario for viewing wishlist:
+        Given I view the Wishlist
+        Then I should see all the items in my Wishlist
+    
+    Scenario for removing a product from the cart:
+        Given I view the Cart
+        When I remove the Product from the Cart
+        Then the Product should be removed from my Cart
+    
+    Scenario for removing a product from the wishlist:
+        Given I view the Wishlist
+        When I remove the Product from the Wishlist
+        Then the Product should be removed from my Wishlist
+    
+    Scenario for proceeding to checkout:
+        Given I view the Cart
+        When I proceed to Checkout
+        Then I should be able to complete the purchase
+```
+
+This DSL code describes the entities involved (such as Product, User, Cart, and Wishlist), their actions, and various scenarios related to browsing, adding, and managing products in the e-commerce website.

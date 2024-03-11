@@ -1,0 +1,54 @@
+Based on the provided DSL grammar, here's the DSL code to satisfy the requirements for an e-commerce website selling high-end office chairs:
+
+```plaintext
+model ECommerceWebsite
+using CatalogModel
+
+entity Product
+actions:
+    show - picture, name, price
+    view - details, reviews, buy
+properties:
+    name
+    price
+
+entity CatalogModel
+actions:
+    show - picture, name, price
+properties:
+    picture
+    name
+    price
+
+Scenario: BrowseCatalog
+Given I am on the home page
+When I click on a product
+Then I should be taken to the product details page
+
+Scenario: ViewProductDetails
+Given I am on the product details page
+When I view the product
+Then I should see its details, reviews, and have the option to buy it
+
+Scenario: AddToCart
+Given I am viewing a product
+When I choose to buy it
+Then the product should be added to my shopping cart
+
+Scenario: AddToWishlist
+Given I am viewing a product
+When I choose to add it to my wishlist
+Then the product should be added to my wishlist
+
+Scenario: Checkout
+Given I am viewing my shopping cart
+When I choose to checkout
+Then I should be able to complete the purchase
+
+Scenario: ViewWishlist
+Given I am on the home page
+When I view my wishlist
+Then I should see all the products I've added to my wishlist
+```
+
+This DSL code describes the actions and properties of entities involved in an e-commerce website, along with various scenarios related to browsing, buying, and managing products.

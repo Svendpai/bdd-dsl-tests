@@ -1,0 +1,41 @@
+Based on the provided DSL grammar, below is the DSL code that satisfies your requirements for an e-commerce website selling high-end office chairs:
+
+```plaintext
+model ECommerceWebsite
+
+entity Product {
+    properties: name, picture, price
+}
+
+entity Review {
+    properties: rating, comment
+}
+
+Scenario: BrowseCatalog
+Given the user is on the home page
+When the user clicks on a product
+Then the user is taken to the product details page
+
+Scenario: ViewProductDetails
+Given the user is on the product details page
+Then the user can see the product name, picture, price, and additional information
+And the user can see reviews for the product
+And the user can add the product to the shopping cart or wishlist
+
+Scenario: AddToCart
+Given the user is on the product details page
+When the user adds the product to the cart
+Then the product is added to the user's shopping cart
+
+Scenario: AddToWishlist
+Given the user is on the product details page
+When the user adds the product to the wishlist
+Then the product is added to the user's wishlist
+
+Scenario: Checkout
+Given the user has added products to the shopping cart
+When the user proceeds to checkout
+Then the user can review the items in the cart and complete the purchase
+```
+
+This DSL code defines the necessary entities (Product and Review), along with scenarios that describe the behavior of the e-commerce website, such as browsing the catalog, viewing product details, adding products to the cart or wishlist, and checking out.

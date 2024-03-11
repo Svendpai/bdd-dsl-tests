@@ -2,8 +2,8 @@ model eCommerce using widgets
 
 entity item {
     actions: view details, add item to the cart, add item to the wishlist
-    states: in_cart, in_wishlist
-    properties: picture, name, price, details
+    states: in_cart, in_wishlist, reviewed, purchased
+    properties: picture, name, price, details, review*
 }
 
 entity cart {
@@ -16,6 +16,12 @@ entity wishlist {
     actions: view wishlist
     states: contains_items, empty
     properties: items*
+}
+
+entity review {
+	actions: review item, remove review
+	states: void
+	properties: text, rating
 }
 
 Scenario: View item details
@@ -77,6 +83,26 @@ Then the cart "main" is empty
         Given the BrowserWindow "Cart Page" is displayed
         When I view the cart "main"
         Then the items of the cart "main" is "None"
+        
+Scenario: Checkout cart with one item
+Given the items of the cart "main" is "123"
+And the item "123" is not purchased
+	which means
+		Given the BrowserWindow "Cart Page" is displayed
+        When I view the cart "main"
+        Then the items of the cart "main" is "123"
+When I checkout the cart "main"
+    which means
+        Given the BrowserWindow "Checkout Page" is displayed
+        And the items of the cart "main" is not "None"
+        When I click on "Confirm Checkout"
+        Then the Notification "Checkout successful" is displayed
+Then the cart "main" is empty
+And the item "123" is purchased
+    which means
+        Given the BrowserWindow "Cart Page" is displayed
+        When I view the cart "main"
+        Then the items of the cart "main" is "None"
 
 Scenario: Add item to wishlist
 Given the item "123" is not in_wishlist
@@ -119,3 +145,23 @@ And the item "123" is not in_wishlist
         When I view the cart "main"
         Then the item "123" is in_cart
         And the item "123" is not in_wishlist
+
+Scenario: Review an item
+Given the item "123" is purchased
+	which means
+		Given the items of the cart "main" is "123"
+		When I checkout the cart "main"
+		Then the item "123" is purchased
+When I review the item "123"
+	which means
+		Given the BrowserWindow "Herman Miller Aeron" is displayed
+		When I click on the Button "Add Review"
+		And type "123" in the TextField "Review"
+		And click "9" in the RadioButton "Rating"
+		Then the value of the TextField "Your Rating" is "9"
+Then the item "123" is reviewed
+	which means
+		Given the BrowserWindow "Home Page" is displayed
+		When I click on in the BrowserWindow "Herman Miller Aeron"
+		Then the item "123" is reviewed
+		And the value of the TextField "Your Rating" is "9"

@@ -1,0 +1,51 @@
+Based on the provided DSL grammar and your requirements for an e-commerce website selling high-end office chairs, the necessary DSL code would define entities for products, detail pages, shopping cart, and wishlist, along with actions for viewing, adding items, and checking out. Here's an outline of what the DSL code might look like:
+
+```xtext
+model OfficeChairsShop
+
+entity Product {
+  properties:
+    name, picture, price
+}
+
+entity ProductDetails extends Product {
+  properties:
+    description, reviews
+  actions:
+    addToCart, addToWishlist
+}
+
+entity ShoppingCart {
+  actions:
+    viewCart, checkout
+  states:
+    empty / filled
+}
+
+entity Wishlist {
+  actions:
+    viewWishlist, addProduct, removeProduct
+}
+
+Scenario: ViewingProductDetails
+  Given the user is on the home page
+  When the user clicks on a Product
+  Then the user is taken to the ProductDetails page for that product
+
+Scenario: AddingProductToCart
+  Given the user is on the ProductDetails page
+  When the user clicks addToCart for the product
+  Then the product is added to the ShoppingCart and ShoppingCart is filled
+
+Scenario: AddingProductToWishlist
+  Given the user is on the ProductDetails page
+  When the user clicks addToWishlist for the product
+  Then the product is added to the Wishlist
+
+Scenario: CheckingOut
+  Given the user is viewing the ShoppingCart and ShoppingCart is filled
+  When the user clicks checkout
+  Then the user completes the purchase process
+```
+
+This code snippet outlines the basic structure for your e-commerce site's functionality, including viewing product details, adding items to the cart and wishlist, and checking out. Adjustments and expansions may be necessary to fully detail every feature and interaction on your site according to the DSL grammar's capabilities.

@@ -1,0 +1,71 @@
+To create a DSL code based on the provided grammar for your e-commerce website that sells high-end office chairs, we'll define entities to represent the key components of your website, such as the catalog, product details, shopping cart, and wishlist. We'll also define actions for viewing items, adding items to the cart or wishlist, and checking out. Since the grammar is designed for behavior-driven development, we'll focus on defining the entities and the scenarios that describe the interactions on the website.
+
+```plaintext
+model OfficeChairsECommerce
+
+entity HomePage {
+  actions:
+    viewCatalog
+  properties:
+    catalog
+}
+
+entity Catalog {
+  states:
+    itemVisible / itemNotVisible
+  properties:
+    items*
+}
+
+entity Product {
+  actions:
+    viewDetails, addToCart, addToWishlist, buy
+  states:
+    inStock / outOfStock
+  properties:
+    picture, name, price, details, reviews
+}
+
+entity ShoppingCart {
+  actions:
+    checkout
+  properties:
+    items*
+}
+
+entity Wishlist {
+  properties:
+    items*
+}
+
+// Scenarios
+
+Scenario: ViewingItemsInCatalog
+  Given the HomePage
+  When I viewCatalog
+  Then the Catalog should have itemVisible
+
+Scenario: ViewingProductDetails
+  Given the Catalog with itemVisible
+  When I viewDetails on the Product
+  Then the Product should have details and reviews visible
+
+Scenario: AddingItemToCart
+  Given the Product inStock
+  When I addToCart on the Product
+  Then the ShoppingCart should have the Product
+
+Scenario: AddingItemToWishlist
+  Given the Product inStock
+  When I addToWishlist on the Product
+  Then the Wishlist should have the Product
+
+Scenario: CheckingOut
+  Given the ShoppingCart with items
+  When I checkout
+  Then the ShoppingCart should be empty and purchase confirmed
+```
+
+This DSL code outlines the basic structure and interactions within your e-commerce website. It starts with defining the entities involved in the website, like `HomePage`, `Catalog`, `Product`, `ShoppingCart`, and `Wishlist`, along with their respective actions and properties. The scenarios then describe the behavior expected from the website, such as viewing items in the catalog, viewing product details, adding items to the cart or wishlist, and checking out.
+
+This code serves as a high-level description of your requirements and can be further refined or extended based on more detailed specifications or additional features you might want to include in your e-commerce website.

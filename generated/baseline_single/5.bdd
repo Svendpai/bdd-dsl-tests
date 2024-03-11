@@ -1,0 +1,52 @@
+Based on the given DSL grammar and your requirements for an e-commerce website selling high-end office chairs, the following DSL code outlines the necessary entities, actions, states, properties, and scenarios to model your website's functionality:
+
+```dsl
+model HighEndOfficeChairs
+
+entity Product {
+  actions: viewDetails, addToCart, addToWishlist, checkout
+  states: inCart, inWishlist, viewed
+  properties: name, price, picture, description, reviews
+}
+
+entity Cart {
+  actions: addProduct, removeProduct, checkout
+  states: containsProduct, empty
+}
+
+entity Wishlist {
+  actions: addProduct, removeProduct
+  states: containsProduct, empty
+}
+
+entity Review {
+  properties: author, rating, content
+}
+
+// Scenario for viewing product details
+Scenario: ViewProductDetails
+Given the Product #1 is not viewed
+When I viewDetails for the Product #1
+Then the Product #1 is viewed
+
+// Scenario for adding a product to the cart
+Scenario: AddProductToCart
+Given the Cart is empty
+When I addToCart for the Product #1
+Then the Cart containsProduct #1
+
+// Scenario for adding a product to the wishlist
+Scenario: AddProductToWishlist
+Given the Wishlist is empty
+When I addToWishlist for the Product #1
+Then the Wishlist containsProduct #1
+
+// Scenario for checking out
+Scenario: CheckoutCart
+Given the Cart containsProduct #1
+When I checkout
+Then the Cart is empty
+
+```
+
+This DSL code defines a `Product` entity with actions to view its details, add it to the cart, add it to the wishlist, and check out. The `Cart` and `Wishlist` entities can contain products and have actions to add or remove products. The `Review` entity holds the reviews for each product. Each scenario outlines a specific interaction with the website, such as viewing product details, adding a product to the cart or wishlist, and checking out.

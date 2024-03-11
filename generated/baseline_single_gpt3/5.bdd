@@ -1,0 +1,35 @@
+Based on the provided DSL grammar, here's the DSL code for your e-commerce website requirements:
+
+```
+model ECommerceWebsite
+entity Product is
+    properties: name, picture, price
+    actions: view, buy
+}
+
+Scenario: BrowseAndBuyOfficeChairs
+Given the catalog is populated with the following products:
+    Given the product "Office Chair 1" is available for sale and the picture is "office_chair_1.jpg" and the price is 300
+    Given the product "Office Chair 2" is available for sale and the picture is "office_chair_2.jpg" and the price is 400
+    Given the product "Office Chair 3" is available for sale and the picture is "office_chair_3.jpg" and the price is 500
+
+When I view the catalog
+Then I should see the following products:
+    - Product: "Office Chair 1", Picture: "office_chair_1.jpg", Price: 300
+    - Product: "Office Chair 2", Picture: "office_chair_2.jpg", Price: 400
+    - Product: "Office Chair 3", Picture: "office_chair_3.jpg", Price: 500
+
+When I click on "Office Chair 1"
+Then I should see the full details of "Office Chair 1" including reviews and the option to buy
+
+Given I add "Office Chair 2" to my shopping cart
+Then "Office Chair 2" should be in my shopping cart
+
+Given I add "Office Chair 3" to my wishlist
+Then "Office Chair 3" should be in my wishlist
+
+When I'm done shopping
+Then I can proceed to checkout
+```
+
+This DSL code defines the e-commerce website model, including the Product entity with its properties and actions. It also specifies a scenario for browsing and buying office chairs, including adding products to the cart and wishlist, and proceeding to checkout.
