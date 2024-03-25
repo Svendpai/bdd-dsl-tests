@@ -118,29 +118,29 @@ def get_similarity_score(possible_solution_path: str, generated_solution_path: s
     possible_solution = load_text_file(possible_solution_path)
     generated_solution = load_text_file(generated_solution_path)
 
-    possible_solution_ast = get_ast(possible_solution_path)
-    generated_solution_ast = get_ast(generated_solution_path)
-    ast_tfidf_similarity = get_tfidf_similarity(possible_solution_ast, generated_solution_ast)
-    ast_levenstein_distance = get_levenshtein_distance(possible_solution_ast, generated_solution_ast)
-    ast_cosine_similarity = get_cosine_similarity(possible_solution_ast, generated_solution_ast)
-    ast_word2vec_similarity = get_word2vec_similarity(possible_solution_ast, generated_solution_ast)
+    # possible_solution_ast = get_ast(possible_solution_path)
+    # generated_solution_ast = get_ast(generated_solution_path)
+    # ast_tfidf_similarity = get_tfidf_similarity(possible_solution_ast, generated_solution_ast)
+    # ast_levenstein_distance = get_levenshtein_distance(possible_solution_ast, generated_solution_ast)
+    # ast_cosine_similarity = get_cosine_similarity(possible_solution_ast, generated_solution_ast)
+    # ast_word2vec_similarity = get_word2vec_similarity(possible_solution_ast, generated_solution_ast)
 
     cosine_similarity = get_cosine_similarity(possible_solution, generated_solution)
     levenshtein_distance = get_levenshtein_distance(possible_solution, generated_solution)
     tfidf_similarity = get_tfidf_similarity(possible_solution, generated_solution)
     jaccard_similarity = get_jaccard_similarity(possible_solution, generated_solution)
-    word2vec_similarity = get_word2vec_similarity(possible_solution, generated_solution)
+    # word2vec_similarity = get_word2vec_similarity(possible_solution, generated_solution)
 
     similarity = {
-        "cosine_similarity": f"{cosine_similarity:.4f}",
+        "cosine_similarity": float(f"{cosine_similarity:.4f}"),
         "levenshtein_distance": levenshtein_distance,
-        "tfidf_similarity": f"{tfidf_similarity:.4f}",
-        "jaccard_similarity": f"{jaccard_similarity:.4f}",
-        "word2vec_similarity": f"{word2vec_similarity:.4f}",
-        "ast_tfidf_similarity": f"{ast_tfidf_similarity:.4f}",
-        "ast_levenstein_distance": ast_levenstein_distance,
-        "ast_cosine_similarity": f"{ast_cosine_similarity:.4f}",
-        "ast_word2vec_similarity": f"{ast_word2vec_similarity:.4f}",
+        "tfidf_similarity": float(f"{tfidf_similarity:.4f}"),
+        "jaccard_similarity": float(f"{jaccard_similarity:.4f}"),
+        # "word2vec_similarity": f"{word2vec_similarity:.4f}",
+        # "ast_tfidf_similarity": f"{ast_tfidf_similarity:.4f}",
+        # "ast_levenstein_distance": ast_levenstein_distance,
+        # "ast_cosine_similarity": f"{ast_cosine_similarity:.4f}",
+        # "ast_word2vec_similarity": f"{ast_word2vec_similarity:.4f}",
 
     }
 
@@ -152,6 +152,7 @@ def get_score_of_generated_data(possible_solution_folder_path: str, generated_fo
     scores = {}
     for possible_solution in os.listdir(possible_solution_folder_path):
         for generated in os.listdir(generated_folder_path):
+            print(generated)
             if not possible_solution.endswith(".bdd"): continue
             if not generated.endswith(".bdd"): continue
             if possible_solution != generated.split("_")[0] + ".bdd": continue
@@ -163,6 +164,31 @@ def get_score_of_generated_data(possible_solution_folder_path: str, generated_fo
             scores[generated]["compiler_log"] = compile_model(os.path.join(generated_folder_path, generated))
 
     return json.dumps(scores, sort_keys=True, indent=4, ensure_ascii=False)
+
+
+def get_score_of_generated_data_2(ground_truth_bdd_path: str, generated_folder_path: str) -> str:
+
+    scores = {}
+    for version in os.listdir(generated_folder_path):
+        version_path = os.path.join(generated_folder_path, version)
+        if not os.path.isdir(version_path): continue
+        print(version)
+        scores[version] = {}
+
+        for attempt in os.listdir(version_path):
+            attempt_path = os.path.join(version_path, attempt)
+            if not attempt.endswith(".bdd"): continue
+            print(attempt)
+
+            # id = version+"/"+attempt
+
+            scores[version][attempt] = get_similarity_score(ground_truth_bdd_path, attempt_path)
+            
+            scores[version][attempt]["compiler_log"] = compile_model(attempt_path)
+
+        
+    return json.dumps(scores, sort_keys=True, indent=4, ensure_ascii=False)
+
 
 
 @timer
@@ -192,11 +218,15 @@ def compile_model(dsl_file_path: str, compiler_path: str = COMPILER_PATH, widget
 
 def main():
     possible_solution_path = "./possible_solutions"
+    ground_truth = "./possible_solutions/eCommerce.bdd"
     generated_path = "./generated"
 
-    scores = get_score_of_generated_data(possible_solution_path, generated_path)
+    # scores = get_score_of_generated_data(possible_solution_path, generated_path)
+    # save_json(scores, "similarity_scores.json")
+
+    scores = get_score_of_generated_data_2(ground_truth, generated_path)
     print(scores)
-    save_json(scores, "similarity_scores.json")
+    save_json(scores, "similarity_scores_2.json")
 
 
 if __name__ == "__main__":

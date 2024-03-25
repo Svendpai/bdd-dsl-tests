@@ -1,0 +1,99 @@
+```bdd
+model highEndOfficeChairs using widgets
+
+entity product {
+    actions: view details, add to cart, add to wishlist
+    states: viewed, in cart, in wishlist
+    properties: picture, name, price, description, reviews
+}
+
+entity cart {
+    actions: checkout
+    states: checked out
+    properties: items*
+}
+
+entity wishlist {
+    actions: add item, remove item
+    states: void
+    properties: items*
+}
+
+Scenario: Viewing product details
+Given the product "ErgoChair" is not viewed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I look at the Grid "Products"
+        Then the Image "ErgoChair Picture" is displayed
+        And the Text "ErgoChair Name" is "ErgoChair"
+        And the Text "ErgoChair Price" is "£499"
+When I click on the product "ErgoChair"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Image "ErgoChair Picture"
+        Then the BrowserWindow "Product Details - ErgoChair" is displayed
+Then the product "ErgoChair" is viewed
+    which means
+        Given the BrowserWindow "Product Details - ErgoChair" is displayed
+        When I look at the Text "Description"
+        Then the Text "Description" is displayed
+        And the Text "Reviews" is displayed
+        And the Button "Add to Cart" is displayed
+        And the Button "Add to Wishlist" is displayed
+
+Scenario: Adding product to cart
+Given the product "ErgoChair" is viewed
+    which means
+        Given the BrowserWindow "Product Details - ErgoChair" is displayed
+        When I look at the Button "Add to Cart"
+        Then the Button "Add to Cart" is enabled
+When I add the product "ErgoChair" to the cart
+    which means
+        Given the BrowserWindow "Product Details - ErgoChair" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "ErgoChair added to your cart" is displayed
+Then the product "ErgoChair" is in cart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I look at the Grid "Cart Items"
+        Then the Text "ErgoChair" is displayed
+        And the Text "1" is displayed for the Quantity
+        And the Text "£499" is displayed for the Price
+
+Scenario: Adding product to wishlist
+Given the product "ErgoChair" is viewed
+    which means
+        Given the BrowserWindow "Product Details - ErgoChair" is displayed
+        When I look at the Button "Add to Wishlist"
+        Then the Button "Add to Wishlist" is enabled
+When I add the product "ErgoChair" to the wishlist
+    which means
+        Given the BrowserWindow "Product Details - ErgoChair" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "ErgoChair added to your wishlist" is displayed
+Then the product "ErgoChair" is in wishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I look at the Grid "Wishlist Items"
+        Then the Text "ErgoChair" is displayed
+        And the Button "Remove from Wishlist" is enabled
+
+Scenario: Checking out cart
+Given the cart contains the product "ErgoChair"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I look at the Grid "Cart Items"
+        Then the Text "ErgoChair" is displayed
+        And the Text "1" is displayed for the Quantity
+        And the Text "£499" is displayed for the Price
+When I checkout the cart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "Checkout Confirmation" is displayed
+Then the cart is checked out
+    which means
+        Given the BrowserWindow "Order Confirmation" is displayed
+        When I look at the Text "Order Status"
+        Then the Text "Order Status" is "Confirmed"
+```

@@ -1,0 +1,376 @@
+{
+    "baseline": {
+        "1.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'Based' (./temp/1.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'on' (./temp/1.bdd line : 1 column : 7)"
+            ],
+            "cosine_similarity": 0.1621,
+            "jaccard_similarity": 0.1164,
+            "levenshtein_distance": 4823,
+            "tfidf_similarity": 0.1201
+        },
+        "10.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'To' (./temp/10.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'create' (./temp/10.bdd line : 1 column : 4)"
+            ],
+            "cosine_similarity": 0.26,
+            "jaccard_similarity": 0.1186,
+            "levenshtein_distance": 4852,
+            "tfidf_similarity": 0.2181
+        },
+        "2.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'To' (./temp/2.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'represent' (./temp/2.bdd line : 1 column : 4)"
+            ],
+            "cosine_similarity": 0.1672,
+            "jaccard_similarity": 0.1595,
+            "levenshtein_distance": 4730,
+            "tfidf_similarity": 0.3981
+        },
+        "3.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'To' (./temp/3.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'create' (./temp/3.bdd line : 1 column : 4)",
+                "ERROR:mismatched character '<EOF>' expecting ''' (./temp/3.bdd line : 1 column : 419)"
+            ],
+            "cosine_similarity": 0.2089,
+            "jaccard_similarity": 0.1333,
+            "levenshtein_distance": 4851,
+            "tfidf_similarity": 0.1251
+        },
+        "4.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'To' (./temp/4.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'satisfy' (./temp/4.bdd line : 1 column : 4)"
+            ],
+            "cosine_similarity": 0.1485,
+            "jaccard_similarity": 0.1587,
+            "levenshtein_distance": 4936,
+            "tfidf_similarity": 0.3303
+        },
+        "5.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'To' (./temp/5.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'satisfy' (./temp/5.bdd line : 1 column : 4)"
+            ],
+            "cosine_similarity": 0.1525,
+            "jaccard_similarity": 0.1751,
+            "levenshtein_distance": 4759,
+            "tfidf_similarity": 0.3463
+        },
+        "6.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'To' (./temp/6.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'create' (./temp/6.bdd line : 1 column : 4)"
+            ],
+            "cosine_similarity": 0.1683,
+            "jaccard_similarity": 0.1779,
+            "levenshtein_distance": 4808,
+            "tfidf_similarity": 0.1946
+        },
+        "7.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'Based' (./temp/7.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'on' (./temp/7.bdd line : 1 column : 7)"
+            ],
+            "cosine_similarity": 0.2176,
+            "jaccard_similarity": 0.198,
+            "levenshtein_distance": 4793,
+            "tfidf_similarity": 0.3513
+        },
+        "8.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'To' (./temp/8.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'create' (./temp/8.bdd line : 1 column : 4)",
+                "ERROR:mismatched character '<EOF>' expecting ''' (./temp/8.bdd line : 1 column : 297)"
+            ],
+            "cosine_similarity": 0.1822,
+            "jaccard_similarity": 0.1373,
+            "levenshtein_distance": 4695,
+            "tfidf_similarity": 0.2766
+        },
+        "9.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'Based' (./temp/9.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'on' (./temp/9.bdd line : 1 column : 7)"
+            ],
+            "cosine_similarity": 0.1705,
+            "jaccard_similarity": 0.125,
+            "levenshtein_distance": 4590,
+            "tfidf_similarity": 0.2689
+        }
+    },
+    "baseline_single": {
+        "1.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'To' (./temp/1.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'create' (./temp/1.bdd line : 1 column : 4)"
+            ],
+            "cosine_similarity": 0.1833,
+            "jaccard_similarity": 0.1604,
+            "levenshtein_distance": 4908,
+            "tfidf_similarity": 0.208
+        },
+        "10.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'To' (./temp/10.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'create' (./temp/10.bdd line : 1 column : 4)",
+                "ERROR:mismatched character '<EOF>' expecting ''' (./temp/10.bdd line : 44 column : 324)"
+            ],
+            "cosine_similarity": 0.1734,
+            "jaccard_similarity": 0.1342,
+            "levenshtein_distance": 5016,
+            "tfidf_similarity": 0.2161
+        },
+        "2.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'Based' (./temp/2.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'on' (./temp/2.bdd line : 1 column : 7)",
+                "ERROR:mismatched character '<EOF>' expecting ''' (./temp/2.bdd line : 51 column : 313)"
+            ],
+            "cosine_similarity": 0.1233,
+            "jaccard_similarity": 0.1463,
+            "levenshtein_distance": 5093,
+            "tfidf_similarity": 0.1215
+        },
+        "3.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'Based' (./temp/3.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'on' (./temp/3.bdd line : 1 column : 7)"
+            ],
+            "cosine_similarity": 0.1468,
+            "jaccard_similarity": 0.1388,
+            "levenshtein_distance": 5112,
+            "tfidf_similarity": 0.2018
+        },
+        "4.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'To' (./temp/4.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'create' (./temp/4.bdd line : 1 column : 4)"
+            ],
+            "cosine_similarity": 0.1205,
+            "jaccard_similarity": 0.1429,
+            "levenshtein_distance": 4977,
+            "tfidf_similarity": 0.1973
+        },
+        "5.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'Based' (./temp/5.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'on' (./temp/5.bdd line : 1 column : 7)",
+                "ERROR:mismatched character '<EOF>' expecting ''' (./temp/5.bdd line : 1 column : 232)"
+            ],
+            "cosine_similarity": 0.1921,
+            "jaccard_similarity": 0.1699,
+            "levenshtein_distance": 5100,
+            "tfidf_similarity": 0.2075
+        },
+        "6.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'To' (./temp/6.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'generate' (./temp/6.bdd line : 1 column : 4)"
+            ],
+            "cosine_similarity": 0.1703,
+            "jaccard_similarity": 0.1341,
+            "levenshtein_distance": 4914,
+            "tfidf_similarity": 0.2096
+        },
+        "7.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'To' (./temp/7.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'create' (./temp/7.bdd line : 1 column : 4)",
+                "ERROR:mismatched character '<EOF>' expecting ''' (./temp/7.bdd line : 1 column : 242)"
+            ],
+            "cosine_similarity": 0.1343,
+            "jaccard_similarity": 0.1627,
+            "levenshtein_distance": 5046,
+            "tfidf_similarity": 0.3084
+        },
+        "8.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'Based' (./temp/8.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'on' (./temp/8.bdd line : 1 column : 7)"
+            ],
+            "cosine_similarity": 0.178,
+            "jaccard_similarity": 0.1872,
+            "levenshtein_distance": 4973,
+            "tfidf_similarity": 0.2348
+        },
+        "9.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'To' (./temp/9.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'generate' (./temp/9.bdd line : 1 column : 4)"
+            ],
+            "cosine_similarity": 0.1468,
+            "jaccard_similarity": 0.1597,
+            "levenshtein_distance": 4886,
+            "tfidf_similarity": 0.1372
+        }
+    },
+    "baseline_single_gpt3": {
+        "1.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'Based' (./temp/1.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'on' (./temp/1.bdd line : 1 column : 7)"
+            ],
+            "cosine_similarity": 0.1288,
+            "jaccard_similarity": 0.2126,
+            "levenshtein_distance": 5110,
+            "tfidf_similarity": 0.3782
+        },
+        "2.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'Based' (./temp/2.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'on' (./temp/2.bdd line : 1 column : 7)"
+            ],
+            "cosine_similarity": 0.08,
+            "jaccard_similarity": 0.1813,
+            "levenshtein_distance": 5220,
+            "tfidf_similarity": 0.1975
+        },
+        "3.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'Based' (./temp/3.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'on' (./temp/3.bdd line : 1 column : 7)"
+            ],
+            "cosine_similarity": 0.161,
+            "jaccard_similarity": 0.1989,
+            "levenshtein_distance": 5166,
+            "tfidf_similarity": 0.1499
+        },
+        "4.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'To' (./temp/4.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'fulfill' (./temp/4.bdd line : 1 column : 4)"
+            ],
+            "cosine_similarity": 0.194,
+            "jaccard_similarity": 0.1667,
+            "levenshtein_distance": 4486,
+            "tfidf_similarity": 0.2561
+        },
+        "5.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'Based' (./temp/5.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'on' (./temp/5.bdd line : 1 column : 7)"
+            ],
+            "cosine_similarity": 0.2074,
+            "jaccard_similarity": 0.1562,
+            "levenshtein_distance": 5194,
+            "tfidf_similarity": 0.1074
+        },
+        "6.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'Based' (./temp/6.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'on' (./temp/6.bdd line : 1 column : 7)"
+            ],
+            "cosine_similarity": 0.17,
+            "jaccard_similarity": 0.1775,
+            "levenshtein_distance": 5490,
+            "tfidf_similarity": 0.1777
+        },
+        "7.bdd": {
+            "compiler_log": [
+                "ERROR:missing 'model' at 'Based' (./temp/7.bdd line : 1 column : 1)",
+                "ERROR:missing EOF at 'on' (./temp/7.bdd line : 1 column : 7)"
+            ],
+            "cosine_similarity": 0.0801,
+            "jaccard_similarity": 0.1724,
+            "levenshtein_distance": 5403,
+            "tfidf_similarity": 0.2476
+        }
+    },
+    "v1": {
+        "1.bdd": {
+            "compiler_log": [
+                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+            ],
+            "cosine_similarity": 0.162,
+            "jaccard_similarity": 0.3472,
+            "levenshtein_distance": 4269,
+            "tfidf_similarity": 0.3773
+        },
+        "10.bdd": {
+            "compiler_log": [
+                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+            ],
+            "cosine_similarity": 0.2318,
+            "jaccard_similarity": 0.3399,
+            "levenshtein_distance": 4190,
+            "tfidf_similarity": 0.3953
+        },
+        "2.bdd": {
+            "compiler_log": [
+                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+            ],
+            "cosine_similarity": 0.2017,
+            "jaccard_similarity": 0.3419,
+            "levenshtein_distance": 4203,
+            "tfidf_similarity": 0.355
+        },
+        "3.bdd": {
+            "compiler_log": [
+                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+            ],
+            "cosine_similarity": 0.1934,
+            "jaccard_similarity": 0.2994,
+            "levenshtein_distance": 4251,
+            "tfidf_similarity": 0.2343
+        },
+        "4.bdd": {
+            "compiler_log": [
+                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+            ],
+            "cosine_similarity": 0.1681,
+            "jaccard_similarity": 0.3699,
+            "levenshtein_distance": 4361,
+            "tfidf_similarity": 0.3675
+        },
+        "5.bdd": {
+            "compiler_log": [
+                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+            ],
+            "cosine_similarity": 0.1635,
+            "jaccard_similarity": 0.3613,
+            "levenshtein_distance": 4044,
+            "tfidf_similarity": 0.3296
+        },
+        "6.bdd": {
+            "compiler_log": [
+                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+            ],
+            "cosine_similarity": 0.1862,
+            "jaccard_similarity": 0.3397,
+            "levenshtein_distance": 4055,
+            "tfidf_similarity": 0.3147
+        },
+        "7.bdd": {
+            "compiler_log": [
+                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+            ],
+            "cosine_similarity": 0.2353,
+            "jaccard_similarity": 0.3563,
+            "levenshtein_distance": 3631,
+            "tfidf_similarity": 0.4185
+        },
+        "8.bdd": {
+            "compiler_log": [
+                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+            ],
+            "cosine_similarity": 0.1542,
+            "jaccard_similarity": 0.3544,
+            "levenshtein_distance": 4285,
+            "tfidf_similarity": 0.3956
+        },
+        "9.bdd": {
+            "compiler_log": [
+                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+            ],
+            "cosine_similarity": 0.1755,
+            "jaccard_similarity": 0.3419,
+            "levenshtein_distance": 3792,
+            "tfidf_similarity": 0.3679
+        }
+    }
+}

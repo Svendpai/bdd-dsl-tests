@@ -227,34 +227,34 @@ Use the following DSL grammar examples to get a better idea of how to use them. 
             Then the value of the TextField "Amount" is "2"
     ```
      
-    ```bdd
-    model sample using widgets
+	```bdd
+	model sample using widgets
 
 
-    entity account {
-        actions: withdraw amount from, transfer amount into
-        states: void
-        properties: balance
-    }
+	entity account {
+		actions: withdraw amount from, transfer amount into
+		states: void
+		properties: balance
+	}
 
 
-    Scenario: Withdrawing money - transaction succeeded
-    Given the balance of the account "1787461" is 1000
-        which means
-            Given the BrowserWindow "Account Balance" is displayed
-            When I click on "See the balance"
-            Then the value of the TextField "Balance" is "1000"
-    When I transfer 1000 from the account "1787461"
-        which means
-            Given the BrowserWindow "SEPA Transfer" is displayed
-            When I type "1000" into the field "Amount"
-            Then the Notification "Your transfer has been successfully processed" is displayed
-    Then the account "1787461" is void
-        which means
-            Given the BrowserWindow "Account Balance" is displayed
-            When I click on "See the balance"
-            Then the value of the TextField "Balance" is "0"
-    ```
+	Scenario: Withdrawing money - transaction succeeded
+	Given the balance of the account "1787461" is 1000
+		which means
+			Given the BrowserWindow "Account Balance" is displayed
+			When I click on "See the balance"
+			Then the value of the TextField "Balance" is "1000"
+	When I transfer 1000 from the account "1787461"
+		which means
+			Given the BrowserWindow "SEPA Transfer" is displayed
+			When I type "1000" into the field "Amount"
+			Then the Notification "Your transfer has been successfully processed" is displayed
+	Then the account "1787461" is void
+		which means
+			Given the BrowserWindow "Account Balance" is displayed
+			When I click on "See the balance"
+			Then the value of the TextField "Balance" is "0"
+	```
 
     ```bdd
     	model movieRating using widgets
