@@ -86,6 +86,17 @@ def get_cosine_similarity(s1: str, s2: str) -> float:
 
 @timer
 def get_tfidf_similarity(s1: str, s2: str) -> float:
+    """The TF-IDF similarity is calculated as the cosine similarity between the TF-IDF vectors of the two strings.
+    
+    Parameters:
+    
+    s1 (str): The first string.
+    s2 (str): The second string.
+    
+    Returns:
+    
+    float: The TF-IDF similarity between the two strings.
+    """
     # TODO do not remove stop words (stop words are important in this case)
     vect = TfidfVectorizer(min_df=1, stop_words="english")
     tfidf = vect.fit_transform([s1, s2])
@@ -95,7 +106,45 @@ def get_tfidf_similarity(s1: str, s2: str) -> float:
 
 @timer
 def get_levenshtein_distance(s1: str, s2: str) -> int:
+    """Calculate the Levenshtein distance between two strings."""
     return Levenshtein.distance(s1, s2)
+
+
+@timer
+def get_token_levenshtein_distance(s1, s2):
+    """Calculate the Levenshtein distance between two strings based on tokens (words)."""
+    # Split the strings into tokens based on whitespace
+    tokens1 = s1.split()
+    tokens2 = s2.split()
+
+    # Initialize the matrix with zeros
+    d = [[0 for _ in range(len(tokens2) + 1)] for _ in range(len(tokens1) + 1)]
+
+    # Populate the first column and first row of the matrix
+    for i in range(len(tokens1) + 1):
+        d[i][0] = i
+    for j in range(len(tokens2) + 1):
+        d[0][j] = j
+
+    # Iterate over the matrix and fill it in
+    for i in range(1, len(tokens1) + 1):
+        for j in range(1, len(tokens2) + 1):
+            # Check if tokens are the same
+            if tokens1[i - 1] == tokens2[j - 1]:
+                cost = 0
+            else:
+                cost = 1
+            
+            # Calculate distances for the three operations
+            deletion = d[i - 1][j] + 1
+            insertion = d[i][j - 1] + 1
+            substitution = d[i - 1][j - 1] + cost
+
+            # Choose the minimum distance
+            d[i][j] = min(insertion, deletion, substitution)
+
+    # The distance is in the bottom-right corner of the matrix
+    return d[len(tokens1)][len(tokens2)]
 
 
 @timer
