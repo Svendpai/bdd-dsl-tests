@@ -2,8 +2,7 @@
     "baseline": {
         "1.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'Based' (./temp/1.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'on' (./temp/1.bdd line : 1 column : 7)"
+                "ERROR:missing EOF at '-' (./temp/1.bdd line : 1 column : 8)"
             ],
             "cosine_similarity": 0.1621,
             "jaccard_similarity": 0.1164,
@@ -12,8 +11,12 @@
         },
         "10.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'To' (./temp/10.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'create' (./temp/10.bdd line : 1 column : 4)"
+                "ERROR:extraneous input 'Wishlist' expecting '}' (./temp/10.bdd line : 19 column : 33)",
+                "ERROR:no viable alternative at input 'Then' (./temp/10.bdd line : 37 column : 1)",
+                "ERROR:no viable alternative at input 'Then' (./temp/10.bdd line : 42 column : 1)",
+                "ERROR:no viable alternative at input 'to' (./temp/10.bdd line : 47 column : 1)",
+                "ERROR:no viable alternative at input 'to' (./temp/10.bdd line : 52 column : 1)",
+                "ERROR:no viable alternative at input 'Then' (./temp/10.bdd line : 57 column : 1)"
             ],
             "cosine_similarity": 0.26,
             "jaccard_similarity": 0.1186,
@@ -22,8 +25,13 @@
         },
         "2.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'To' (./temp/2.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'represent' (./temp/2.bdd line : 1 column : 4)"
+                "ERROR:missing '-' at 'details' (./temp/2.bdd line : 13 column : 9)",
+                "ERROR:mismatched input 'reviews' expecting '}' (./temp/2.bdd line : 14 column : 9)",
+                "ERROR:mismatched input 'actions:' expecting '}' (./temp/2.bdd line : 24 column : 5)",
+                "ERROR:no viable alternative at input 'Then' (./temp/2.bdd line : 35 column : 5)",
+                "ERROR:no viable alternative at input 'Then' (./temp/2.bdd line : 41 column : 5)",
+                "ERROR:no viable alternative at input 'Then' (./temp/2.bdd line : 47 column : 5)",
+                "ERROR:no viable alternative at input 'Then' (./temp/2.bdd line : 53 column : 5)"
             ],
             "cosine_similarity": 0.1672,
             "jaccard_similarity": 0.1595,
@@ -32,9 +40,11 @@
         },
         "3.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'To' (./temp/3.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'create' (./temp/3.bdd line : 1 column : 4)",
-                "ERROR:mismatched character '<EOF>' expecting ''' (./temp/3.bdd line : 1 column : 419)"
+                "ERROR:no viable alternative at input 'Then' (./temp/3.bdd line : 41 column : 3)",
+                "ERROR:no viable alternative at input 'Then' (./temp/3.bdd line : 46 column : 3)",
+                "ERROR:no viable alternative at input 'Then' (./temp/3.bdd line : 51 column : 3)",
+                "ERROR:no viable alternative at input 'Then' (./temp/3.bdd line : 56 column : 3)",
+                "ERROR:no viable alternative at input 'Then' (./temp/3.bdd line : 61 column : 3)"
             ],
             "cosine_similarity": 0.2089,
             "jaccard_similarity": 0.1333,
@@ -43,8 +53,12 @@
         },
         "4.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'To' (./temp/4.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'satisfy' (./temp/4.bdd line : 1 column : 4)"
+                "ERROR:missing RULE_ID at '{' (./temp/4.bdd line : 3 column : 19)",
+                "ERROR:no viable alternative at input 'Then' (./temp/4.bdd line : 34 column : 5)",
+                "ERROR:no viable alternative at input 'is' (./temp/4.bdd line : 39 column : 5)",
+                "ERROR:no viable alternative at input 'is' (./temp/4.bdd line : 44 column : 5)",
+                "ERROR:no viable alternative at input 'is' (./temp/4.bdd line : 49 column : 5)",
+                "ERROR:no viable alternative at input 'Then' (./temp/4.bdd line : 54 column : 5)"
             ],
             "cosine_similarity": 0.1485,
             "jaccard_similarity": 0.1587,
@@ -53,8 +67,16 @@
         },
         "5.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'To' (./temp/5.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'satisfy' (./temp/5.bdd line : 1 column : 4)"
+                "ERROR:mismatched input 'actions:' expecting '}' (./temp/5.bdd line : 6 column : 5)",
+                "ERROR:missing '-' at 'description' (./temp/5.bdd line : 15 column : 9)",
+                "ERROR:mismatched input 'reviews' expecting '}' (./temp/5.bdd line : 16 column : 9)",
+                "ERROR:mismatched input 'actions:' expecting '}' (./temp/5.bdd line : 25 column : 5)",
+                "ERROR:mismatched input 'actions:' expecting '}' (./temp/5.bdd line : 32 column : 5)",
+                "ERROR:no viable alternative at input 'Then' (./temp/5.bdd line : 37 column : 5)",
+                "ERROR:no viable alternative at input 'Then' (./temp/5.bdd line : 42 column : 5)",
+                "ERROR:no viable alternative at input 'Then' (./temp/5.bdd line : 47 column : 5)",
+                "ERROR:no viable alternative at input 'Then' (./temp/5.bdd line : 52 column : 5)",
+                "ERROR:no viable alternative at input 'Then' (./temp/5.bdd line : 57 column : 5)"
             ],
             "cosine_similarity": 0.1525,
             "jaccard_similarity": 0.1751,
@@ -63,8 +85,19 @@
         },
         "6.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'To' (./temp/6.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'create' (./temp/6.bdd line : 1 column : 4)"
+                "ERROR:missing RULE_ID at '{' (./temp/6.bdd line : 3 column : 20)",
+                "ERROR:mismatched input 'of' expecting '}' (./temp/6.bdd line : 7 column : 16)",
+                "ERROR:missing '-' at 'addToWishlist' (./temp/6.bdd line : 14 column : 9)",
+                "ERROR:extraneous input 'not' expecting RULE_ID (./temp/6.bdd line : 16 column : 21)",
+                "ERROR:missing '-' at 'description' (./temp/6.bdd line : 21 column : 9)",
+                "ERROR:mismatched input 'reviews' expecting '}' (./temp/6.bdd line : 22 column : 9)",
+                "ERROR:mismatched input 'of' expecting '}' (./temp/6.bdd line : 30 column : 16)",
+                "ERROR:mismatched input 'of' expecting '}' (./temp/6.bdd line : 37 column : 16)",
+                "ERROR:no viable alternative at input 'Then' (./temp/6.bdd line : 41 column : 5)",
+                "ERROR:no viable alternative at input 'is' (./temp/6.bdd line : 46 column : 5)",
+                "ERROR:no viable alternative at input 'are' (./temp/6.bdd line : 52 column : 5)",
+                "ERROR:no viable alternative at input 'are' (./temp/6.bdd line : 57 column : 5)",
+                "ERROR:no viable alternative at input 'Then' (./temp/6.bdd line : 62 column : 5)"
             ],
             "cosine_similarity": 0.1683,
             "jaccard_similarity": 0.1779,
@@ -73,8 +106,19 @@
         },
         "7.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'Based' (./temp/7.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'on' (./temp/7.bdd line : 1 column : 7)"
+                "ERROR:mismatched input 'row' expecting RULE_ID (./temp/7.bdd line : 5 column : 32)",
+                "ERROR:mismatched input 'of' expecting '}' (./temp/7.bdd line : 7 column : 18)",
+                "ERROR:extraneous input 'not' expecting RULE_ID (./temp/7.bdd line : 14 column : 21)",
+                "ERROR:extraneous input 'not' expecting RULE_ID (./temp/7.bdd line : 23 column : 19)",
+                "ERROR:extraneous input 'not' expecting RULE_ID (./temp/7.bdd line : 30 column : 17)",
+                "ERROR:mismatched input 'in' expecting '}' (./temp/7.bdd line : 32 column : 16)",
+                "ERROR:extraneous input 'not' expecting RULE_ID (./temp/7.bdd line : 37 column : 17)",
+                "ERROR:mismatched input 'in' expecting '}' (./temp/7.bdd line : 39 column : 16)",
+                "ERROR:no viable alternative at input 'is' (./temp/7.bdd line : 49 column : 5)",
+                "ERROR:no viable alternative at input 'is' (./temp/7.bdd line : 55 column : 5)",
+                "ERROR:no viable alternative at input 'is' (./temp/7.bdd line : 61 column : 5)",
+                "ERROR:no viable alternative at input 'is' (./temp/7.bdd line : 66 column : 5)",
+                "ERROR:no viable alternative at input 'is' (./temp/7.bdd line : 71 column : 5)"
             ],
             "cosine_similarity": 0.2176,
             "jaccard_similarity": 0.198,
@@ -83,9 +127,11 @@
         },
         "8.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'To' (./temp/8.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'create' (./temp/8.bdd line : 1 column : 4)",
-                "ERROR:mismatched character '<EOF>' expecting ''' (./temp/8.bdd line : 1 column : 297)"
+                "ERROR:no viable alternative at input 'Then' (./temp/8.bdd line : 43 column : 5)",
+                "ERROR:no viable alternative at input 'is' (./temp/8.bdd line : 48 column : 5)",
+                "ERROR:no viable alternative at input 'is' (./temp/8.bdd line : 53 column : 5)",
+                "ERROR:no viable alternative at input 'is' (./temp/8.bdd line : 58 column : 5)",
+                "ERROR:no viable alternative at input 'is' (./temp/8.bdd line : 63 column : 5)"
             ],
             "cosine_similarity": 0.1822,
             "jaccard_similarity": 0.1373,
@@ -94,8 +140,7 @@
         },
         "9.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'Based' (./temp/9.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'on' (./temp/9.bdd line : 1 column : 7)"
+                "ERROR:missing EOF at '{' (./temp/9.bdd line : 2 column : 1)"
             ],
             "cosine_similarity": 0.1705,
             "jaccard_similarity": 0.125,
@@ -106,8 +151,14 @@
     "baseline_single": {
         "1.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'To' (./temp/1.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'create' (./temp/1.bdd line : 1 column : 4)"
+                "ERROR:mismatched input '*' expecting '-' (./temp/1.bdd line : 6 column : 14)",
+                "ERROR:no viable alternative at input '\"catalog\"' (./temp/1.bdd line : 31 column : 14)",
+                "ERROR:mismatched input '\"cart\"' expecting '-' (./temp/1.bdd line : 32 column : 16)",
+                "ERROR:no viable alternative at input ',' (./temp/1.bdd line : 37 column : 5)",
+                "ERROR:no viable alternative at input 'Then' (./temp/1.bdd line : 42 column : 5)",
+                "ERROR:no viable alternative at input 'to' (./temp/1.bdd line : 48 column : 5)",
+                "ERROR:no viable alternative at input 'to' (./temp/1.bdd line : 54 column : 5)",
+                "ERROR:no viable alternative at input 'Then' (./temp/1.bdd line : 60 column : 5)"
             ],
             "cosine_similarity": 0.1833,
             "jaccard_similarity": 0.1604,
@@ -116,9 +167,13 @@
         },
         "10.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'To' (./temp/10.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'create' (./temp/10.bdd line : 1 column : 4)",
-                "ERROR:mismatched character '<EOF>' expecting ''' (./temp/10.bdd line : 44 column : 324)"
+                "ERROR:mismatched input 'actions:' expecting '}' (./temp/10.bdd line : 5 column : 3)",
+                "ERROR:mismatched input 'actions:' expecting '}' (./temp/10.bdd line : 10 column : 3)",
+                "ERROR:mismatched input 'actions:' expecting '}' (./temp/10.bdd line : 15 column : 3)",
+                "ERROR:no viable alternative at input 'When' (./temp/10.bdd line : 19 column : 3)",
+                "ERROR:no viable alternative at input 'Then' (./temp/10.bdd line : 24 column : 3)",
+                "ERROR:no viable alternative at input 'Then' (./temp/10.bdd line : 29 column : 3)",
+                "ERROR:no viable alternative at input 'Then' (./temp/10.bdd line : 34 column : 3)"
             ],
             "cosine_similarity": 0.1734,
             "jaccard_similarity": 0.1342,
@@ -127,9 +182,11 @@
         },
         "2.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'Based' (./temp/2.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'on' (./temp/2.bdd line : 1 column : 7)",
-                "ERROR:mismatched character '<EOF>' expecting ''' (./temp/2.bdd line : 51 column : 313)"
+                "ERROR:mismatched input 'extends' expecting '{' (./temp/2.bdd line : 8 column : 23)",
+                "ERROR:no viable alternative at input 'is' (./temp/2.bdd line : 28 column : 3)",
+                "ERROR:no viable alternative at input 'is' (./temp/2.bdd line : 33 column : 3)",
+                "ERROR:no viable alternative at input 'is' (./temp/2.bdd line : 38 column : 3)",
+                "ERROR:no viable alternative at input 'is' (./temp/2.bdd line : 43 column : 3)"
             ],
             "cosine_similarity": 0.1233,
             "jaccard_similarity": 0.1463,
@@ -138,8 +195,13 @@
         },
         "3.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'Based' (./temp/3.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'on' (./temp/3.bdd line : 1 column : 7)"
+                "ERROR:mismatched input 'actions:' expecting '}' (./temp/3.bdd line : 5 column : 5)",
+                "ERROR:mismatched input 'actions:' expecting '}' (./temp/3.bdd line : 10 column : 5)",
+                "ERROR:mismatched input 'actions:' expecting '}' (./temp/3.bdd line : 15 column : 5)",
+                "ERROR:no viable alternative at input 'is' (./temp/3.bdd line : 33 column : 1)",
+                "ERROR:no viable alternative at input 'is' (./temp/3.bdd line : 38 column : 1)",
+                "ERROR:no viable alternative at input 'is' (./temp/3.bdd line : 43 column : 1)",
+                "ERROR:no viable alternative at input 'Then' (./temp/3.bdd line : 48 column : 1)"
             ],
             "cosine_similarity": 0.1468,
             "jaccard_similarity": 0.1388,
@@ -148,8 +210,10 @@
         },
         "4.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'To' (./temp/4.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'create' (./temp/4.bdd line : 1 column : 4)"
+                "ERROR:no viable alternative at input 'is' (./temp/4.bdd line : 21 column : 3)",
+                "ERROR:no viable alternative at input 'is' (./temp/4.bdd line : 28 column : 3)",
+                "ERROR:no viable alternative at input 'is' (./temp/4.bdd line : 34 column : 3)",
+                "ERROR:no viable alternative at input 'in' (./temp/4.bdd line : 40 column : 3)"
             ],
             "cosine_similarity": 0.1205,
             "jaccard_similarity": 0.1429,
@@ -158,9 +222,9 @@
         },
         "5.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'Based' (./temp/5.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'on' (./temp/5.bdd line : 1 column : 7)",
-                "ERROR:mismatched character '<EOF>' expecting ''' (./temp/5.bdd line : 1 column : 232)"
+                "ERROR:no viable alternative at input 'is' (./temp/5.bdd line : 31 column : 1)",
+                "ERROR:no viable alternative at input 'is' (./temp/5.bdd line : 37 column : 1)",
+                "ERROR:no viable alternative at input '#' (./temp/5.bdd line : 43 column : 1)"
             ],
             "cosine_similarity": 0.1921,
             "jaccard_similarity": 0.1699,
@@ -169,8 +233,11 @@
         },
         "6.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'To' (./temp/6.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'generate' (./temp/6.bdd line : 1 column : 4)"
+                "ERROR:mismatched input 'actions:' expecting '}' (./temp/6.bdd line : 6 column : 5)",
+                "ERROR:no viable alternative at input 'Then' (./temp/6.bdd line : 25 column : 5)",
+                "ERROR:no viable alternative at input 'to' (./temp/6.bdd line : 30 column : 5)",
+                "ERROR:no viable alternative at input 'to' (./temp/6.bdd line : 35 column : 5)",
+                "ERROR:no viable alternative at input 'Then' (./temp/6.bdd line : 40 column : 5)"
             ],
             "cosine_similarity": 0.1703,
             "jaccard_similarity": 0.1341,
@@ -179,9 +246,10 @@
         },
         "7.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'To' (./temp/7.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'create' (./temp/7.bdd line : 1 column : 4)",
-                "ERROR:mismatched character '<EOF>' expecting ''' (./temp/7.bdd line : 1 column : 242)"
+                "ERROR:no viable alternative at input 'is' (./temp/7.bdd line : 37 column : 3)",
+                "ERROR:no viable alternative at input 'is' (./temp/7.bdd line : 42 column : 3)",
+                "ERROR:no viable alternative at input 'is' (./temp/7.bdd line : 47 column : 3)",
+                "ERROR:no viable alternative at input 'Then' (./temp/7.bdd line : 52 column : 3)"
             ],
             "cosine_similarity": 0.1343,
             "jaccard_similarity": 0.1627,
@@ -190,8 +258,13 @@
         },
         "8.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'Based' (./temp/8.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'on' (./temp/8.bdd line : 1 column : 7)"
+                "ERROR:mismatched input 'cart' expecting '}' (./temp/8.bdd line : 5 column : 22)",
+                "ERROR:mismatched input 'cart' expecting '}' (./temp/8.bdd line : 14 column : 32)",
+                "ERROR:no viable alternative at input 'do' (./temp/8.bdd line : 27 column : 5)",
+                "ERROR:no viable alternative at input 'Then' (./temp/8.bdd line : 34 column : 5)",
+                "ERROR:no viable alternative at input 'is' (./temp/8.bdd line : 40 column : 5)",
+                "ERROR:no viable alternative at input 'is' (./temp/8.bdd line : 45 column : 5)",
+                "ERROR:no viable alternative at input 'is' (./temp/8.bdd line : 50 column : 5)"
             ],
             "cosine_similarity": 0.178,
             "jaccard_similarity": 0.1872,
@@ -200,8 +273,7 @@
         },
         "9.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'To' (./temp/9.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'generate' (./temp/9.bdd line : 1 column : 4)"
+                "ERROR:mismatched input 'entity' expecting 'model' ( line : 1 column : 1)"
             ],
             "cosine_similarity": 0.1468,
             "jaccard_similarity": 0.1597,
@@ -212,8 +284,16 @@
     "baseline_single_gpt3": {
         "1.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'Based' (./temp/1.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'on' (./temp/1.bdd line : 1 column : 7)"
+                "ERROR:mismatched input 'on' expecting 'which' (./temp/1.bdd line : 8 column : 12)",
+                "ERROR:no viable alternative at input 'of' (./temp/1.bdd line : 11 column : 29)",
+                "ERROR:mismatched input 'on' expecting 'which' (./temp/1.bdd line : 17 column : 12)",
+                "ERROR:mismatched input 'on' expecting 'which' (./temp/1.bdd line : 22 column : 12)",
+                "ERROR:no viable alternative at input 'from' (./temp/1.bdd line : 26 column : 20)",
+                "ERROR:no viable alternative at input 'from' (./temp/1.bdd line : 31 column : 24)",
+                "ERROR:no viable alternative at input 'from' (./temp/1.bdd line : 36 column : 24)",
+                "ERROR:Couldn't resolve reference to Scenario 'am'. (./temp/1.bdd line : 8 column : 9)",
+                "ERROR:Couldn't resolve reference to Scenario 'am'. (./temp/1.bdd line : 17 column : 9)",
+                "ERROR:Couldn't resolve reference to Scenario 'am'. (./temp/1.bdd line : 22 column : 9)"
             ],
             "cosine_similarity": 0.1288,
             "jaccard_similarity": 0.2126,
@@ -222,8 +302,27 @@
         },
         "2.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'Based' (./temp/2.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'on' (./temp/2.bdd line : 1 column : 7)"
+                "ERROR:missing '{' at 'actions:' (./temp/2.bdd line : 5 column : 1)",
+                "ERROR:no viable alternative at input '-' (./temp/2.bdd line : 6 column : 10)",
+                "ERROR:no viable alternative at input '-' (./temp/2.bdd line : 7 column : 10)",
+                "ERROR:mismatched input 'entity' expecting '-' (./temp/2.bdd line : 12 column : 1)",
+                "ERROR:missing '{' at 'actions:' (./temp/2.bdd line : 13 column : 1)",
+                "ERROR:no viable alternative at input '-' (./temp/2.bdd line : 14 column : 10)",
+                "ERROR:mismatched input 'Scenario:' expecting '-' (./temp/2.bdd line : 20 column : 1)",
+                "ERROR:mismatched input 'on' expecting 'which' (./temp/2.bdd line : 21 column : 12)",
+                "ERROR:mismatched input 'on' expecting 'which' (./temp/2.bdd line : 26 column : 12)",
+                "ERROR:mismatched input 'viewing' expecting 'which' (./temp/2.bdd line : 31 column : 12)",
+                "ERROR:mismatched input 'viewing' expecting 'which' (./temp/2.bdd line : 36 column : 12)",
+                "ERROR:mismatched input 'viewing' expecting 'which' (./temp/2.bdd line : 41 column : 12)",
+                "ERROR:mismatched input 'on' expecting 'which' (./temp/2.bdd line : 46 column : 12)",
+                "ERROR:mismatched character '<EOF>' expecting ''' (./temp/2.bdd line : 48 column : 37)",
+                "ERROR:Couldn't resolve reference to Model 'CatalogModel'. (./temp/2.bdd line : 2 column : 7)",
+                "ERROR:Couldn't resolve reference to Scenario 'am'. (./temp/2.bdd line : 21 column : 9)",
+                "ERROR:Couldn't resolve reference to Scenario 'am'. (./temp/2.bdd line : 26 column : 9)",
+                "ERROR:Couldn't resolve reference to Scenario 'am'. (./temp/2.bdd line : 31 column : 9)",
+                "ERROR:Couldn't resolve reference to Scenario 'am'. (./temp/2.bdd line : 36 column : 9)",
+                "ERROR:Couldn't resolve reference to Scenario 'am'. (./temp/2.bdd line : 41 column : 9)",
+                "ERROR:Couldn't resolve reference to Scenario 'am'. (./temp/2.bdd line : 46 column : 9)"
             ],
             "cosine_similarity": 0.08,
             "jaccard_similarity": 0.1813,
@@ -232,8 +331,10 @@
         },
         "3.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'Based' (./temp/3.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'on' (./temp/3.bdd line : 1 column : 7)"
+                "ERROR:no viable alternative at input 'is' (./temp/3.bdd line : 12 column : 1)",
+                "ERROR:no viable alternative at input 'is' (./temp/3.bdd line : 17 column : 1)",
+                "ERROR:no viable alternative at input 'is' (./temp/3.bdd line : 23 column : 1)",
+                "ERROR:no viable alternative at input 'to' (./temp/3.bdd line : 33 column : 1)"
             ],
             "cosine_similarity": 0.161,
             "jaccard_similarity": 0.1989,
@@ -242,8 +343,15 @@
         },
         "4.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'To' (./temp/4.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'fulfill' (./temp/4.bdd line : 1 column : 4)"
+                "ERROR:no viable alternative at input '-' (./temp/4.bdd line : 5 column : 32)",
+                "ERROR:no viable alternative at input ';' (./temp/4.bdd line : 8 column : 44)",
+                "ERROR:missing RULE_ID at 'off' (./temp/4.bdd line : 9 column : 23)",
+                "ERROR:mismatched input 'out' expecting RULE_ID (./temp/4.bdd line : 9 column : 28)",
+                "ERROR:mismatched input ';' expecting '}' (./temp/4.bdd line : 9 column : 40)",
+                "ERROR:mismatched input 'Checkout' expecting '}' (./temp/4.bdd line : 21 column : 20)",
+                "ERROR:mismatched input 'Checkout' expecting '}' (./temp/4.bdd line : 29 column : 20)",
+                "ERROR:no viable alternative at input ';' (./temp/4.bdd line : 37 column : 40)",
+                "ERROR:no viable alternative at input 'for' (./temp/4.bdd line : 41 column : 14)"
             ],
             "cosine_similarity": 0.194,
             "jaccard_similarity": 0.1667,
@@ -252,8 +360,13 @@
         },
         "5.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'Based' (./temp/5.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'on' (./temp/5.bdd line : 1 column : 7)"
+                "ERROR:extraneous input 'properties:' expecting RULE_ID (./temp/5.bdd line : 3 column : 5)",
+                "ERROR:missing '{' at 'actions:' (./temp/5.bdd line : 4 column : 5)",
+                "ERROR:no viable alternative at input 'is' (./temp/5.bdd line : 8 column : 1)",
+                "ERROR:mismatched character '<EOF>' expecting ''' (./temp/5.bdd line : 28 column : 7)",
+                "ERROR:Couldn't resolve reference to EntityDef 'name'. (./temp/5.bdd line : 3 column : 17)",
+                "ERROR:Couldn't resolve reference to EntityDef 'picture'. (./temp/5.bdd line : 3 column : 23)",
+                "ERROR:Couldn't resolve reference to EntityDef 'price'. (./temp/5.bdd line : 3 column : 32)"
             ],
             "cosine_similarity": 0.2074,
             "jaccard_similarity": 0.1562,
@@ -262,8 +375,7 @@
         },
         "6.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'Based' (./temp/6.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'on' (./temp/6.bdd line : 1 column : 7)"
+                "ERROR:no viable alternative at input 'Given' (./temp/6.bdd line : 9 column : 5)"
             ],
             "cosine_similarity": 0.17,
             "jaccard_similarity": 0.1775,
@@ -272,8 +384,20 @@
         },
         "7.bdd": {
             "compiler_log": [
-                "ERROR:missing 'model' at 'Based' (./temp/7.bdd line : 1 column : 1)",
-                "ERROR:missing EOF at 'on' (./temp/7.bdd line : 1 column : 7)"
+                "ERROR:no viable alternative at input '-' (./temp/7.bdd line : 5 column : 17)",
+                "ERROR:extraneous input '-' expecting RULE_ID (./temp/7.bdd line : 5 column : 26)",
+                "ERROR:no viable alternative at input '-' (./temp/7.bdd line : 6 column : 12)",
+                "ERROR:extraneous input '-' expecting RULE_ID (./temp/7.bdd line : 6 column : 23)",
+                "ERROR:no viable alternative at input '-' (./temp/7.bdd line : 6 column : 33)",
+                "ERROR:mismatched input '}' expecting '-' (./temp/7.bdd line : 16 column : 1)",
+                "ERROR:no viable alternative at input '-' (./temp/7.bdd line : 20 column : 13)",
+                "ERROR:mismatched input 'from' expecting RULE_ID (./temp/7.bdd line : 21 column : 18)",
+                "ERROR:no viable alternative at input '-' (./temp/7.bdd line : 27 column : 13)",
+                "ERROR:mismatched input 'from' expecting RULE_ID (./temp/7.bdd line : 28 column : 18)",
+                "ERROR:no viable alternative at input 'all' (./temp/7.bdd line : 33 column : 9)",
+                "ERROR:mismatched input 'Scenario:' expecting 'which' (./temp/7.bdd line : 37 column : 1)",
+                "ERROR:mismatched input 'viewing' expecting 'which' (./temp/7.bdd line : 38 column : 12)",
+                "ERROR:Couldn't resolve reference to Scenario 'am'. (./temp/7.bdd line : 38 column : 9)"
             ],
             "cosine_similarity": 0.0801,
             "jaccard_similarity": 0.1724,
@@ -284,7 +408,22 @@
     "v1": {
         "1.bdd": {
             "compiler_log": [
-                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+                "ERROR:mismatched input 'cart' expecting '}' (./temp/1.bdd line : 4 column : 27)",
+                "ERROR:mismatched input 'out' expecting '}' (./temp/1.bdd line : 11 column : 21)",
+                "ERROR:no viable alternative at input 'of' (./temp/1.bdd line : 28 column : 13)",
+                "ERROR:no viable alternative at input 'details' (./temp/1.bdd line : 33 column : 6)",
+                "ERROR:no viable alternative at input 'which' (./temp/1.bdd line : 42 column : 5)",
+                "ERROR:extraneous input 'in' expecting RULE_ID (./temp/1.bdd line : 46 column : 33)",
+                "ERROR:mismatched input 'Scenario:' expecting 'which' (./temp/1.bdd line : 48 column : 1)",
+                "ERROR:no viable alternative at input 'in' (./temp/1.bdd line : 49 column : 1)",
+                "ERROR:no viable alternative at input 'which' (./temp/1.bdd line : 68 column : 5)",
+                "ERROR:extraneous input 'in' expecting RULE_ID (./temp/1.bdd line : 72 column : 33)",
+                "ERROR:mismatched input '<EOF>' expecting 'which' (./temp/1.bdd line : 72 column : 44)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/1.bdd line : 22 column : 34)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/1.bdd line : 36 column : 34)",
+                "ERROR:Couldn't resolve reference to StateName 'cart'. (./temp/1.bdd line : 46 column : 36)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/1.bdd line : 62 column : 34)",
+                "ERROR:Couldn't resolve reference to StateName 'wishlist'. (./temp/1.bdd line : 72 column : 36)"
             ],
             "cosine_similarity": 0.162,
             "jaccard_similarity": 0.3472,
@@ -293,7 +432,22 @@
         },
         "10.bdd": {
             "compiler_log": [
-                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+                "ERROR:mismatched input 'cart' expecting '}' (./temp/10.bdd line : 4 column : 27)",
+                "ERROR:mismatched input 'out' expecting '}' (./temp/10.bdd line : 11 column : 21)",
+                "ERROR:no viable alternative at input 'is' (./temp/10.bdd line : 34 column : 1)",
+                "ERROR:no viable alternative at input 'which' (./temp/10.bdd line : 53 column : 5)",
+                "ERROR:mismatched input 'Then' expecting 'for' (./temp/10.bdd line : 56 column : 1)",
+                "ERROR:extraneous input 'in' expecting RULE_ID (./temp/10.bdd line : 56 column : 33)",
+                "ERROR:no viable alternative at input 'which' (./temp/10.bdd line : 57 column : 5)",
+                "ERROR:no viable alternative at input 'which' (./temp/10.bdd line : 66 column : 5)",
+                "ERROR:mismatched input 'Then' expecting 'for' (./temp/10.bdd line : 69 column : 1)",
+                "ERROR:extraneous input 'in' expecting RULE_ID (./temp/10.bdd line : 69 column : 33)",
+                "ERROR:no viable alternative at input 'which' (./temp/10.bdd line : 70 column : 5)",
+                "ERROR:no viable alternative at input '\"ErgoChair\"' (./temp/10.bdd line : 75 column : 1)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/10.bdd line : 49 column : 34)",
+                "ERROR:Couldn't resolve reference to StateName 'cart'. (./temp/10.bdd line : 56 column : 36)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/10.bdd line : 62 column : 34)",
+                "ERROR:Couldn't resolve reference to StateName 'wishlist'. (./temp/10.bdd line : 69 column : 36)"
             ],
             "cosine_similarity": 0.2318,
             "jaccard_similarity": 0.3399,
@@ -302,7 +456,12 @@
         },
         "2.bdd": {
             "compiler_log": [
-                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+                "ERROR:mismatched input 'wishlist' expecting '}' (./temp/2.bdd line : 4 column : 31)",
+                "ERROR:mismatched input 'out' expecting '}' (./temp/2.bdd line : 11 column : 18)",
+                "ERROR:no viable alternative at input 'which' (./temp/2.bdd line : 22 column : 1)",
+                "ERROR:no viable alternative at input 'details' (./temp/2.bdd line : 39 column : 1)",
+                "ERROR:no viable alternative at input 'details' (./temp/2.bdd line : 55 column : 1)",
+                "ERROR:no viable alternative at input 'from' (./temp/2.bdd line : 70 column : 24)"
             ],
             "cosine_similarity": 0.2017,
             "jaccard_similarity": 0.3419,
@@ -311,7 +470,19 @@
         },
         "3.bdd": {
             "compiler_log": [
-                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+                "ERROR:mismatched input 'cart' expecting '}' (./temp/3.bdd line : 4 column : 32)",
+                "ERROR:mismatched input 'out' expecting '}' (./temp/3.bdd line : 11 column : 18)",
+                "ERROR:no viable alternative at input 'details' (./temp/3.bdd line : 32 column : 6)",
+                "ERROR:no viable alternative at input 'I' (./temp/3.bdd line : 43 column : 6)",
+                "ERROR:no viable alternative at input 'in' (./temp/3.bdd line : 54 column : 1)",
+                "ERROR:no viable alternative at input 'I' (./temp/3.bdd line : 73 column : 6)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/3.bdd line : 22 column : 50)",
+                "ERROR:Couldn't resolve reference to ActionDef 'look'. (./temp/3.bdd line : 30 column : 10)",
+                "ERROR:Couldn't resolve reference to ActionDef 'look'. (./temp/3.bdd line : 31 column : 7)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/3.bdd line : 39 column : 50)",
+                "ERROR:Couldn't resolve reference to ActionDef 'look'. (./temp/3.bdd line : 42 column : 10)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/3.bdd line : 69 column : 50)",
+                "ERROR:Couldn't resolve reference to ActionDef 'look'. (./temp/3.bdd line : 72 column : 10)"
             ],
             "cosine_similarity": 0.1934,
             "jaccard_similarity": 0.2994,
@@ -320,7 +491,12 @@
         },
         "4.bdd": {
             "compiler_log": [
-                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+                "ERROR:mismatched input 'cart' expecting '}' (./temp/4.bdd line : 5 column : 30)",
+                "ERROR:mismatched input 'out' expecting '}' (./temp/4.bdd line : 34 column : 17)",
+                "ERROR:no viable alternative at input 'is' (./temp/4.bdd line : 49 column : 1)",
+                "ERROR:no viable alternative at input 'which' (./temp/4.bdd line : 63 column : 1)",
+                "ERROR:no viable alternative at input 'from' (./temp/4.bdd line : 71 column : 24)",
+                "ERROR:no viable alternative at input 'which' (./temp/4.bdd line : 86 column : 1)"
             ],
             "cosine_similarity": 0.1681,
             "jaccard_similarity": 0.3699,
@@ -329,7 +505,12 @@
         },
         "5.bdd": {
             "compiler_log": [
-                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+                "ERROR:mismatched input 'cart' expecting '}' (./temp/5.bdd line : 4 column : 35)",
+                "ERROR:no viable alternative at input ',' (./temp/5.bdd line : 22 column : 1)",
+                "ERROR:no viable alternative at input 'which' (./temp/5.bdd line : 40 column : 1)",
+                "ERROR:no viable alternative at input '\"ErgoChair\"' (./temp/5.bdd line : 51 column : 1)",
+                "ERROR:no viable alternative at input 'which' (./temp/5.bdd line : 64 column : 1)",
+                "ERROR:no viable alternative at input '\"ErgoChair\"' (./temp/5.bdd line : 75 column : 1)"
             ],
             "cosine_similarity": 0.1635,
             "jaccard_similarity": 0.3613,
@@ -338,7 +519,26 @@
         },
         "6.bdd": {
             "compiler_log": [
-                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+                "ERROR:mismatched input 'cart' expecting '}' (./temp/6.bdd line : 4 column : 27)",
+                "ERROR:mismatched input 'out' expecting '}' (./temp/6.bdd line : 11 column : 21)",
+                "ERROR:mismatched input '\"Aeron Chair\"' expecting RULE_ID (./temp/6.bdd line : 27 column : 44)",
+                "ERROR:mismatched input '\"$999\"' expecting RULE_ID (./temp/6.bdd line : 28 column : 45)",
+                "ERROR:mismatched input '\"Aeron Chair\"' expecting RULE_ID (./temp/6.bdd line : 34 column : 40)",
+                "ERROR:mismatched input 'Scenario:' expecting 'which' (./temp/6.bdd line : 39 column : 1)",
+                "ERROR:no viable alternative at input 'which' (./temp/6.bdd line : 46 column : 5)",
+                "ERROR:mismatched input 'Scenario:' expecting 'which' (./temp/6.bdd line : 52 column : 1)",
+                "ERROR:no viable alternative at input 'which' (./temp/6.bdd line : 59 column : 5)",
+                "ERROR:mismatched input 'Scenario:' expecting 'which' (./temp/6.bdd line : 65 column : 1)",
+                "ERROR:no viable alternative at input '\"Aeron Chair\"' (./temp/6.bdd line : 66 column : 1)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/6.bdd line : 22 column : 40)",
+                "ERROR:Couldn't resolve reference to ActionDef 'look'. (./temp/6.bdd line : 25 column : 16)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/6.bdd line : 37 column : 35)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/6.bdd line : 40 column : 36)",
+                "ERROR:Couldn't resolve reference to ActionDef 'look'. (./temp/6.bdd line : 43 column : 16)",
+                "ERROR:Couldn't resolve reference to PropertyDef 'value'. (./temp/6.bdd line : 44 column : 18)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/6.bdd line : 53 column : 36)",
+                "ERROR:Couldn't resolve reference to ActionDef 'look'. (./temp/6.bdd line : 56 column : 16)",
+                "ERROR:Couldn't resolve reference to PropertyDef 'value'. (./temp/6.bdd line : 57 column : 18)"
             ],
             "cosine_similarity": 0.1862,
             "jaccard_similarity": 0.3397,
@@ -347,7 +547,28 @@
         },
         "7.bdd": {
             "compiler_log": [
-                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+                "ERROR:mismatched input 'cart' expecting '}' (./temp/7.bdd line : 4 column : 35)",
+                "ERROR:mismatched input 'out' expecting '}' (./temp/7.bdd line : 11 column : 21)",
+                "ERROR:mismatched input '\"ErgoChair\"' expecting RULE_ID (./temp/7.bdd line : 27 column : 42)",
+                "ERROR:mismatched input '\"£499\"' expecting RULE_ID (./temp/7.bdd line : 28 column : 43)",
+                "ERROR:no viable alternative at input 'which' (./temp/7.bdd line : 50 column : 5)",
+                "ERROR:extraneous input 'in' expecting RULE_ID (./temp/7.bdd line : 54 column : 33)",
+                "ERROR:no viable alternative at input 'for' (./temp/7.bdd line : 59 column : 39)",
+                "ERROR:no viable alternative at input 'which' (./temp/7.bdd line : 69 column : 5)",
+                "ERROR:extraneous input 'in' expecting RULE_ID (./temp/7.bdd line : 73 column : 33)",
+                "ERROR:no viable alternative at input '\"ErgoChair\"' (./temp/7.bdd line : 81 column : 1)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/7.bdd line : 22 column : 38)",
+                "ERROR:Couldn't resolve reference to ActionDef 'look'. (./temp/7.bdd line : 25 column : 16)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/7.bdd line : 34 column : 33)",
+                "ERROR:Couldn't resolve reference to ActionDef 'look'. (./temp/7.bdd line : 37 column : 16)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/7.bdd line : 44 column : 34)",
+                "ERROR:Couldn't resolve reference to ActionDef 'look'. (./temp/7.bdd line : 47 column : 16)",
+                "ERROR:Couldn't resolve reference to StateName 'cart'. (./temp/7.bdd line : 54 column : 36)",
+                "ERROR:Couldn't resolve reference to ActionDef 'look'. (./temp/7.bdd line : 57 column : 16)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/7.bdd line : 63 column : 34)",
+                "ERROR:Couldn't resolve reference to ActionDef 'look'. (./temp/7.bdd line : 66 column : 16)",
+                "ERROR:Couldn't resolve reference to StateName 'wishlist'. (./temp/7.bdd line : 73 column : 36)",
+                "ERROR:Couldn't resolve reference to ActionDef 'look'. (./temp/7.bdd line : 76 column : 16)"
             ],
             "cosine_similarity": 0.2353,
             "jaccard_similarity": 0.3563,
@@ -356,7 +577,19 @@
         },
         "8.bdd": {
             "compiler_log": [
-                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+                "ERROR:mismatched input 'cart' expecting '}' (./temp/8.bdd line : 4 column : 24)",
+                "ERROR:mismatched input 'out' expecting '}' (./temp/8.bdd line : 11 column : 18)",
+                "ERROR:mismatched input '\"ErgoChair\"' expecting RULE_ID (./temp/8.bdd line : 26 column : 32)",
+                "ERROR:mismatched input 'When' expecting 'Given' (./temp/8.bdd line : 31 column : 3)",
+                "ERROR:no viable alternative at input 'which' (./temp/8.bdd line : 48 column : 2)",
+                "ERROR:mismatched input 'When' expecting 'Given' (./temp/8.bdd line : 49 column : 3)",
+                "ERROR:no viable alternative at input 'from' (./temp/8.bdd line : 57 column : 24)",
+                "ERROR:no viable alternative at input 'which' (./temp/8.bdd line : 80 column : 2)",
+                "ERROR:mismatched input 'When' expecting 'Given' (./temp/8.bdd line : 81 column : 3)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/8.bdd line : 22 column : 34)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/8.bdd line : 42 column : 34)",
+                "ERROR:Couldn't resolve reference to EntityDef 'cart'. (./temp/8.bdd line : 47 column : 43)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/8.bdd line : 74 column : 34)"
             ],
             "cosine_similarity": 0.1542,
             "jaccard_similarity": 0.3544,
@@ -365,7 +598,17 @@
         },
         "9.bdd": {
             "compiler_log": [
-                "ERROR:mismatched input '`' expecting 'model' ( line : 1 column : 1)"
+                "ERROR:mismatched input 'cart' expecting '}' (./temp/9.bdd line : 4 column : 27)",
+                "ERROR:mismatched input 'out' expecting '}' (./temp/9.bdd line : 11 column : 21)",
+                "ERROR:no viable alternative at input 'and' (./temp/9.bdd line : 26 column : 14)",
+                "ERROR:no viable alternative at input 'which' (./temp/9.bdd line : 45 column : 5)",
+                "ERROR:no viable alternative at input 'and' (./temp/9.bdd line : 53 column : 14)",
+                "ERROR:no viable alternative at input 'which' (./temp/9.bdd line : 62 column : 5)",
+                "ERROR:no viable alternative at input 'and' (./temp/9.bdd line : 70 column : 14)",
+                "ERROR:no viable alternative at input 'contains' (./temp/9.bdd line : 73 column : 1)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/9.bdd line : 22 column : 34)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/9.bdd line : 39 column : 34)",
+                "ERROR:Couldn't resolve reference to StateName 'viewed'. (./temp/9.bdd line : 56 column : 34)"
             ],
             "cosine_similarity": 0.1755,
             "jaccard_similarity": 0.3419,

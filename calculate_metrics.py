@@ -180,8 +180,6 @@ def get_score_of_generated_data_2(ground_truth_bdd_path: str, generated_folder_p
             if not attempt.endswith(".bdd"): continue
             print(attempt)
 
-            # id = version+"/"+attempt
-
             scores[version][attempt] = get_similarity_score(ground_truth_bdd_path, attempt_path)
             
             scores[version][attempt]["compiler_log"] = compile_model(attempt_path)
@@ -189,6 +187,27 @@ def get_score_of_generated_data_2(ground_truth_bdd_path: str, generated_folder_p
         
     return json.dumps(scores, sort_keys=True, indent=4, ensure_ascii=False)
 
+
+def clean_llm_ouput(dsl_file_path: str) -> str:
+    with open(dsl_file_path, 'r') as dsl_file:
+        lines = dsl_file.readlines()
+
+    start_idx = end_idx = None
+    for idx, line in enumerate(lines):
+        if '```' in line:
+            if start_idx is None:
+                start_idx = idx + 1  # Skip the line with "```"
+            else:
+                end_idx = idx  # Don't skip this line, as we want to remove everything after "```"
+                break
+
+    # Ensure we have valid start and end indices before extracting the content
+    if start_idx is not None and end_idx is not None and start_idx < end_idx:
+        cleaned_content = ''.join(lines[start_idx:end_idx])
+    elif start_idx is not None:
+        cleaned_content = ''.join(lines[start_idx:])  # If there's no ending "```", take everything after the starting one
+
+    return cleaned_content
 
 
 @timer
@@ -199,8 +218,13 @@ def compile_model(dsl_file_path: str, compiler_path: str = COMPILER_PATH, widget
 
     os.makedirs(temp_dir_path, exist_ok=True)
     shutil.copy(widgets_path, temp_dir_path)
-    shutil.copy(dsl_file_path, temp_dir_path)
     shutil.copy(compiler_path, temp_dir_path)
+
+    cleaned_content = clean_llm_ouput(dsl_file_path)
+
+    cleaned_file_path = os.path.join(temp_dir_path, os.path.basename(dsl_file_path))
+    with open(cleaned_file_path, 'w') as cleaned_file:
+        cleaned_file.write(cleaned_content)
     
     new_compiler_path = os.path.join(temp_dir_path, os.path.split(compiler_path)[1])
 
