@@ -1,0 +1,113 @@
+```bdd
+model OfficeChairECommerce using Widgets
+
+entity Catalog {
+    actions:
+        view item details
+    states:
+        available / unavailable
+    properties:
+        items*
+}
+
+entity Item {
+    actions:
+        add to cart,
+        add to wishlist
+    states:
+        inCart / notInCart,
+        inWishlist / notInWishlist
+    properties:
+        picture,
+        name,
+        price,
+        details,
+        reviews*
+}
+
+entity Cart {
+    actions:
+        checkout
+    states:
+        empty / containsItems
+    properties:
+        items*
+}
+
+entity Wishlist {
+    actions:
+        remove item [from]
+    states:
+        empty / containsItems
+    properties:
+        items*
+}
+
+Scenario: Viewing Items on HomePage
+Given the Catalog "MyCatalog" is available
+    which means
+        Given the BrowserWindow "HomePage" is displayed
+        When I go to the BrowserWindow "CatalogPage"
+        Then the Grid "ItemGrid" is displayed
+When I view item details of the Item "OfficeChair1"
+    which means
+        Given the BrowserWindow "CatalogPage" is displayed
+        When I click on the Image "OfficeChair1"
+        Then the BrowserWindow "DetailsPage" is displayed
+Then the details of the Item "OfficeChair1" are shown
+    which means
+        Given the BrowserWindow "DetailsPage" is displayed
+        When I see the Text "OfficeChair1Details"
+        Then the Label "Reviews" is displayed
+
+Scenario: Adding Item to Cart
+Given the Item "OfficeChair1" is notInCart
+    which means
+        Given the BrowserWindow "DetailsPage" is displayed
+        When I see the Button "Add to Cart"
+        Then the Text "Not in Cart" is displayed
+When I add to cart the Item "OfficeChair1"
+    which means
+        Given the BrowserWindow "DetailsPage" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "Added to Cart" is displayed
+Then the Item "OfficeChair1" is inCart
+    which means
+        Given the BrowserWindow "DetailsPage" is displayed
+        When I see the Button "Remove from Cart"
+        Then the Text "In Cart" is displayed
+
+Scenario: Removing Item from Wishlist
+Given the Item "OfficeChair1" is inWishlist
+    which means
+        Given the BrowserWindow "WishlistPage" is displayed
+        When I see the Button "Remove from Wishlist"
+        Then the Text "In Wishlist" is displayed
+When I remove item from the Wishlist "OfficeChair1"
+    which means
+        Given the BrowserWindow "WishlistPage" is displayed
+        When I click on the Button "Remove from Wishlist"
+        Then the Notification "Removed from Wishlist" is displayed
+Then the Item "OfficeChair1" is notInWishlist
+    which means
+        Given the BrowserWindow "WishlistPage" is displayed
+        When I see the Button "Add to Wishlist"
+        Then the Text "Not in Wishlist" is displayed
+
+Scenario: Checking out Items in Cart
+Given the Cart "MyCart" containsItems
+    which means
+        Given the BrowserWindow "CartPage" is displayed
+        When I see the Grid "ItemsInCart"
+        Then the Button "Checkout" is enabled
+When I checkout the Cart "MyCart"
+    which means
+        Given the BrowserWindow "CartPage" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "CheckoutPage" is displayed
+Then the Cart "MyCart" is empty
+    which means
+        Given the BrowserWindow "CheckoutPage" is displayed
+        When I complete the Form "PaymentInformation"
+        Then the Notification "Checkout Successful" is displayed
+```

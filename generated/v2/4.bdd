@@ -1,0 +1,125 @@
+```bdd
+model OfficeChairsShop using Widgets
+
+entity Item {
+    actions: 
+        click,
+        addToCart,
+        addToWishlist,
+        buy
+    states:
+        inCart / notInCart,
+        inWishlist / notInWishlist,
+        purchased / notPurchased
+    properties: 
+        name,
+        priceTag,
+        picture,
+        details*,
+        reviews*
+}
+
+entity Cart {
+    actions:
+        checkout
+    states:
+        checkedOut / notCheckedOut
+    properties:
+        items*
+}
+
+entity Wishlist {
+    actions:
+        remove item [from]
+    states:
+        void
+    properties:
+        items*
+}
+
+Scenario: Viewing Item Details
+Given the Item "Ergonomic Office Chair" is notPurchased
+    which means
+        Given the BrowserWindow "HomePage" is displayed
+        When I click on the Item "Ergonomic Office Chair"
+        Then the BrowserWindow "ItemDetailsPage" is displayed
+When I click the Item "Ergonomic Office Chair"
+    which means
+        Given the BrowserWindow "ItemDetailsPage" is displayed
+        When I view the Text "Details" and "Reviews"
+        Then the details and reviews of the Item "Ergonomic Office Chair" are shown
+Then the details* of the Item "Ergonomic Office Chair" are displayed
+    which means
+        Given the BrowserWindow "ItemDetailsPage" is displayed
+        When I view the Text "Details"
+        Then the details of the Item "Ergonomic Office Chair" are shown
+
+Scenario: Adding Item to Cart
+Given the Item "Ergonomic Office Chair" is notInCart
+    which means
+        Given the BrowserWindow "HomePage" is displayed
+        When I click on the Item "Ergonomic Office Chair"
+        Then the Button "Add to Cart" is enabled
+When I addToCart the Item "Ergonomic Office Chair"
+    which means
+        Given the BrowserWindow "ItemDetailsPage" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "Item added to cart" is displayed
+Then the Item "Ergonomic Office Chair" is inCart
+    which means
+        Given the BrowserWindow "CartPage" is displayed
+        When I go to the BrowserWindow "CartPage"
+        Then the list of items includes the Item "Ergonomic Office Chair"
+
+Scenario: Checking Out
+Given the Cart "MyCart" is notCheckedOut
+And the items* of the Cart "MyCart" includes the Item "Ergonomic Office Chair"
+    which means
+        Given the BrowserWindow "CartPage" is displayed
+        When I view the List "Items in Cart"
+        Then the List "Items in Cart" includes the Item "Ergonomic Office Chair"
+When I checkout the Cart "MyCart"
+    which means
+        Given the BrowserWindow "CartPage" is displayed
+        When I click on the Button "Checkout"
+        Then the Notification "Checkout successful" is displayed
+Then the Cart "MyCart" is checkedOut
+    which means
+        Given the BrowserWindow "CartPage" is displayed
+        When I go to the BrowserWindow "CheckoutConfirmationPage"
+        Then the Text "Checkout successful" is shown
+
+Scenario: Adding Item to Wishlist
+Given the Item "Ergonomic Office Chair" is notInWishlist
+    which means
+        Given the BrowserWindow "HomePage" is displayed
+        When I click on the Item "Ergonomic Office Chair"
+        Then the Button "Add to Wishlist" is enabled
+When I addToWishlist the Item "Ergonomic Office Chair"
+    which means
+        Given the BrowserWindow "ItemDetailsPage" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "Item added to wishlist" is displayed
+Then the Item "Ergonomic Office Chair" is inWishlist
+    which means
+        Given the BrowserWindow "WishlistPage" is displayed
+        When I go to the BrowserWindow "WishlistPage"
+        Then the list of items includes the Item "Ergonomic Office Chair"
+
+Scenario: Removing Item from Wishlist
+Given the Item "Ergonomic Office Chair" is inWishlist
+    which means
+        Given the BrowserWindow "WishlistPage" is displayed
+        When I view the List "Items in Wishlist"
+        Then the List "Items in Wishlist" includes the Item "Ergonomic Office Chair"
+When I remove item [from] the Wishlist "MyWishlist"
+    which means
+        Given the BrowserWindow "WishlistPage" is displayed
+        When I click on the Button "Remove from Wishlist"
+        Then the Notification "Item removed from wishlist" is displayed
+Then the Wishlist "MyWishlist" is void
+    which means
+        Given the BrowserWindow "WishlistPage" is displayed
+        When I view the List "Items in Wishlist"
+        Then the List "Items in Wishlist" does not include the Item "Ergonomic Office Chair"
+```

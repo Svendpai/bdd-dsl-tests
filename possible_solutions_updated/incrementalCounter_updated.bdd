@@ -1,0 +1,95 @@
+model IncrementalCounter using widgets
+
+entity Counter {
+    actions:
+    	increment counter
+    states:
+        void
+    properties:
+        value
+}
+
+Scenario: Initial display - zero
+Given the value of the Counter "MyCounter" is 0
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Counter"
+        Then the value of the TextField "Counter Value" is "0"
+When I increment the Counter "MyCounter"
+    which means
+        Given the BrowserWindow "Counter" is displayed
+        When I click on the Button "Increment"
+        Then the value of the TextField "Counter Value" is "1"
+Then the value of the Counter "MyCounter" is 1
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Counter"
+        Then the value of the TextField "Counter Value" is "1"
+
+Scenario: Increment one - two
+Given the value of the Counter "MyCounter" is 1
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Counter"
+        Then the value of the TextField "Counter Value" is "1"
+When I increment the Counter "MyCounter"
+    which means
+        Given the BrowserWindow "Counter" is displayed
+        When I click on the Button "Increment"
+        Then the value of the TextField "Counter Value" is "2"
+Then the value of the Counter "MyCounter" is 2
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Counter"
+        Then the value of the TextField "Counter Value" is "2"
+
+Scenario: Increment two - three
+Given the value of the Counter "MyCounter" is 2
+	which means
+		Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Counter"
+		Then the value of the TextField "Counter Value" is "2"
+When I increment the Counter "MyCounter"
+	which means
+		Given the BrowserWindow "Counter" is displayed
+		When I click on the Button "Increment"
+		Then the value of the TextField "Counter Value" is "3"
+Then the value of the Counter "MyCounter" is 3
+	which means
+		Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Counter"
+		Then the value of the TextField "Counter Value" is "3"
+
+Scenario: Increment three - four
+Given the value of the Counter "MyCounter" is 3
+	which means
+		Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Counter"
+		Then the value of the TextField "Counter Value" is "3"
+When I increment the Counter "MyCounter"
+	which means
+		Given the BrowserWindow "Counter" is displayed
+		When I click on the Button "Increment"
+		Then the value of the TextField "Counter Value" is "4"
+Then the value of the Counter "MyCounter" is 4
+	which means
+		Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Counter"
+		Then the value of the TextField "Counter Value" is "4"
+
+Scenario: Increment four - five
+Given the value of the Counter "MyCounter" is 4
+	which means
+		Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Counter"
+		Then the value of the TextField "Counter Value" is "4"
+When I increment the Counter "MyCounter"
+	which means
+		Given the BrowserWindow "Counter" is displayed
+		When I click on the Button "Increment"
+		Then the value of the TextField "Counter Value" is "5"
+Then the value of the Counter "MyCounter" is 5
+	which means
+		Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Counter"
+		Then the value of the TextField "Counter Value" is "5"

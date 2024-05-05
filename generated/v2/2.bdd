@@ -1,0 +1,80 @@
+```bdd
+model HighEndOfficeChairs using Widgets
+
+entity Item {
+    actions: click, add [to], buy
+    states: inCatalog, inCart, inWishlist, purchased
+    properties: picture, name, priceTag, details*, reviews*
+}
+
+entity ShoppingCart {
+    actions: add item [to], remove item [from], checkout
+    states: empty / filled, checkedOut
+    properties: items*
+}
+
+entity Wishlist {
+    actions: add item [to], remove item [from]
+    states: empty / filled
+    properties: items*
+}
+
+Scenario: Viewing Item Details
+Given the Item "ErgonomicChair" is inCatalog
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the Image "ErgonomicChairPicture" is displayed
+        And the Text "ErgonomicChairName" is displayed
+        And the Text "ErgonomicChairPrice" is displayed
+When I click on the Item "ErgonomicChair"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Image "ErgonomicChairPicture"
+        Then the BrowserWindow "ItemDetails" is displayed
+Then the details of the Item "ErgonomicChair" are shown
+And the reviews of the Item "ErgonomicChair" are shown
+    which means
+        Given the BrowserWindow "ItemDetails" is displayed
+        When I go to the BrowserWindow "ItemDetails"
+        Then the Text "ErgonomicChairDetails" is displayed
+        And the Text "ErgonomicChairReviews" is displayed
+
+Scenario: Adding Item to Shopping Cart
+Given the Item "ErgonomicChair" is inCatalog
+And the ShoppingCart "MyCart" is empty
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the Image "ErgonomicChairPicture" is displayed
+When I add the Item "ErgonomicChair" to the ShoppingCart "MyCart"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Button "AddToCart"
+        Then the BrowserWindow "Home" is displayed
+Then the Item "ErgonomicChair" is inCart
+And the ShoppingCart "MyCart" is filled
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the Text "CartItems" displays "1 Item"
+
+Scenario: Checking Out from Shopping Cart
+Given the Item "ErgonomicChair" is inCart
+And the ShoppingCart "MyCart" is filled
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Cart"
+        Then the Text "CartItems" displays "1 Item"
+When I checkout from the ShoppingCart "MyCart"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "CheckoutConfirmation" is displayed
+Then the ShoppingCart "MyCart" is checkedOut
+And the Item "ErgonomicChair" is purchased
+    which means
+        Given the BrowserWindow "CheckoutConfirmation" is displayed
+        When I go to the BrowserWindow "CheckoutConfirmation"
+        Then the Text "CheckoutStatus" displays "Checkout Successful"
+```

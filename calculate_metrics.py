@@ -204,6 +204,9 @@ def get_similarity_score(possible_solution_path: str, generated_solution_path: s
     levenshtein_distance = get_levenshtein_distance(possible_solution, generated_solution)
     tfidf_similarity = get_tfidf_similarity(possible_solution, generated_solution)
     jaccard_similarity = get_jaccard_similarity(possible_solution, generated_solution)
+    levenshtein_token_distance = get_token_levenshtein_distance(possible_solution, generated_solution)
+    longest_common_subsequence = get_longest_common_subsequence(possible_solution, generated_solution)
+    length_of_longest_common_subsequence = len(longest_common_subsequence) / min(len(possible_solution), len(generated_solution))
     # word2vec_similarity = get_word2vec_similarity(possible_solution, generated_solution)
 
     similarity = {
@@ -211,6 +214,8 @@ def get_similarity_score(possible_solution_path: str, generated_solution_path: s
         "levenshtein_distance": levenshtein_distance,
         "tfidf_similarity": float(f"{tfidf_similarity:.4f}"),
         "jaccard_similarity": float(f"{jaccard_similarity:.4f}"),
+        "levenshtein_distance_token": levenshtein_token_distance,
+        "longest_common_subsequence": float(f"{length_of_longest_common_subsequence:.4f}"),
         # "word2vec_similarity": f"{word2vec_similarity:.4f}",
         # "ast_tfidf_similarity": f"{ast_tfidf_similarity:.4f}",
         # "ast_levenstein_distance": ast_levenstein_distance,
@@ -316,7 +321,7 @@ def compile_model(dsl_file_path: str, compiler_path: str = COMPILER_PATH, widget
 
 
 def main():
-    possible_solution_path = "./possible_solutions"
+    # possible_solution_path = "./possible_solutions"
     ground_truth = "./possible_solutions/eCommerce.bdd"
     generated_path = "./generated"
 
