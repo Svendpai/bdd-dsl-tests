@@ -181,7 +181,7 @@ def generate_latex_table(parsed_data):
     latex_content = []
 
     # LaTeX header and setup for the table
-    latex_content.append(r'\begin{table}[h]')
+    latex_content.append(r'\begin{table}[!h]')
     latex_content.append(r'    \centering')
     latex_content.append(r'    \makebox[\linewidth]{')
     latex_content.append(r'    \begin{tabular}{l l*{10}{c} r}')
