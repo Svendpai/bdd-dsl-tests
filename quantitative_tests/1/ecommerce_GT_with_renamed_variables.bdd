@@ -1,0 +1,183 @@
+model OnlineStore using widgets
+
+entity Product {
+    actions:
+    	select,
+    	view details,
+    	evaluate,
+    	delete review
+    states: 
+    	inCart, 
+    	inFavorites, 
+    	reviewed, 
+    	bought
+    properties: 
+    	image, 
+    	title, 
+    	cost, 
+    	description, 
+    	rating*
+}
+
+entity ShoppingCart {
+    actions: 
+    	view cart,
+    	complete purchase,
+    	add product [to]
+    states: 
+    	empty
+    properties: 
+    	products*
+}
+
+entity Favorites {
+    actions: 
+    	view favorites, 
+    	add product [to]
+    states: 
+    	empty
+    properties: 
+    	products*
+}
+
+Scenario: View Product details
+Given the title of the Product "456" is "Steelcase Gesture"
+And the cost of the Product "456" is 999
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I select the Product "456"
+        Then the BrowserWindow "Steelcase Gesture" is displayed
+When I view details of the Product "456"
+    which means
+    	Given the BrowserWindow "Home Page" is displayed
+        When I select the Product "456"
+        Then the value of the TextField "Title" is "Steelcase Gesture"
+        And the value of the TextField "Cost" is "999"
+Then the title of the Product "456" is "Steelcase Gesture"
+And the cost of the Product "456" is 999
+	which means
+    	Given the BrowserWindow "Home Page" is displayed
+        When I select the Product "456"
+        Then the value of the TextField "Title" is "Steelcase Gesture"
+        And the value of the TextField "Cost" is "999"	
+
+Scenario: Add Product to ShoppingCart
+Given the Product "456" is not inCart
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click the Button "ShoppingCart"
+        And I view the ShoppingCart "MyCart"
+        Then the BrowserWindow "Cart Page" is displayed
+        And the Product "456" is not inCart
+When I add the Product "456" to the ShoppingCart "MyCart"
+    which means
+        Given the BrowserWindow "Steelcase Gesture" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "Steelcase Gesture has been added to the Cart" is displayed
+Then the Product "456" is inCart
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click the Button "ShoppingCart"
+        And view the ShoppingCart "MyCart"
+        Then the BrowserWindow "Cart Page" is displayed
+        And the Product "456" is inCart
+
+Scenario: Complete ShoppingCart Purchase
+Given the ShoppingCart "MyCart" is not empty
+    which means
+        Given the BrowserWindow "Cart Page" is displayed
+        When I view the ShoppingCart "MyCart"
+        Then the products of the ShoppingCart "MyCart" is not "None"
+When I complete purchase of the ShoppingCart "MyCart"
+    which means
+        Given the BrowserWindow "Checkout Page" is displayed
+        And the ShoppingCart "MyCart" is not empty
+        When I click on the Button "Confirm Purchase"
+        Then the Notification "Purchase successful" is displayed
+Then the ShoppingCart "MyCart" is empty
+    which means
+        Given the BrowserWindow "Cart Page" is displayed
+        When I view the ShoppingCart "MyCart"
+        Then the products of the ShoppingCart "MyCart" is "None"
+        
+Scenario: Complete ShoppingCart Purchase with one Product
+Given the products of the ShoppingCart "MyCart" is "456"
+And the Product "456" is not bought
+	which means
+		Given the BrowserWindow "Cart Page" is displayed
+        When I view the ShoppingCart "MyCart"
+        Then the products of the ShoppingCart "MyCart" is "456"
+When I complete purchase of the ShoppingCart "MyCart"
+    which means
+        Given the BrowserWindow "Checkout Page" is displayed
+        And the products of the ShoppingCart "MyCart" is not "None"
+        When I click on "Confirm Purchase"
+        Then the Notification "Purchase successful" is displayed
+Then the ShoppingCart "MyCart" is empty
+And the Product "456" is bought
+    which means
+        Given the BrowserWindow "Cart Page" is displayed
+        When I view the ShoppingCart "MyCart"
+        Then the products of the ShoppingCart "MyCart" is "None"
+
+Scenario: Add Product to Favorites
+Given the Product "456" is not inFavorites
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click the Button "My Favorites"
+        And view the Favorites "MyFavorites"
+        Then the BrowserWindow "Favorites Page" is displayed
+        And the Product "456" is not inFavorites
+When I add the Product "456" to the Favorites "MyFavorites"
+    which means
+        Given the BrowserWindow "Steelcase Gesture" is displayed
+        When I click on the Button "Add to Favorites"
+        Then the Notification "Steelcase Gesture has been added to your Favorites" is displayed
+Then the Product "456" is inFavorites
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click the Button "ShoppingCart"
+        And view the Favorites "MyFavorites"
+        Then the BrowserWindow "Favorites Page" is displayed
+        And the Product "456" is inFavorites
+
+Scenario: Transfer a Product between Favorites - ShoppingCart
+Given the Product "456" is inFavorites
+And the Product "456" is not inCart
+    which means
+        Given the BrowserWindow "Favorites Page" is displayed
+        When I view the Favorites "MyFavorites"
+        Then the Product "456" is inFavorites
+        And the Product "456" is not inCart
+When I add the Product "456" to the ShoppingCart "MyCart"
+    which means
+        Given the BrowserWindow "Favorites Page" is displayed
+        When I click on the Button "Add to Cart" for the Product "456"
+        Then the Notification "Steelcase Gesture moved to Cart" is displayed
+Then the Product "456" is inCart
+And the Product "456" is not inFavorites
+    which means
+        Given the BrowserWindow "Cart Page" is displayed
+        When I view the ShoppingCart "MyCart"
+        Then the Product "456" is inCart
+        And the Product "456" is not inFavorites
+
+Scenario: Review a Product
+Given the Product "456" is bought
+	which means
+		Given the products of the ShoppingCart "MyCart" is "456"
+		When I complete purchase of the ShoppingCart "MyCart"
+		Then the Product "456" is bought
+When I evaluate the Product "456"
+	which means
+		Given the BrowserWindow "Steelcase Gesture" is displayed
+		When I click on the Button "Add Review"
+		And type "Great chair!" in the TextField "Review"
+		And pick "9" in the RadioButton "Rating"
+		Then the value of the TextField "Your Rating" is "9"
+Then the Product "456" is reviewed
+	which means
+		Given the BrowserWindow "Home Page" is displayed
+		When I go to the BrowserWindow "Steelcase Gesture"
+		Then the Product "456" is reviewed
+		And the value of the TextField "Your Rating" is "9"
