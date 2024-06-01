@@ -15,4 +15,4 @@ This repository is associated with my Master's thesis:
 * `/quantitative_tests` contains the data for conducting the quantitative tests
 * `calculate_metrics.py` is the script used to generate the similarity measurements and can be run from the command line
 * `create_graphs.ipynb` is a Jupyter notebook used for visualizing the similarity measurements
-* `generate_table.py` is used to translate the `data.md` files from the iterations to the latex tables seen in the paper
+* `generate_table.py` is used to translate the `data.md` files from the iterations to the Latex tables seen in the paper
