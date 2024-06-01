@@ -1,0 +1,96 @@
+```bdd
+model OfficeChairs using widgets
+
+entity Product {
+	actions: click
+	states:
+		shown
+	properties:
+		picture,
+		name,
+		price
+}
+
+entity Review {
+	properties:
+		content,
+		rating
+}
+
+entity CatalogPage {
+	actions:
+		goToProductPage
+	properties:
+		products
+}
+
+entity ProductPage {
+	actions:
+		addToCart,
+		addToWishlist
+	properties:
+		picture,
+		name,
+		price,
+		description,
+		reviews
+}
+
+entity ShoppingCart {
+	properties:
+		items
+}
+
+entity Wishlist {
+	properties:
+		items
+}
+
+Scenario: Browse the catalog
+Given the BrowserWindow "Catalog" is displayed
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Link "Catalog"
+Then all products are shown
+	which means
+		Given the CatalogPage "Catalog" is displayed
+		Then the value of the Grid "Products" is the products
+
+Scenario: View a product
+Given the CatalogPage "Catalog" is displayed
+And the Product "Aeron Chair" is shown
+	which means
+		Given the BrowserWindow "Catalog" is displayed
+		Then the value of the Grid "Products" contains the Product "Aeron Chair"
+When I click on the Product "Aeron Chair"
+	which means
+		Given the CatalogPage "Catalog" is displayed
+		When I click on the Product "Aeron Chair"
+Then the ProductPage "Aeron Chair" is displayed
+	which means
+		Given the BrowserWindow "Product" is displayed
+		Then the value of the Image "Product Picture" is the picture of the Product "Aeron Chair"
+		And the value of the TextField "Product Name" is the name of the Product "Aeron Chair"
+		And the value of the TextField "Product Price" is the price of the Product "Aeron Chair"
+		And the value of the TextArea "Product Description" is the description of the Product "Aeron Chair"
+		And all reviews are shown
+			which means
+				Given the ProductPage "Aeron Chair" is displayed
+				Then the value of the Grid "Reviews" is the reviews of the Product "Aeron Chair"
+
+Scenario: Add to cart
+Given the ProductPage "Aeron Chair" is displayed
+When I addToCart the Product "Aeron Chair"
+Then the Product "Aeron Chair" is added to the ShoppingCart "MyCart"
+	which means
+		Given the BrowserWindow "Cart" is displayed
+		Then the value of the Grid "Cart Items" contains the Product "Aeron Chair"
+
+Scenario: Add to wishlist
+Given the ProductPage "Aeron Chair" is displayed
+When I addToWishlist the Product "Aeron Chair"
+Then the Product "Aeron Chair" is added to the Wishlist "MyWishlist"
+	which means
+		Given the BrowserWindow "Wishlist" is displayed
+		Then the value of the Grid "Wishlist Items" contains the Product "Aeron Chair"
+```

@@ -1,0 +1,113 @@
+```bdd
+model OfficeChairStore using Widgets
+
+entity Product {
+    actions: viewDetails, addToCart, addToWishlist
+    states: inCart, inWishlist
+    properties: name, price, picture, details, reviews
+}
+
+entity ShoppingCart {
+    actions: checkout
+    states: checkedOut
+    properties: items
+}
+
+entity Wishlist {
+    actions: checkout
+    states: checkedOut
+    properties: items
+}
+
+Scenario: viewProductDetails
+Given the picture of the Product "MyProduct" is displayed
+And the name of the Product "MyProduct" is displayed
+And the price of the Product "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I viewDetails the Product "MyProduct"
+        Then the BrowserWindow "ProductDetails" is displayed
+When I viewDetails the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        Then the details of the Product "MyProduct" are displayed
+        And the reviews of the Product "MyProduct" are displayed
+Then the details of the Product "MyProduct" are displayed
+And the reviews of the Product "MyProduct" are displayed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Product "MyProduct"
+        Then the TextField "Details" shows details of the Product "MyProduct"
+        And the TextField "Reviews" shows reviews of the Product "MyProduct"
+
+Scenario: addToCartFromDetailsPage
+Given the Product "MyProduct" is not inCart
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Product "MyProduct"
+        Then the Button "Add to Cart" is enabled
+When I addToCart the Product "MyProduct"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "Product added to cart" is displayed
+Then the Product "MyProduct" is inCart
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Product "MyProduct"
+        Then the Button "Add to Cart" is disabled
+        And the Notification "Product already in cart" is displayed
+
+Scenario: addToWishlistFromDetailsPage
+Given the Product "MyProduct" is not inWishlist
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Product "MyProduct"
+        Then the Button "Add to Wishlist" is enabled
+When I addToWishlist the Product "MyProduct"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "Product added to wishlist" is displayed
+Then the Product "MyProduct" is inWishlist
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Product "MyProduct"
+        Then the Button "Add to Wishlist" is disabled
+        And the Notification "Product already in wishlist" is displayed
+
+Scenario: checkoutCart
+Given the items of the ShoppingCart "MyShoppingCart" are displayed
+    which means
+        Given the BrowserWindow "ShoppingCart" is displayed
+        When I view the ShoppingCart "MyShoppingCart"
+        Then the Grid "CartItems" shows items in the ShoppingCart "MyShoppingCart"
+When I checkout the ShoppingCart "MyShoppingCart"
+    which means
+        Given the BrowserWindow "ShoppingCart" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "CheckoutConfirmation" is displayed
+Then the ShoppingCart "MyShoppingCart" is checkedOut
+    which means
+        Given the BrowserWindow "CheckoutConfirmation" is displayed
+        When I confirm the ModalWindow "ConfirmCheckout"
+        Then the Notification "Checkout successful" is displayed
+
+Scenario: checkoutWishlist
+Given the items of the Wishlist "MyWishlist" are displayed
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I view the Wishlist "MyWishlist"
+        Then the Grid "WishlistItems" shows items in the Wishlist "MyWishlist"
+When I checkout the Wishlist "MyWishlist"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "CheckoutConfirmation" is displayed
+Then the Wishlist "MyWishlist" is checkedOut
+    which means
+        Given the BrowserWindow "CheckoutConfirmation" is displayed
+        When I confirm the ModalWindow "ConfirmCheckout"
+        Then the Notification "Checkout successful" is displayed
+```

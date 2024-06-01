@@ -1,0 +1,56 @@
+Based on the requirements for the e-commerce website and the provided DSL grammar, here is the DSL code that defines the necessary entities, actions, states, and scenarios for your high-end office chairs website.
+
+```xtext
+model OfficeChairsStore
+
+entity Product {
+    properties: name, price, image, description, reviews*
+    actions: view, addToCart, addToWishlist, buy
+}
+
+entity Cart {
+    properties: items*
+    actions: addItem, removeItem, checkout
+}
+
+entity Wishlist {
+    properties: items*
+    actions: addItem, removeItem
+}
+
+entity HomePage {
+    states: displayingProducts
+}
+
+entity ProductPage {
+    states: showingDetails, showingReviews
+}
+
+entity CheckoutPage {
+    states: confirmingPurchase
+}
+
+// Scenarios
+
+Scenario: ViewingProductsOnHomePage
+Given the HomePage is displayingProducts
+When I view the Product
+Then the ProductPage is showingDetails
+
+Scenario: AddingProductToCart
+Given the ProductPage is showingDetails
+When I addToCart for the Product
+Then the Cart has the Product
+
+Scenario: AddingProductToWishlist
+Given the ProductPage is showingDetails
+When I addToWishlist for the Product
+Then the Wishlist has the Product
+
+Scenario: CheckingOutFromCart
+Given the Cart has items
+When I checkout
+Then the CheckoutPage is confirmingPurchase
+```
+
+This DSL code outlines the basic structure and functionality for an e-commerce site selling high-end office chairs. It defines entities such as products, cart, wishlist, and different pages (home, product, checkout) along with their properties and actions like viewing, adding items to cart or wishlist, and buying. The scenarios describe user interactions with the system, such as viewing products on the home page, adding a product to the cart or wishlist, and proceeding to checkout.

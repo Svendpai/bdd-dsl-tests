@@ -1,0 +1,65 @@
+```bdd
+model OfficeChairECommerce using Widgets
+
+entity Product {
+    actions: viewDetails, addToCart, addToWishlist
+    states: viewedDetails, addedToCart, addedToWishlist
+    properties: name, picture, price
+}
+
+entity ShoppingCart {
+    actions: checkout
+    states: void
+    properties: items, total
+}
+
+entity Wishlist {
+    actions: checkout
+    states: void
+    properties: items, total
+}
+
+Scenario: View Product Details - Successful
+Given the Product "HighEndChair" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I viewDetails on the Product "HighEndChair"
+        Then the BrowserWindow "ProductDetails" is displayed
+        And the value of the TextField "Name" is "HighEndChair"
+        And the value of the Image "Picture" is "HighEndChairPicture"
+        And the value of the TextField "Price" is "$500"
+
+Scenario: Add Product to Cart - Successful
+Given the Product "HighEndChair" is displayed
+And the ShoppingCart "MyShoppingCart" is void
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I viewDetails on the Product "HighEndChair"
+        And I add the Product "HighEndChair" to the ShoppingCart "MyShoppingCart"
+        Then the ShoppingCart "MyShoppingCart" is not void
+        And the Product "HighEndChair" is addedToCart
+
+Scenario: Add Product to Wishlist - Successful
+Given the Product "HighEndChair" is displayed
+And the Wishlist "MyWishlist" is void
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I viewDetails on the Product "HighEndChair"
+        And I add the Product "HighEndChair" to the Wishlist "MyWishlist"
+        Then the Wishlist "MyWishlist" is not void
+        And the Product "HighEndChair" is addedToWishlist
+
+Scenario: Checkout from Shopping Cart - Successful
+Given the ShoppingCart "MyShoppingCart" is not void
+    which means
+        Given the BrowserWindow "ShoppingCart" is displayed
+        And I checkout from the ShoppingCart "MyShoppingCart"
+        Then the BrowserWindow "Checkout" is displayed
+
+Scenario: Checkout from Wishlist - Successful
+Given the Wishlist "MyWishlist" is not void
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        And I checkout from the Wishlist "MyWishlist"
+        Then the BrowserWindow "Checkout" is displayed
+```  

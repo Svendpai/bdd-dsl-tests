@@ -1,0 +1,141 @@
+```bdd
+model ECommerceOfficeChairStore
+
+entity Product {
+    actions: view, click
+    states: viewed, clicked
+    properties: name, price, coverArt
+}
+
+entity ProductDetails is Widget {
+    actions: view, clickAddToCart, clickAddToWishlist
+    states: viewed, addedToCart, addedToWishlist
+    properties: description, reviews
+}
+
+entity Cart {
+    actions: viewCart, removeFromCart, checkout
+    states: viewed, itemRemoved, checkedOut
+    properties: items
+}
+
+entity Wishlist {
+    actions: viewWishlist, removeFromWishlist, moveToCart
+    states: viewed, itemRemoved, movedToCart
+    properties: items 
+}
+
+Scenario: ViewProductCatalog
+Given the ProductDetails "Product1" on the page
+And the ProductDetails "Product2" on the page  
+And the ProductDetails "Product3" on the page
+    which means  
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the Product "Product1" is viewed
+        And the Product "Product2" is viewed  
+        And the Product "Product3" is viewed
+When I click on the Product "Product1"
+    which means
+        Given the BrowserWindow "Home" is displayed 
+        When I click on the Product "Product1"
+        Then the Product "Product1" is clicked
+Then the ProductDetails "Product1" is viewed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the ProductDetails "Product1"
+        Then the name of the ProductDetails "Product1" is "Chair 1"
+        And the price of the ProductDetails "Product1" is 99.99
+        And the description of the ProductDetails "Product1" is "Ergonomic office chair"
+        And the reviews of the ProductDetails "Product1" are [Review1, Review2]
+        
+Scenario: AddProductToCart        
+Given the ProductDetails "Product1" is viewed        
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the ProductDetails "Product1"
+        Then the ProductDetails "Product1" is viewed  
+When I clickAddToCart the ProductDetails "Product1"
+    which means  
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Cart" 
+        Then the Notification "Added to Cart" is displayed
+Then the ProductDetails "Product1" is addedToCart  
+And the Cart "MyCart" contains the Product "Product1"
+    which means
+        Given the BrowserWindow "Cart" is displayed 
+        When I viewCart the Cart "MyCart"
+        Then the Product "Product1" is in the Cart "MyCart"
+
+Scenario: AddProductToWishlist
+Given the ProductDetails "Product2" is viewed
+    which means  
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the ProductDetails "Product2"
+        Then the ProductDetails "Product2" is viewed
+When I clickAddToWishlist the ProductDetails "Product2" 
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed  
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "Added to Wishlist" is displayed  
+Then the ProductDetails "Product2" is addedToWishlist
+And the Wishlist "MyWishlist" contains the Product "Product2"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I viewWishlist the Wishlist "MyWishlist" 
+        Then the Product "Product2" is in the Wishlist "MyWishlist"
+        
+Scenario: RemoveFromCart
+Given the Cart "MyCart" contains the Product "Product1"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I viewCart the Cart "MyCart"
+        Then the Product "Product1" is in the Cart "MyCart"         
+When I removeFromCart the Product "Product1" from the Cart "MyCart"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click on the Button "Remove" for the Product "Product1"
+        Then the Notification "Removed from Cart" is displayed
+Then the Cart "MyCart" does not contain the Product "Product1"
+    which means 
+        Given the BrowserWindow "Cart" is displayed
+        When I viewCart the Cart "MyCart"
+        Then the Product "Product1" is not in the Cart "MyCart"
+        
+Scenario: CheckoutCart  
+Given the Cart "MyCart" contains the Product "Product1" 
+And the Cart "MyCart" contains the Product "Product2"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I viewCart the Cart "MyCart"
+        Then the Product "Product1" is in the Cart "MyCart"
+        And the Product "Product2" is in the Cart "MyCart"
+When I checkout the Cart "MyCart"
+    which means  
+        Given the BrowserWindow "Cart" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "Checkout" is displayed
+Then the Cart "MyCart" is checkedOut
+    which means
+        Given the BrowserWindow "Cart" is displayed  
+        When I viewCart the Cart "MyCart"
+        Then the Cart "MyCart" is empty
+        
+Scenario: MoveFromWishlistToCart
+Given the Wishlist "MyWishlist" contains the Product "Product3"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I viewWishlist the Wishlist "MyWishlist"
+        Then the Product "Product3" is in the Wishlist "MyWishlist"  
+When I moveToCart the Product "Product3" from the Wishlist "MyWishlist"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed 
+        When I click on the Button "Move to Cart" for the Product "Product3"
+        Then the Notification "Moved to Cart" is displayed
+Then the Wishlist "MyWishlist" does not contain the Product "Product3" 
+And the Cart "MyCart" contains the Product "Product3"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I viewCart the Cart "MyCart" 
+        Then the Product "Product3" is in the Cart "MyCart"
+```

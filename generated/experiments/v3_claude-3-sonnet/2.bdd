@@ -1,0 +1,77 @@
+```bdd
+model ECommerceSite using Widgets
+
+entity Product {
+    actions: click [on], view
+    states: displayed, shown
+    properties: name, price, picture
+}
+
+entity ProductDetails is Widget {
+    actions: buy, addToCart, addToWishlist
+    states: purchased, inCart, inWishlist
+    properties: details, reviews
+}
+
+entity Cart {
+    actions: add, remove, checkout
+    states: void
+    properties: items, total
+}
+
+entity Wishlist {
+    actions: add, remove
+    states: void
+    properties: items
+}
+
+Scenario: ViewProductDetailsAndAddToCart
+Given the Product "HighEndChair" is displayed
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click [on] the Product "HighEndChair"
+        Then the ProductDetails "Chair Details" is displayed
+When I addToCart the ProductDetails "Chair Details"
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        When I click [on] the Button "Add to Cart"
+        Then the Product "HighEndChair" is inCart
+Then the ProductDetails "Chair Details" is inCart
+    which means
+        Given the BrowserWindow "Cart Summary" is displayed
+        When I click [on] the Icon "Cart"
+        Then the ProductDetails "Chair Details" is displayed under the Grid "Cart Items"
+
+Scenario: ViewProductDetailsAndAddToWishlist
+Given the Product "HighEndChair" is displayed
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click [on] the Product "HighEndChair"
+        Then the ProductDetails "Chair Details" is displayed
+When I addToWishlist the ProductDetails "Chair Details"  
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        When I click [on] the Button "Add to Wishlist"
+        Then the Product "HighEndChair" is inWishlist
+Then the ProductDetails "Chair Details" is inWishlist
+    which means  
+        Given the BrowserWindow "Wishlist View" is displayed
+        When I click [on] the Icon "Wishlist"
+        Then the ProductDetails "Chair Details" is displayed under the Grid "Wishlist Items"
+
+Scenario: CheckoutFromCart  
+Given the Cart "MyCart" has items
+    which means
+        Given the BrowserWindow "Cart Summary" is displayed
+        When I click [on] the Icon "Cart"  
+        Then the Grid "Cart Items" has items
+When I checkout the Cart "MyCart"
+    which means
+        Given the BrowserWindow "Cart Summary" is displayed  
+        When I click [on] the Button "Checkout"
+        Then the BrowserWindow "Checkout" is displayed
+Then the Cart "MyCart" is void   
+    which means
+        Given the BrowserWindow "Order Confirmation" is displayed
+        Then the value of the TextField "Order Total" is "0"
+```

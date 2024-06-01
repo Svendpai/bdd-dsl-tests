@@ -1,0 +1,110 @@
+```bdd
+model ECommerceWebsite using Widgets
+
+entity Product {
+    actions: viewDetails, addToCart, addToWishlist
+    states: void
+    properties: picture, name, price
+}
+
+entity ShoppingCart {
+    actions: viewCart, checkout
+    states: void
+    properties: itemCount, totalPrice
+}
+
+entity Wishlist {
+    actions: viewWishlist, moveToCart, removeFromWishlist
+    states: void
+    properties: itemCount
+}
+
+Scenario: View Product Details
+Given the Product "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And the Product "MyProduct" is shown
+When I viewDetails the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And I click on the Product "MyProduct"
+Then the BrowserWindow "ProductDetails" is displayed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        Then the value of the TextField "Product Picture" is "MyProduct picture"
+        And the value of the TextField "Product Name" is "MyProduct"
+        And the value of the TextField "Product Price" is "MyProduct price"
+
+Scenario: Add Product to Cart
+Given the Product "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And the Product "MyProduct" is shown
+When I addToCart the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And I click on the Button "Add to Cart"
+Then the value of the TextField "Shopping Cart Item Count" is "1"
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+        Then the value of the TextField "Shopping Cart Item Count" is "1"
+
+Scenario: Add Product to Wishlist
+Given the Product "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And the Product "MyProduct" is shown
+When I addToWishlist the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And I click on the Button "Add to Wishlist"
+Then the value of the TextField "Wishlist Item Count" is "1"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        Then the value of the TextField "Wishlist Item Count" is "1"
+
+Scenario: View Cart and Checkout
+Given the ShoppingCart is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And I click on the Button "View Cart"
+Then the BrowserWindow "Shopping Cart" is displayed
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+When I checkout the ShoppingCart
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+        And I click on the Button "Checkout"
+Then the BrowserWindow "Checkout" is displayed
+    which means
+        Given the BrowserWindow "Checkout" is displayed
+
+Scenario: View Wishlist, Move to Cart, and Remove from Wishlist
+Given the Wishlist is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And I click on the Button "View Wishlist"
+Then the BrowserWindow "Wishlist" is displayed
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+When I moveToCart the Product "MyProduct" from the Wishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        And I click on the Button "Move to Cart" for the Product "MyProduct"
+Then the value of the TextField "Wishlist Item Count" is "0"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        Then the value of the TextField "Wishlist Item Count" is "0"
+And the value of the TextField "Shopping Cart Item Count" is "1"
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+        Then the value of the TextField "Shopping Cart Item Count" is "1"
+When I removeFromWishlist the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        And I click on the Button "Remove" for the Product "MyProduct"
+Then the value of the TextField "Wishlist Item Count" is "0"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        Then the value of the TextField "Wishlist Item Count" is "0"
+```  

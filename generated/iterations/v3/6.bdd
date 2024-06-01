@@ -1,0 +1,114 @@
+```bdd
+model OfficeChairEcommerce using Widgets
+
+entity ProductCatalog is Widget {
+    actions: viewProductDetails
+    properties: itemName, itemPrice, itemImage
+}
+
+entity ProductDetailsPage is Widget {
+    actions: addToCart, addToWishlist, viewReviews
+    properties: detailedDescription, allReviews
+}
+
+entity Cart is Widget {
+    actions: checkout, removeItem, viewItems
+    properties: totalItems, totalPrice
+}
+
+entity Wishlist is Widget {
+    actions: moveToCart, removeItem, viewItems
+    properties: totalItems
+}
+
+entity ReviewSection is Widget {
+    actions: submitReview
+    properties: reviewText, reviewRating
+}
+
+Scenario: viewProductCatalog
+Given the ProductCatalog "MyCatalog" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the ProductCatalog "MyCatalog" is shown
+When I viewProductDetails the ProductCatalog "MyCatalog"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Image "ProductImage"
+        Then the BrowserWindow "ProductDetails" is displayed
+Then the ProductDetailsPage "MyProductDetailsPage" is displayed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Text "ProductName, ProductPrice"
+        Then the Text "DetailedDescription, AllReviews" is shown
+
+Scenario: addProductToCart
+Given the ProductDetailsPage "MyProductDetailsPage" is displayed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Text "ProductName, ProductPrice"
+        Then the Button "Add to Cart" is enabled
+When I addToCart the ProductDetailsPage "MyProductDetailsPage"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Cart "MyCart" is displayed
+Then the totalItems of the Cart "MyCart" is increased
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the Text "TotalItems"
+        Then the Text "TotalItems" is shown
+
+Scenario: checkoutCart
+Given the Cart "MyCart" is displayed
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I go to the BrowserWindow "Cart"
+        Then the Button "Checkout" is enabled
+When I checkout the Cart "MyCart"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "CheckoutConfirmation" is displayed
+Then the Cart "MyCart" is empty
+    which means
+        Given the BrowserWindow "CheckoutConfirmation" is displayed
+        When I confirm the purchase
+        Then the Text "Thank you for your purchase!" is shown
+
+Scenario: addProductToWishlist
+Given the ProductDetailsPage "MyProductDetailsPage" is displayed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Text "ProductName, ProductPrice"
+        Then the Button "Add to Wishlist" is enabled
+When I addToWishlist the ProductDetailsPage "MyProductDetailsPage"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Wishlist "MyWishlist" is displayed
+Then the totalItems of the Wishlist "MyWishlist" is increased
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I view the Text "TotalItems"
+        Then the Text "TotalItems" is shown
+
+Scenario: submitReviewOnProduct
+Given the ProductDetailsPage "MyProductDetailsPage" is displayed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Text "ProductName, ProductPrice"
+        Then the Button "Write Review" is enabled
+When I submitReview the ReviewSection "MyReviewSection"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I type "Great chair!" into the TextArea "ReviewText"
+        And I select "5 stars" in the DropdownList "ReviewRating"
+        Then the Button "Submit Review" is clicked
+Then the allReviews of the ProductDetailsPage "MyProductDetailsPage" include "Great chair!"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Text "AllReviews"
+        Then the Text "Review by user: Great chair! - 5 stars" is shown
+```

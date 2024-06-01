@@ -1,0 +1,113 @@
+```bdd
+model EcommerceWebsite
+
+entity CatalogItem {
+	properties:
+		picture,
+		name,
+		price
+}
+
+entity Catalog {
+	actions:
+		viewItem
+	properties:
+		items
+}
+
+entity ProductPage {
+	actions:
+		addToCart,
+		addToWishlist
+	properties:
+		picture,
+		name,
+		price,
+		description,
+		reviews
+}
+
+entity Cart {
+	actions:
+		removeItem
+	properties:
+		items
+}
+
+entity Wishlist {
+	actions:
+		removeItem
+	properties:
+		items
+}
+
+entity Checkout {
+	actions:
+		pay
+	properties:
+		items,
+		totalPrice
+}
+
+Scenario: View the catalog
+Given the BrowserWindow "Home" is displayed
+Then the Catalog "MyCatalog" is displayed
+And all items of the Catalog "MyCatalog" are not viewed
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I viewItem the CatalogItem "MyCatalogItem 1"
+		Then the ProductPage "MyProductPage 1" is displayed
+		And the picture of the ProductPage "MyProductPage 1" is the picture of the CatalogItem "MyCatalogItem 1"
+		And the name of the ProductPage "MyProductPage 1" is the name of the CatalogItem "MyCatalogItem 1"
+		And the price of the ProductPage "MyProductPage 1" is the price of the CatalogItem "MyCatalogItem 1"
+		And the description of the ProductPage "MyProductPage 1" is not displayed
+		And the reviews of the ProductPage "MyProductPage 1" are not displayed
+
+Scenario: Add an item to the cart
+Given the ProductPage "MyProductPage 1" is displayed
+When I addToCart the ProductPage "MyProductPage 1"
+Then the Cart "MyCart" has the CatalogItem "MyCatalogItem 1"
+	which means
+		Given the ProductPage "MyProductPage 1" is displayed
+		When I go to the BrowserWindow "Cart"
+		Then the Cart "MyCart" has the CatalogItem "MyCatalogItem 1"
+
+Scenario: Add an item to the wishlist
+Given the ProductPage "MyProductPage 1" is displayed
+When I addToWishlist the ProductPage "MyProductPage 1"
+Then the Wishlist "MyWishlist" has the CatalogItem "MyCatalogItem 1"
+	which means
+		Given the ProductPage "MyProductPage 1" is displayed
+		When I go to the BrowserWindow "Wishlist"
+		Then the Wishlist "MyWishlist" has the CatalogItem "MyCatalogItem 1"
+
+Scenario: Remove an item from the cart
+Given the Cart "MyCart" has the CatalogItem "MyCatalogItem 1"
+When I removeItem the CatalogItem "MyCatalogItem 1" from the Cart "MyCart"
+Then the Cart "MyCart" does not have the CatalogItem "MyCatalogItem 1"
+	which means
+		Given the BrowserWindow "Cart" is displayed
+		When I go to the BrowserWindow "Cart"
+		Then the Cart "MyCart" does not have the CatalogItem "MyCatalogItem 1"
+
+Scenario: Remove an item from the wishlist
+Given the Wishlist "MyWishlist" has the CatalogItem "MyCatalogItem 1"
+When I removeItem the CatalogItem "MyCatalogItem 1" from the Wishlist "MyWishlist"
+Then the Wishlist "MyWishlist" does not have the CatalogItem "MyCatalogItem 1"
+	which means
+		Given the BrowserWindow "Wishlist" is displayed
+		When I go to the BrowserWindow "Wishlist"
+		Then the Wishlist "MyWishlist" does not have the CatalogItem "MyCatalogItem 1"
+
+Scenario: Pay for the items in the cart
+Given the Cart "MyCart" has the CatalogItem "MyCatalogItem 1"
+And the price of the CatalogItem "MyCatalogItem 1" is 100
+When I pay for the items in the Cart "MyCart"
+Then the totalPrice of the Checkout "MyCheckout" is 100
+And the Cart "MyCart" does not have any items
+	which means
+		Given the BrowserWindow "Cart" is displayed
+		When I go to the BrowserWindow "Checkout"
+		Then the totalPrice of the Checkout "MyCheckout" is 100
+		And the Cart "MyCart" does not have any items
+```

@@ -1,0 +1,126 @@
+```bdd
+model ECommerceOfficeChairs using Widgets
+
+entity Product {
+    actions:
+        viewDetails,
+        addToCart,
+        addToWishlist
+    states:
+        inCart,
+        inWishlist
+    properties:
+        name,
+        price,
+        picture,
+        description,
+        reviews
+}
+
+entity ShoppingCart {
+    actions:
+        viewCart,
+        checkout
+    states:
+        empty,
+        containsItems
+    properties:
+        items,
+        total
+}
+
+entity Wishlist {
+    actions:
+        viewWishlist,
+        addProduct,
+        removeProduct
+    states:
+        empty,
+        containsItems
+    properties:
+        items
+}
+
+entity DetailsPage is Widget {
+    actions:
+        load,
+        purchase
+    states:
+        loaded
+    properties:
+        productName,
+        productPrice,
+        productDescription,
+        productReviews
+}
+
+Scenario: viewProductDetails
+Given the picture of the Product "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I view the Product "MyProduct"
+        Then the Image "ProductPicture" is shown
+When I viewDetails the Product "MyProduct"
+    which means
+        Given the DetailsPage "ProductDetails" is displayed
+        When I click on the Image "ProductPicture"
+        Then the DetailsPage "ProductDetails" is loaded
+Then the productName of the DetailsPage "ProductDetails" is the name of the Product "MyProduct"
+And the productPrice of the DetailsPage "ProductDetails" is the price of the Product "MyProduct"
+    which means
+        Given the DetailsPage "ProductDetails" is loaded
+        When I view the DetailsPage "ProductDetails"
+        Then the value of the TextField "ProductName" is the name of the Product "MyProduct"
+        And the value of the TextField "ProductPrice" is the price of the Product "MyProduct"
+
+Scenario: addToShoppingCart
+Given the DetailsPage "ProductDetails" is loaded
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I load the DetailsPage "ProductDetails"
+        Then the Button "AddToCart" is available
+When I addToCart the Product "MyProduct"
+    which means
+        Given the Button "AddToCart" is available
+        When I click on the Button "AddToCart"
+        Then the Notification "Product added to cart" is displayed
+Then the Product "MyProduct" is inCart
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+        When I viewCart the ShoppingCart "MyShoppingCart"
+        Then the Grid "CartItems" contains the name of the Product "MyProduct"
+
+Scenario: addToWishlist
+Given the DetailsPage "ProductDetails" is loaded
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I load the DetailsPage "ProductDetails"
+        Then the Button "AddToWishlist" is available
+When I addToWishlist the Product "MyProduct"
+    which means
+        Given the Button "AddToWishlist" is available
+        When I click on the Button "AddToWishlist"
+        Then the Notification "Product added to wishlist" is displayed
+Then the Product "MyProduct" is inWishlist
+    which means
+        Given the Wishlist "MyWishlist" is displayed
+        When I viewWishlist the Wishlist "MyWishlist"
+        Then the Grid "WishlistItems" contains the name of the Product "MyProduct"
+
+Scenario: checkoutShoppingCart
+Given the ShoppingCart "MyShoppingCart" containsItems
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I viewCart the ShoppingCart "MyShoppingCart"
+        Then the Grid "CartItems" is not empty
+When I checkout the ShoppingCart "MyShoppingCart"
+    which means
+        Given the Button "Checkout" is available
+        When I click on the Button "Checkout"
+        Then the ModalWindow "CheckoutConfirmation" is open
+Then the ShoppingCart "MyShoppingCart" is empty
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I viewCart the ShoppingCart "MyShoppingCart"
+        Then the Grid "CartItems" is empty
+```

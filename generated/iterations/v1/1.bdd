@@ -1,0 +1,74 @@
+```bdd
+model highEndOfficeChairs using widgets
+
+entity product {
+    actions: view, add to cart, add to wishlist
+    states: viewed, in cart, in wishlist
+    properties: name, price, picture, details, reviews
+}
+
+entity cart {
+    actions: checkout
+    states: checked out
+    properties: items*
+}
+
+entity wishlist {
+    actions: void
+    states: void
+    properties: items*
+}
+
+Scenario: Viewing product details
+Given the product "ErgoChair" is viewed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Image "ErgoChair Picture"
+        Then the Text "ErgoChair Details" is displayed
+        And the Text "ErgoChair Reviews" is displayed
+When I view the details of the product "ErgoChair"
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        When I click on the Link "More Details"
+        Then the Text "ErgoChair Full Details" is displayed
+Then the product "ErgoChair" details are viewed
+
+Scenario: Adding product to cart
+Given the product "ErgoChair" is viewed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Image "ErgoChair Picture"
+        Then the Button "Add to Cart" is enabled
+When I add the product "ErgoChair" to the cart
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "ErgoChair added to cart" is displayed
+Then the product "ErgoChair" is in cart
+
+Scenario: Checking out
+Given the product "ErgoChair" is in cart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click on the Link "View Cart"
+        Then the Text "ErgoChair in Cart" is displayed
+When I checkout the cart
+    which means
+        Given the BrowserWindow "Checkout" is displayed
+        When I click on the Button "Checkout"
+        Then the Notification "Checkout successful" is displayed
+Then the cart is checked out
+
+Scenario: Adding product to wishlist
+Given the product "ErgoChair" is viewed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Image "ErgoChair Picture"
+        Then the Button "Add to Wishlist" is enabled
+When I add the product "ErgoChair" to the wishlist
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "ErgoChair added to wishlist" is displayed
+Then the product "ErgoChair" is in wishlist
+```

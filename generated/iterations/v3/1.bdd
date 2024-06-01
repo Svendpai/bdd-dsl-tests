@@ -1,0 +1,115 @@
+```bdd
+model OfficeChairsECommerce using Widgets
+
+entity Product {
+    actions:
+        click,
+        addToCart,
+        addToWishlist
+    states:
+        displayed,
+        selected,
+        addedToCart,
+        addedToWishlist
+    properties:
+        picture,
+        name,
+        price,
+        description,
+        reviews
+}
+
+entity ShoppingCart {
+    actions:
+        viewCart,
+        checkout
+    states:
+        containsProducts,
+        checkedOut
+    properties:
+        items,
+        totalPrice
+}
+
+entity Wishlist {
+    actions:
+        viewWishlist,
+        removeItem
+    states:
+        containsProducts
+    properties:
+        items
+}
+
+Scenario: viewHomePage
+Given the BrowserWindow "Home" is displayed
+    which means
+        Given the Product "MyProduct" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the picture of the Product "MyProduct" is shown,
+        And the name of the Product "MyProduct" is visible,
+        And the price of the Product "MyProduct" is visible
+When I click on the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        Then the BrowserWindow "ProductDetails" is displayed
+Then the Product "MyProduct" is selected
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Product "MyProduct"
+        Then the description of the Product "MyProduct" is visible,
+        And the reviews of the Product "MyProduct" are visible
+
+Scenario: addProductToCart
+Given the Product "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the Product "MyProduct" is displayed
+When I addToCart the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Button "Add to Cart"
+        Then the ShoppingCart "MyShoppingCart" containsProducts
+Then the Product "MyProduct" is addedToCart
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+        When I viewCart the ShoppingCart "MyShoppingCart"
+        Then the items of the ShoppingCart "MyShoppingCart" include the Product "MyProduct"
+
+Scenario: addProductToWishlist
+Given the Product "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the Product "MyProduct" is displayed
+When I addToWishlist the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Wishlist "MyWishlist" containsProducts
+Then the Product "MyProduct" is addedToWishlist
+    which means
+        Given the Wishlist "MyWishlist" is displayed
+        When I viewWishlist the Wishlist "MyWishlist"
+        Then the items of the Wishlist "MyWishlist" include the Product "MyProduct"
+
+Scenario: checkoutShoppingCart
+Given the ShoppingCart "MyShoppingCart" containsProducts
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+        When I viewCart the ShoppingCart "MyShoppingCart"
+        Then the items of the ShoppingCart "MyShoppingCart" include the Product "MyProduct"
+When I checkout the ShoppingCart "MyShoppingCart"
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "Checkout" is displayed
+Then the ShoppingCart "MyShoppingCart" is checkedOut
+    which means
+        Given the BrowserWindow "Checkout" is displayed
+        When I go to the BrowserWindow "Checkout"
+        Then the totalPrice of the ShoppingCart "MyShoppingCart" is calculated,
+        And the ShoppingCart "MyShoppingCart" is void
+```

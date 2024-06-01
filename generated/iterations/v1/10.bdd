@@ -1,0 +1,88 @@
+```bdd
+model highEndOfficeChairs using widgets
+
+entity product {
+    actions: view, add to cart, add to wishlist
+    states: viewed, in cart, in wishlist
+    properties: picture, name, price, details, reviews
+}
+
+entity cart {
+    actions: checkout
+    states: checked out
+    properties: products*
+}
+
+entity wishlist {
+    actions: void
+    states: void
+    properties: products*
+}
+
+entity homepage {
+    actions: display
+    states: displayed
+    properties: products*
+}
+
+entity productDetailsPage {
+    actions: display
+    states: displayed
+    properties: product
+}
+
+Scenario: View product details
+Given the homepage is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+When I click on the product "ErgoChair"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Image "ErgoChair Picture"
+Then the product "ErgoChair" is viewed
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        Then the value of the TextField "Product Name" is "ErgoChair"
+        And the value of the TextField "Price" is "$399"
+        And the value of the TextField "Details" is "Ergonomic design with adjustable lumbar support"
+
+Scenario: Add product to cart
+Given the product "ErgoChair" is viewed
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+When I add the product "ErgoChair" to cart
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        When I click on the Button "Add to Cart"
+Then the product "ErgoChair" is in cart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        Then the Text "ErgoChair" is shown
+
+Scenario: Add product to wishlist
+Given the product "ErgoChair" is viewed
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+When I add the product "ErgoChair" to wishlist
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        When I click on the Button "Add to Wishlist"
+Then the product "ErgoChair" is in wishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        Then the Text "ErgoChair" is shown
+
+Scenario: Checkout cart
+Given the cart contains the product "ErgoChair"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        And the Text "ErgoChair" is shown
+When I checkout the cart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click on the Button "Checkout"
+Then the cart is checked out
+    which means
+        Given the BrowserWindow "Order Confirmation" is displayed
+        Then the Text "Your order has been placed" is shown
+```

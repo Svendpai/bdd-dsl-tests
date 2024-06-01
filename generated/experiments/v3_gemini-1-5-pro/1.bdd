@@ -1,0 +1,92 @@
+```bdd
+model OfficeChairs using widgets
+
+entity Product {
+	actions: viewDetails
+	states: available, unavailable
+	properties: name, picture, price
+}
+
+entity Catalog {
+	properties: products
+}
+
+entity ProductDetails {
+	properties: name, picture, description, reviews
+}
+
+entity ShoppingCart {
+	actions: addToCart, removeFromCart
+	properties: items
+}
+
+entity Wishlist {
+	actions: addToWishlist, removeFromWishlist
+	properties: items
+}
+
+Scenario: View the catalog
+Given the products of the Catalog "MyCatalog" are "Aeron Chair" and "Mirra 2 Chair"
+	which means
+		Given the BrowserWindow "Home" is displayed
+		Then the value of the Grid "Product Catalog" is "Aeron Chair"
+		And the value of the Grid "Product Catalog" is "Mirra 2 Chair"
+When I viewDetails of the Product "Aeron Chair"
+	which means
+		When I click on the Image "Aeron Chair"
+		Then the BrowserWindow "Product Details" is displayed
+		And the value of the Label "Product Name" is "Aeron Chair"
+		And the value of the Image "Product Image" is "Aeron Chair"
+		And the value of the TextArea "Product Description" is "A detailed description of the Aeron Chair"
+		And the value of the Grid "Product Reviews" is "Review 1"
+		And the value of the Grid "Product Reviews" is "Review 2"
+Then the Product "Aeron Chair" is available
+	which means
+		Given the BrowserWindow "Home" is displayed
+		Then the value of the Grid "Product Catalog" is "Aeron Chair"
+		And the value of the Grid "Product Catalog" is "Mirra 2 Chair"
+
+Scenario: Add to cart and remove from cart
+Given the items of the ShoppingCart "MyCart" are empty
+	which means
+		Given the BrowserWindow "Cart" is displayed
+		Then the value of the Grid "Cart Items" is empty
+When I addToCart the Product "Aeron Chair"
+	which means
+		Given the BrowserWindow "Product Details" is displayed
+		When I click on the Button "Add to Cart"
+		Then the BrowserWindow "Cart" is displayed
+		And the value of the Grid "Cart Items" is "Aeron Chair"
+When I removeFromCart the Product "Aeron Chair"
+	which means
+		Given the BrowserWindow "Cart" is displayed
+		When I click on the Button "Remove"
+		Then the BrowserWindow "Cart" is displayed
+		And the value of the Grid "Cart Items" is empty
+Then the items of the ShoppingCart "MyCart" are empty
+	which means
+		Given the BrowserWindow "Cart" is displayed
+		Then the value of the Grid "Cart Items" is empty
+
+Scenario: Add to wishlist and remove from wishlist
+Given the items of the Wishlist "MyWishlist" are empty
+	which means
+		Given the BrowserWindow "Wishlist" is displayed
+		Then the value of the Grid "Wishlist Items" is empty
+When I addToWishlist the Product "Mirra 2 Chair"
+	which means
+		Given the BrowserWindow "Product Details" is displayed
+		When I click on the Button "Add to Wishlist"
+		Then the BrowserWindow "Wishlist" is displayed
+		And the value of the Grid "Wishlist Items" is "Mirra 2 Chair"
+When I removeFromWishlist the Product "Mirra 2 Chair"
+	which means
+		Given the BrowserWindow "Wishlist" is displayed
+		When I click on the Button "Remove"
+		Then the BrowserWindow "Wishlist" is displayed
+		And the value of the Grid "Wishlist Items" is empty
+Then the items of the Wishlist "MyWishlist" are empty
+	which means
+		Given the BrowserWindow "Wishlist" is displayed
+		Then the value of the Grid "Wishlist Items" is empty
+```

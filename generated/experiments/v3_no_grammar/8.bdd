@@ -1,0 +1,99 @@
+```bdd
+model OfficeChairsShop using Widgets
+
+entity Product is Widget {
+    actions: click, addToCart, addToWishlist
+    states: selected, inCart, inWishlist
+    properties: name, price, picture, details, reviews
+}
+
+entity ShoppingCart is Widget {
+    actions: viewCart, checkout
+    states: viewed, checkedOut
+    properties: items, total
+}
+
+entity Wishlist is Widget {
+    actions: viewWishlist, addProduct, removeProduct
+    states: viewed, productAdded, productRemoved
+    properties: items
+}
+
+entity DetailsPage is Widget {
+    actions: viewDetails, buyProduct, viewReviews
+    states: detailsViewed, productPurchased, reviewsViewed
+    properties: productName, productPrice, productDetails, productReviews
+}
+
+Scenario: viewProductDetails
+Given the name of the Product "MyProduct" is "Executive Office Chair"
+And the price of the Product "MyProduct" is 349
+And the picture of the Product "MyProduct" is "executiveChair.jpg"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        Then the DetailsPage "MyDetailsPage" is displayed
+When I click the Product "MyProduct"
+    which means
+        Given the DetailsPage "MyDetailsPage" is displayed
+        When I viewDetails the Product "MyProduct"
+        Then the productName of the DetailsPage "MyDetailsPage" is "Executive Office Chair"
+        And the productPrice of the DetailsPage "MyDetailsPage" is 349
+        And the productDetails of the DetailsPage "MyDetailsPage" is "Premium leather, Ergonomic design"
+Then the DetailsPage "MyDetailsPage" is detailsViewed
+    which means
+        Given the DetailsPage "MyDetailsPage" is displayed
+        When I viewReviews the Product "MyProduct"
+        Then the productReviews of the DetailsPage "MyDetailsPage" are "★★★★★ Excellent comfort"
+
+Scenario: addToCartFromDetails
+Given the Product "MyProduct" is selected
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        Then the DetailsPage "MyDetailsPage" is displayed
+When I addToCart the Product "MyProduct"
+    which means
+        Given the DetailsPage "MyDetailsPage" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Product "MyProduct" is inCart
+Then the Product "MyProduct" is inCart
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+        When I viewCart the ShoppingCart "MyShoppingCart"
+        Then the items of the ShoppingCart "MyShoppingCart" contain "MyProduct"
+
+Scenario: addToWishlistFromDetails
+Given the Product "MyProduct" is selected
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        Then the DetailsPage "MyDetailsPage" is displayed
+When I addToWishlist the Product "MyProduct"
+    which means
+        Given the DetailsPage "MyDetailsPage" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Product "MyProduct" is inWishlist
+Then the Product "MyProduct" is inWishlist
+    which means
+        Given the Wishlist "MyWishlist" is displayed
+        When I viewWishlist the Wishlist "MyWishlist"
+        Then the items of the Wishlist "MyWishlist" contain "MyProduct"
+
+Scenario: checkoutFromCart
+Given the Product "MyProduct" is inCart
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+        When I viewCart the ShoppingCart "MyShoppingCart"
+        Then the items of the ShoppingCart "MyShoppingCart" contain "MyProduct"
+When I checkout the ShoppingCart "MyShoppingCart"
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+        When I click on the Button "Checkout"
+        Then the ShoppingCart "MyShoppingCart" is checkedOut
+Then the ShoppingCart "MyShoppingCart" is checkedOut
+    which means
+        Given the BrowserWindow "Checkout" is displayed
+        When I confirm the ModalWindow "Checkout Confirmation"
+        Then the Notification "Your order has been placed successfully" is displayed
+```

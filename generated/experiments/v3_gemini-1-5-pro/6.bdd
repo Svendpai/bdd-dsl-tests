@@ -1,0 +1,73 @@
+```bdd
+model EcommerceWebsite
+
+entity Item {
+  properties:
+    name,
+    picture,
+    price
+}
+
+entity Catalog {
+  properties:
+    items
+}
+
+entity ProductPage {
+  properties:
+    item
+}
+
+entity ShoppingCart {
+  properties:
+    items
+}
+
+entity Wishlist {
+  properties:
+    items
+}
+
+Scenario: Browse the catalog
+  Given the Catalog "MyCatalog" has items
+    which means
+      Given the BrowserWindow "Home" is displayed
+      Then the value of the Grid "Catalog" is "Item 1, Item 2, Item 3"
+  When I click on the Item "Item 1"
+    which means
+      Given the BrowserWindow "Home" is displayed
+      When I click on the Grid "Catalog" at line 1
+    Then the BrowserWindow "Product Page" is displayed
+
+Scenario: View product details
+  Given the ProductPage "MyProductPage" has item "Item 1"
+    which means
+      Given the BrowserWindow "Product Page" is displayed
+      Then the value of the Image "Product Image" is "Picture of Item 1"
+      And the value of the Label "Product Name" is "Item 1"
+      And the value of the Label "Price" is "Price of Item 1"
+
+Scenario: Add item to shopping cart
+  Given the ShoppingCart "MyShoppingCart" has no items
+  And the ProductPage "MyProductPage" has item "Item 1"
+    which means
+      Given the BrowserWindow "Product Page" is displayed
+      Then the value of the Grid "Shopping Cart" is "Empty"
+  When I click on the Button "Add to Cart"
+    which means
+      Given the BrowserWindow "Product Page" is displayed
+      When I click on the Button "Add to Cart"
+    Then the value of the Grid "Shopping Cart" is "Item 1"
+
+Scenario: Add item to wishlist
+  Given the Wishlist "MyWishlist" has no items
+  And the ProductPage "MyProductPage" has item "Item 1"
+    which means
+      Given the BrowserWindow "Product Page" is displayed
+      Then the value of the Grid "Wishlist" is "Empty"
+  When I click on the Button "Add to Wishlist"
+    which means
+      Given the BrowserWindow "Product Page" is displayed
+      When I click on the Button "Add to Wishlist"
+    Then the value of the Grid "Wishlist" is "Item 1"
+```

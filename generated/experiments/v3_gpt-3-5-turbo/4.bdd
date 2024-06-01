@@ -1,0 +1,105 @@
+```bdd
+model ECommerceWebsite using Widgets
+
+entity Product {
+    actions: viewDetails, addToCart, addToWishlist
+    states: void
+    properties: picture, name, price
+}
+
+entity ShoppingCart {
+    actions: checkout
+    states: void
+    properties: itemCount, totalPrice
+}
+
+entity Wishlist {
+    actions: checkout
+    states: void
+    properties: itemCount
+}
+
+Scenario: View Product Details - Successful
+Given the Product "HighEndChair" is available
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "HighEndChair"
+        Then the BrowserWindow "ProductDetails" is displayed
+        And the value of the TextField "Picture" is "HighEndChairPicture"
+        And the value of the TextField "Name" is "HighEndChair"
+        And the value of the TextField "Price" is "HighEndChairPrice"
+When I click on the Button "Add to Cart"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Cart"
+        Then the value of the TextField "CartItemCount" is "1"
+        And the value of the TextField "CartTotalPrice" is "HighEndChairPrice"
+Then the ShoppingCart is not void
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        Then the value of the TextField "ItemCount" is "1"
+        And the value of the TextField "TotalPrice" is "HighEndChairPrice"
+
+Scenario: Add Product to Wishlist - Successful
+Given the Product "HighEndChair" is available
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "HighEndChair"
+        Then the BrowserWindow "ProductDetails" is displayed
+When I click on the Button "Add to Wishlist"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the value of the TextField "WishlistItemCount" is "1"
+Then the Wishlist is not void
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        Then the value of the TextField "ItemCount" is "1"
+
+Scenario: Checkout from Cart - Successful
+Given the Product "HighEndChair" is available
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "HighEndChair"
+        Then the BrowserWindow "ProductDetails" is displayed
+When I click on the Button "Add to Cart"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Cart"
+        Then the value of the TextField "CartItemCount" is "1"
+        And the value of the TextField "CartTotalPrice" is "HighEndChairPrice"
+When I click on the Button "Checkout"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "Checkout" is displayed
+When I click on the Button "Confirm Purchase"
+    which means
+        Given the BrowserWindow "Checkout" is displayed
+        When I click on the Button "Confirm Purchase"
+        Then the Notification "Your purchase has been confirmed" is displayed
+        And the ShoppingCart is void
+
+Scenario: Checkout from Wishlist - Successful
+Given the Product "HighEndChair" is available
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "HighEndChair"
+        Then the BrowserWindow "ProductDetails" is displayed
+When I click on the Button "Add to Wishlist"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the value of the TextField "WishlistItemCount" is "1"
+When I click on the Button "Checkout"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "Checkout" is displayed
+When I click on the Button "Confirm Purchase"
+    which means
+        Given the BrowserWindow "Checkout" is displayed
+        When I click on the Button "Confirm Purchase"
+        Then the Notification "Your purchase has been confirmed" is displayed
+        And the Wishlist is void
+```

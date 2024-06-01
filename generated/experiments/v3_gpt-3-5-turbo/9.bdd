@@ -1,0 +1,110 @@
+```bdd
+model ECommerceWebsite using Widgets
+
+entity Catalog {
+    actions: viewItem
+    states: void
+    properties: item
+}
+
+entity Product {
+    actions: viewDetails, addToCart, addToWishlist
+    states: void
+    properties: picture, name, price
+}
+
+entity ShoppingCart {
+    actions: checkout
+    states: void
+    properties: totalAmount
+}
+
+entity Wishlist {
+    actions: checkout
+    states: void
+    properties: totalAmount
+}
+
+Scenario: View Product Details
+Given the Product "MyProduct" is void
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        Then the value of the TextField "Product Picture" is "MyProductPicture"
+        And the value of the TextField "Product Name" is "MyProductName"
+        And the value of the TextField "Product Price" is "MyProductPrice"
+When I viewDetails the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        Then the value of the TextField "Product Picture" is "MyProductPicture"
+        And the value of the TextField "Product Name" is "MyProductName"
+        And the value of the TextField "Product Price" is "MyProductPrice"
+
+Scenario: Add Product to Cart
+Given the ShoppingCart "MyShoppingCart" is void
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+        Then the value of the TextField "Total Amount" is "0"
+Given the Product "MyProduct" is void
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        Then the value of the TextField "Product Name" is "MyProductName"
+When I addToCart the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        And click on the Button "Add to Cart"
+        Then the Notification "MyProduct has been added to your cart" is displayed
+Then the ShoppingCart "MyShoppingCart" is not void
+And the totalAmount of the ShoppingCart "MyShoppingCart" is "MyProductPrice"
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+        Then the value of the TextField "Total Amount" is "MyProductPrice"
+
+Scenario: Add Product to Wishlist
+Given the Wishlist "MyWishlist" is void
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        Then the value of the TextField "Total Amount" is "0"
+Given the Product "MyProduct" is void
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        Then the value of the TextField "Product Name" is "MyProductName"
+When I addToWishlist the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        And click on the Button "Add to Wishlist"
+        Then the Notification "MyProduct has been added to your wishlist" is displayed
+Then the Wishlist "MyWishlist" is not void
+And the totalAmount of the Wishlist "MyWishlist" is "MyProductPrice"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        Then the value of the TextField "Total Amount" is "MyProductPrice"
+
+Scenario: Checkout from Cart
+Given the ShoppingCart "MyShoppingCart" is not void
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+        Then the value of the TextField "Total Amount" is not "0"
+When I checkout the ShoppingCart "MyShoppingCart"
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+        And click on the Button "Checkout"
+        Then the value of the TextField "Total Amount" is "0"
+        And the Notification "Your order has been successfully processed" is displayed
+
+Scenario: Checkout from Wishlist
+Given the Wishlist "MyWishlist" is not void
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        Then the value of the TextField "Total Amount" is not "0"
+When I checkout the Wishlist "MyWishlist"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        And click on the Button "Checkout"
+        Then the value of the TextField "Total Amount" is "0"
+        And the Notification "Your order has been successfully processed" is displayed
+```

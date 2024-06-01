@@ -1,0 +1,131 @@
+```bdd
+model EcommerceWebsite
+
+entity CatalogItem {
+	properties:
+		picture,
+		name,
+		price
+}
+
+entity Catalog {
+	actions:
+		viewItem
+	properties:
+		items
+}
+
+entity ProductPage {
+	actions:
+		addToCart,
+		addToWishlist
+	properties:
+		picture,
+		name,
+		price,
+		description,
+		reviews
+}
+
+entity Cart {
+	actions:
+		removeItem
+	properties:
+		items
+}
+
+entity Wishlist {
+	actions:
+		removeItem
+	properties:
+		items
+}
+
+entity Checkout {
+	actions:
+		pay
+	properties:
+		items,
+		totalPrice
+}
+
+Scenario: View the catalog
+Given the BrowserWindow "Home" is displayed
+Then the Catalog "MyCatalog" is displayed
+And all items of the Catalog "MyCatalog" are not viewed
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I viewItem the CatalogItem "MyCatalogItem 1"
+		Then the ProductPage "MyProductPage 1" is displayed
+		And the picture of the ProductPage "MyProductPage 1" is the picture of the CatalogItem "MyCatalogItem 1"
+		And the name of the ProductPage "MyProductPage 1" is the name of the CatalogItem "MyCatalogItem 1"
+		And the price of the ProductPage "MyProductPage 1" is the price of the CatalogItem "MyCatalogItem 1"
+
+Scenario: Add an item to the cart
+Given the BrowserWindow "Home" is displayed
+And the Cart "MyCart" is empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I removeItem the Cart "MyCart"
+Then all items of the Catalog "MyCatalog" are not viewed
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I viewItem the CatalogItem "MyCatalogItem 1"
+		Then the ProductPage "MyProductPage 1" is displayed
+		And the picture of the ProductPage "MyProductPage 1" is the picture of the CatalogItem "MyCatalogItem 1"
+		And the name of the ProductPage "MyProductPage 1" is the name of the CatalogItem "MyCatalogItem 1"
+		And the price of the ProductPage "MyProductPage 1" is the price of the CatalogItem "MyCatalogItem 1"
+When I addToCart the ProductPage "MyProductPage 1"
+Then the Cart "MyCart" has 1 item
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Cart"
+		Then the value of the TextField "Number of items" is "1"
+
+Scenario: Add an item to the wishlist
+Given the BrowserWindow "Home" is displayed
+And the Wishlist "MyWishlist" is empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I removeItem the Wishlist "MyWishlist"
+Then all items of the Catalog "MyCatalog" are not viewed
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I viewItem the CatalogItem "MyCatalogItem 1"
+		Then the ProductPage "MyProductPage 1" is displayed
+		And the picture of the ProductPage "MyProductPage 1" is the picture of the CatalogItem "MyCatalogItem 1"
+		And the name of the ProductPage "MyProductPage 1" is the name of the CatalogItem "MyCatalogItem 1"
+		And the price of the ProductPage "MyProductPage 1" is the price of the CatalogItem "MyCatalogItem 1"
+When I addToWishlist the ProductPage "MyProductPage 1"
+Then the Wishlist "MyWishlist" has 1 item
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Wishlist"
+		Then the value of the TextField "Number of items" is "1"
+
+Scenario: Remove an item from the cart
+Given the Cart "MyCart" has 1 item
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I addToCart the ProductPage "MyProductPage 1"
+		Then the Cart "MyCart" has 1 item
+When I removeItem the first item of the Cart "MyCart"
+Then the Cart "MyCart" is empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Cart"
+		Then the value of the TextField "Number of items" is "0"
+
+Scenario: Remove an item from the wishlist
+Given the Wishlist "MyWishlist" has 1 item
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I addToWishlist the ProductPage "MyProductPage 1"
+		Then the Wishlist "MyWishlist" has 1 item
+When I removeItem the first item of the Wishlist "MyWishlist"
+Then the Wishlist "MyWishlist" is empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Wishlist"
+		Then the value of the TextField "Number of items" is "0"
+```

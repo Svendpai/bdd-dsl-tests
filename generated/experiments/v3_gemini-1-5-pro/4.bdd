@@ -1,0 +1,119 @@
+```bdd
+model OfficeChairs using widgets
+
+entity Product {
+	actions: viewDetails
+	states: available, unavailable
+	properties: name, picture, price
+}
+
+entity Catalog {
+	actions: none
+	states: none
+	properties: products
+}
+
+entity ProductDetails {
+	actions: addToCart, addToWishlist
+	states: none
+	properties: name, picture, price, description, reviews
+}
+
+entity ShoppingCart {
+	actions: removeItem
+	states: empty, notEmpty
+	properties: items
+}
+
+entity Wishlist {
+	actions: removeItem
+	states: empty, notEmpty
+	properties: items
+}
+
+Scenario: View the catalog
+Given the products of the Catalog "MyCatalog" are
+	* Product "Aeron Chair" with picture "AeronChair.jpg" and price 1399
+	* Product "Embody Chair" with picture "EmbodyChair.jpg" and price 1599
+	* Product "Mirra 2 Chair" with picture "Mirra2Chair.jpg" and price 999
+	which means
+		Given the BrowserWindow "Home" is displayed
+		Then the value of the Grid "Catalog" is
+			* Product "Aeron Chair" with picture "AeronChair.jpg" and price 1399
+			* Product "Embody Chair" with picture "EmbodyChair.jpg" and price 1599
+			* Product "Mirra 2 Chair" with picture "Mirra2Chair.jpg" and price 999
+When I click on the Product "Aeron Chair"
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Grid "Catalog" and the Product "Aeron Chair"
+		Then the BrowserWindow "Product Details" is displayed
+Then the name of the ProductDetails "MyProductDetails" is "Aeron Chair"
+And the picture of the ProductDetails "MyProductDetails" is "AeronChair.jpg"
+And the price of the ProductDetails "MyProductDetails" is 1399
+And the description of the ProductDetails "MyProductDetails" is not empty
+And the reviews of the ProductDetails "MyProductDetails" are not empty
+
+Scenario: Add an item to the cart
+Given the ShoppingCart "MyCart" is empty
+And the items of the ShoppingCart "MyCart" are empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Cart"
+		Then the value of the Label "Cart" is "0"
+When I click on the Button "Add to cart" of the Product "Aeron Chair" on the ProductDetails "MyProductDetails"
+	which means
+		Given the BrowserWindow "Product Details" is displayed
+		When I click on the Button "Add to cart"
+		Then the value of the Label "Cart" is "1"
+And the items of the ShoppingCart "MyCart" are
+	* Product "Aeron Chair" with picture "AeronChair.jpg" and price 1399
+Then the ShoppingCart "MyCart" is notEmpty
+
+Scenario: Add an item to the wishlist
+Given the Wishlist "MyWishlist" is empty
+And the items of the Wishlist "MyWishlist" are empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Wishlist"
+		Then the value of the Label "Wishlist" is "0"
+When I click on the Button "Add to wishlist" of the Product "Embody Chair" on the ProductDetails "MyProductDetails"
+	which means
+		Given the BrowserWindow "Product Details" is displayed
+		When I click on the Button "Add to wishlist"
+		Then the value of the Label "Wishlist" is "1"
+And the items of the Wishlist "MyWishlist" are
+	* Product "Embody Chair" with picture "EmbodyChair.jpg" and price 1599
+Then the Wishlist "MyWishlist" is notEmpty
+
+Scenario: Remove an item from the cart
+Given the ShoppingCart "MyCart" is notEmpty
+And the items of the ShoppingCart "MyCart" are
+	* Product "Aeron Chair" with picture "AeronChair.jpg" and price 1399
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Cart"
+		Then the value of the Label "Cart" is "1"
+When I click on the Button "Remove" of the Product "Aeron Chair" on the ShoppingCart "MyCart"
+	which means
+		Given the BrowserWindow "Cart" is displayed
+		When I click on the Button "Remove" of the Product "Aeron Chair"
+		Then the value of the Label "Cart" is "0"
+And the items of the ShoppingCart "MyCart" are empty
+Then the ShoppingCart "MyCart" is empty
+
+Scenario: Remove an item from the wishlist
+Given the Wishlist "MyWishlist" is notEmpty
+And the items of the Wishlist "MyWishlist" are
+	* Product "Embody Chair" with picture "EmbodyChair.jpg" and price 1599
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Wishlist"
+		Then the value of the Label "Wishlist" is "1"
+When I click on the Button "Remove" of the Product "Embody Chair" on the Wishlist "MyWishlist"
+	which means
+		Given the BrowserWindow "Wishlist" is displayed
+		When I click on the Button "Remove" of the Product "Embody Chair"
+		Then the value of the Label "Wishlist" is "0"
+And the items of the Wishlist "MyWishlist" are empty
+Then the Wishlist "MyWishlist" is empty
+```

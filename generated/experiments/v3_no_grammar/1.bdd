@@ -1,0 +1,119 @@
+```bdd
+model OfficeChairsStore using Widgets
+
+entity Product {
+    actions:
+        viewDetails, addToCart, addToWishlist
+    states:
+        inCart, inWishlist, detailViewed
+    properties:
+        name, price, picture, details, reviews
+}
+
+entity Cart {
+    actions:
+        checkout
+    states:
+        checkedOut
+    properties:
+        items, total
+}
+
+entity Wishlist {
+    actions:
+        addProduct, removeProduct
+    states:
+        containsProduct, empty
+    properties:
+        items
+}
+
+Scenario: viewProductDetails
+Given the Product "MyProduct" is detailViewed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Image "MyProduct"
+        Then the BrowserWindow "ProductDetails" is displayed
+        And the value of the TextArea "Details" is shown
+        And the value of the TextArea "Reviews" is shown
+When viewDetails the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        Then the BrowserWindow "ProductDetails" is displayed
+Then the Product "MyProduct" is detailViewed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the TextArea "Details"
+        And view the TextArea "Reviews"
+        Then the Product "MyProduct" details and reviews are shown
+
+Scenario: addProductToCart
+Given the Product "MyProduct" is not inCart
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Button "Add to Cart"
+        Then the Button "Add to Cart" is enabled
+When addToCart the Product "MyProduct"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "Product added to cart" is displayed
+Then the Product "MyProduct" is inCart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the Grid "CartItems"
+        Then the Image "MyProduct" and the value of the TextField "Name" and the TextField "Price" are shown in "CartItems"
+
+Scenario: checkoutCart
+Given the Cart "MyCart" containsProduct
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the Grid "CartItems"
+        Then the Button "Checkout" is enabled
+When checkout the Cart "MyCart"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "CheckoutConfirmation" is displayed
+Then the Cart "MyCart" is checkedOut
+    which means
+        Given the BrowserWindow "CheckoutConfirmation" is displayed
+        When I confirm the ModalWindow "Checkout"
+        Then the Notification "Checkout successful" is displayed
+
+Scenario: addProductToWishlist
+Given the Product "MyProduct" is not inWishlist
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Button "Add to Wishlist"
+        Then the Button "Add to Wishlist" is enabled
+When addToWishlist the Product "MyProduct"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "Product added to wishlist" is displayed
+Then the Product "MyProduct" is inWishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I view the Grid "WishlistItems"
+        Then the Image "MyProduct" and the value of the TextField "Name" and the TextField "Price" are shown in "WishlistItems"
+
+Scenario: removeProductFromWishlist
+Given the Product "MyProduct" is inWishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I view the Grid "WishlistItems"
+        Then the Button "Remove from Wishlist" corresponding to "MyProduct" is enabled
+When removeProduct the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I click on the Button "Remove from Wishlist" corresponding to "MyProduct"
+        Then the Notification "Product removed from wishlist" is displayed
+Then the Product "MyProduct" is not inWishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I view the Grid "WishlistItems"
+        Then the Image "MyProduct" and the value of the TextField "Name" and the TextField "Price" are not shown in "WishlistItems"
+```
+This DSL script defines a model for an e-commerce website that sells high-end office chairs. It handles scenarios for viewing product details, adding products to a

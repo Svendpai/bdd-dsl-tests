@@ -1,0 +1,118 @@
+```bdd
+model OfficeChairsECommerce using Widgets
+
+entity Product {
+    actions:
+        click,
+        addToCart,
+        addToWishlist
+    states: 
+        viewed,
+        inCart,
+        inWishlist
+    properties: 
+        name, 
+        price, 
+        picture,
+        details,
+        reviews
+}
+
+entity Cart {
+    actions:
+        checkout
+    states: 
+        checkedOut
+    properties: 
+        totalItems,
+        totalPrice
+}
+
+entity Wishlist {
+    actions:
+        viewItems
+    states: 
+        viewed
+    properties: 
+        totalItems
+}
+
+Scenario: viewProductDetails
+Given the name of the Product "MyProduct" is "Ergonomic Office Chair"
+And the price of the Product "MyProduct" is "299"
+And the picture of the Product "MyProduct" is "chairImage.jpg"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I view the Grid "Catalog"
+        Then the Image "chairImage.jpg" is shown
+        And the Text "Ergonomic Office Chair" is shown
+        And the Text "299" is shown
+When I click the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Image "chairImage.jpg"
+        Then the BrowserWindow "ProductDetails" is displayed
+Then the details of the Product "MyProduct" are shown
+And the reviews of the Product "MyProduct" are shown
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Text "Product Details"
+        Then the Text "Details" is shown
+        And the Text "Reviews" is shown
+
+Scenario: addToCart
+Given the name of the Product "MyProduct" is "Ergonomic Office Chair"
+And the Product "MyProduct" is not inCart
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Button "Add to Cart"
+        Then the Button "Add to Cart" is enabled
+When I addToCart the Product "MyProduct"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "Product added to cart" is open
+Then the Product "MyProduct" is inCart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the Grid "CartItems"
+        Then the Text "Ergonomic Office Chair" is shown
+
+Scenario: checkoutCart
+Given the totalItems of the Cart "MyCart" is 1
+And the totalPrice of the Cart "MyCart" is "299"
+And the Cart "MyCart" is not checkedOut
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the Button "Checkout"
+        Then the Text "Total Items: 1" is shown
+        And the Text "Total Price: 299" is shown
+When I checkout the Cart "MyCart"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click on the Button "Checkout"
+        Then the Notification "Checkout successful" is open
+Then the Cart "MyCart" is checkedOut
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the Text "No items in your cart" is shown
+
+Scenario: addToWishlist
+Given the name of the Product "MyProduct" is "Ergonomic Office Chair"
+And the Product "MyProduct" is not inWishlist
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Button "Add to Wishlist"
+        Then the Button "Add to Wishlist" is enabled
+When I addToWishlist the Product "MyProduct"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "Product added to wishlist" is open
+Then the Product "MyProduct" is inWishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I viewItems the Wishlist "MyWishlist"
+        Then the Text "Ergonomic Office Chair" is shown
+```

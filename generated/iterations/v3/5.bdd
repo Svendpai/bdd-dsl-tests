@@ -1,0 +1,112 @@
+```bdd
+model HighEndChairsStore using widgets
+
+entity ProductCatalog is Widget {
+    actions: viewProductDetails
+    properties: productName, productPrice, productImage
+}
+
+entity ProductDetailsPage is Widget {
+    actions: addToCart, addToWishlist, viewReviews
+    properties: detailedDescription, price, reviews
+}
+
+entity ShoppingCart is Widget {
+    actions: checkout
+    properties: items, totalPrice
+}
+
+entity Wishlist is Widget {
+    actions: moveToCart
+    properties: savedItems
+}
+
+entity ReviewSection is Widget {
+    properties: reviewerName, reviewText, reviewRating
+}
+
+Scenario: viewProductCatalog
+Given the ProductCatalog "MyProductCatalog" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Catalog"
+        Then the ProductCatalog "MyProductCatalog" is shown
+When I viewProductDetails the ProductCatalog "MyProductCatalog" productName "ErgoChair"
+    which means
+        Given the BrowserWindow "Catalog" is displayed
+        When I click on the Product "ErgoChair"
+        Then the BrowserWindow "ProductDetails" is displayed
+Then the ProductDetailsPage "MyProductDetailsPage" is displayed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I go to the BrowserWindow "ProductDetails"
+        Then the Text "detailedDescription" is shown
+
+Scenario: addToCartFromDetailsPage
+Given the ProductDetailsPage "MyProductDetailsPage" is displayed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the BrowserWindow "ProductDetails"
+        Then the Button "Add to Cart" is enabled
+When I addToCart the ProductDetailsPage "MyProductDetailsPage"
+    which means
+        Given the ProductDetailsPage "MyProductDetailsPage" is displayed
+        When I click on the Button "Add to Cart"
+        Then the ShoppingCart "MyShoppingCart" items includes "ErgoChair"
+Then the ShoppingCart "MyShoppingCart" items includes "ErgoChair"
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+        When I view the ShoppingCart "MyShoppingCart"
+        Then the List "items" contains "ErgoChair"
+
+Scenario: checkoutShoppingCart
+Given the ShoppingCart "MyShoppingCart" items includes "ErgoChair"
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+        When I view the ShoppingCart "MyShoppingCart"
+        Then the Button "Checkout" is enabled
+When I checkout the ShoppingCart "MyShoppingCart"
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "CheckoutConfirmation" is displayed
+Then the ShoppingCart "MyShoppingCart" is void
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+        When I view the ShoppingCart "MyShoppingCart"
+        Then the List "items" is empty
+
+Scenario: addProductToWishlist
+Given the ProductDetailsPage "MyProductDetailsPage" is displayed
+    which means
+        Given the ProductDetailsPage "MyProductDetailsPage" is displayed
+        When I view the ProductDetailsPage "MyProductDetailsPage"
+        Then the Button "Add to Wishlist" is enabled
+When I addToWishlist the ProductDetailsPage "MyProductDetailsPage"
+    which means
+        Given the ProductDetailsPage "MyProductDetailsPage" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Wishlist "MyWishlist" savedItems includes "ErgoChair"
+Then the Wishlist "MyWishlist" savedItems includes "ErgoChair"
+    which means
+        Given the Wishlist "MyWishlist" is displayed
+        When I view the Wishlist "MyWishlist"
+        Then the List "savedItems" contains "ErgoChair"
+
+Scenario: moveToCartFromWishlist
+Given the Wishlist "MyWishlist" savedItems includes "ErgoChair"
+    which means
+        Given the Wishlist "MyWishlist" is displayed
+        When I view the Wishlist "MyWishlist"
+        Then the Button "Move to Cart" is enabled
+When I moveToCart the Wishlist "MyWishlist"
+    which means
+        Given the Wishlist "MyWishlist" is displayed
+        When I click on the Button "Move to Cart"
+        Then the ShoppingCart "MyShoppingCart" items includes "ErgoChair"
+Then the ShoppingCart "MyShoppingCart" items includes "ErgoChair"
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+        When I view the ShoppingCart "MyShoppingCart"
+        Then the List "items" contains "ErgoChair"
+```

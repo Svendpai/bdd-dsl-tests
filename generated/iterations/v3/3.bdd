@@ -1,0 +1,114 @@
+```bdd
+model OfficeChairEcommerce using Widgets
+
+entity Product {
+    actions:
+        click,
+        addToCart,
+        addToWishlist
+    states:
+        available,
+        outOfStock
+    properties:
+        name,
+        price,
+        picture,
+        description,
+        reviews
+}
+
+entity Cart {
+    actions:
+        checkout,
+        view
+    states:
+        checkedOut,
+        filled
+    properties:
+        totalItems,
+        totalPrice
+}
+
+entity Wishlist {
+    actions:
+        view,
+        addProduct,
+        removeProduct
+    states:
+        containsProducts,
+        empty
+    properties:
+        totalItems
+}
+
+entity Review {
+    actions:
+        submit,
+        view
+    states:
+        submitted,
+        viewed
+    properties:
+        content,
+        rating,
+        date,
+        author
+}
+
+Scenario: browseProductsOnHomepage
+Given the Product "MyProduct" is available
+And the picture of the Product "MyProduct" is displayed
+And the name of the Product "MyProduct" is "Ergonomic Office Chair"
+And the price of the Product "MyProduct" is "$350"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I view the Grid "Products"
+        Then the Image of the Product "MyProduct" is shown
+        And the Text of the Product "MyProduct" name is "Ergonomic Office Chair"
+        And the Text of the Product "MyProduct" price is "$350"
+When I click on the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Image of the Product "MyProduct"
+        Then the BrowserWindow "ProductDetails" is displayed
+Then the BrowserWindow "ProductDetails" is displayed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I go to the BrowserWindow "ProductDetails"
+        Then the Text of the Product "MyProduct" description is shown
+        And the Review "MyReview" of the Product "MyProduct" is viewed
+
+Scenario: addProductToCart
+Given the Product "MyProduct" is available
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Product "MyProduct"
+        Then the Button "Add to Cart" is enabled
+When I addToCart the Product "MyProduct"
+    which means
+        Given the Button "Add to Cart" of the Product "MyProduct" is enabled
+        When I click on the Button "Add to Cart"
+        Then the Cart "MyCart" totalItems is increased
+Then the totalItems of the Cart "MyCart" is increased
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the Cart "MyCart"
+        Then the Text of the Cart "MyCart" totalItems is "1"
+
+Scenario: checkoutCart
+Given the totalItems of the Cart "MyCart" is 1
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the Cart "MyCart"
+        Then the Button "Checkout" is enabled
+When I checkout the Cart "MyCart"
+    which means
+        Given the Button "Checkout" of the Cart "MyCart" is enabled
+        When I click on the Button "Checkout"
+        Then the Cart "MyCart" is checkedOut
+Then the Cart "MyCart" is checkedOut
+    which means
+        Given the BrowserWindow "Checkout" is displayed
+        When I confirm the ModalWindow "Confirm Checkout"
+        Then the Text "Checkout Successful" is displayed
+```

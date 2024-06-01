@@ -1,0 +1,113 @@
+```bdd
+model OfficeChairsECommerce using Widgets
+
+entity Product {
+    actions:
+        click,
+        addToCart,
+        addToWishlist
+    states:
+        inCart,
+        inWishlist,
+        viewed
+    properties:
+        name,
+        price,
+        image,
+        description,
+        reviews
+}
+
+entity ShoppingCart {
+    actions:
+        viewCart,
+        checkout
+    states:
+        empty,
+        containsItems
+    properties:
+        totalItems,
+        totalPrice
+}
+
+entity Wishlist {
+    actions:
+        viewWishlist
+    states:
+        empty,
+        containsItems
+    properties:
+        totalItems
+}
+
+Scenario: viewProductDetails
+Given the image of the Product "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Image "Product Image"
+        Then the BrowserWindow "ProductDetails" is displayed
+When I click the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Link "View Details"
+        Then the BrowserWindow "ProductDetails" is displayed
+Then the description of the Product "MyProduct" is shown
+And the reviews of the Product "MyProduct" are shown
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Text "Description"
+        And view the Text "Reviews"
+        Then the Text "Description" is shown
+        And the Text "Reviews" is shown
+
+Scenario: addToCartFromHomePage
+Given the price of the Product "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I view the Label "Price"
+        Then the Label "Price" is shown
+When I addToCart the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "Product added to your cart" is open
+Then the Product "MyProduct" is inCart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I viewCart the ShoppingCart "MyShoppingCart"
+        Then the Grid "Cart Items" contains the Product "MyProduct"
+
+Scenario: checkoutCart
+Given the totalItems of the ShoppingCart "MyShoppingCart" are not 0
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the Label "Total Items"
+        Then the Label "Total Items" shows a number greater than 0
+When I checkout the ShoppingCart "MyShoppingCart"
+    which means
+        Given the BrowserWindow "Checkout" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "OrderConfirmation" is displayed
+Then the ShoppingCart "MyShoppingCart" is empty
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I viewCart the ShoppingCart "MyShoppingCart"
+        Then the Grid "Cart Items" is empty
+
+Scenario: addToWishlistFromDetailsPage
+Given the name of the Product "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Label "Product Name"
+        Then the Label "Product Name" is shown
+When I addToWishlist the Product "MyProduct"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "Product added to your wishlist" is open
+Then the Product "MyProduct" is inWishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I viewWishlist the Wishlist "MyWishlist"
+        Then the Grid "Wishlist Items" contains the Product "MyProduct"
+```

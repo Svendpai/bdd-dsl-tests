@@ -74,7 +74,7 @@ def parse_markdown(file_path):
 ERRORS = {
     "Model": [
         "No model definition",
-        "Use of invalid symbols in model name",
+        "Invalid symbols in model name",
         "Encapsulating the model in brackets"
     ],
     "Entity": [
@@ -93,7 +93,6 @@ ERRORS = {
         "Lack of interactive statements",
         "Lack of domain statements",
         "Invalid domain statements",
-        "Referencing states instead of actions",
         "Use action on property instead of entity",
         "Spaces in state reference",
         "Check if Entity is in another entity",
@@ -109,9 +108,9 @@ ERRORS = {
         "Missing keyword",
         "Invalid symbol in property reference",
         "Invalid action reference",
-        "Invalid symbol in action reference",
-        "Use restricted keyword in action reference",
-        "Setting an entity to a value instead of a state"
+        "Invalid property reference",
+        "Setting an entity to a value instead of a state",
+        "Invalid symbol in statement"
     ],
     "General": [
         "Division into multiple code blocks"
@@ -176,12 +175,11 @@ def generate_attempt_data(error_type, parsed_data) -> str:
 
     return text + total + r' \\'
 
-
-def generate_latex_table(parsed_data):
+def generate_latex_table_with_id(parsed_data):
     latex_content = []
 
     # LaTeX header and setup for the table
-    latex_content.append(r'\begin{table}[!h]')
+    latex_content.append(r'\begin{table}[!htbp]')
     latex_content.append(r'    \centering')
     latex_content.append(r'    \makebox[\linewidth]{')
     latex_content.append(r'    \begin{tabular}{l l*{10}{c} r}')
@@ -198,6 +196,39 @@ def generate_latex_table(parsed_data):
             formatted_error_id = error_id.ljust(LONGEST_ID_LENGTH)
             formatted_error_type = error_type.ljust(LONGEST_DESCRIPTION_LENGTH)
             error_id_and_type = rf'        {formatted_error_id} & {formatted_error_type}'
+            error_values = generate_attempt_data(error_type, parsed_data)
+            latex_content.append(error_id_and_type + error_values)
+        latex_content.append(r'')
+
+    latex_content.append(r'    \end{tabular}')
+    latex_content.append(r'    }')
+    latex_content.append(r'    \caption{<Caption>}')
+    latex_content.append(r'    \label{tab:<name>}')
+    latex_content.append(r'\end{table}')
+    
+    return '\n'.join(latex_content)
+
+def generate_latex_table(parsed_data):
+    latex_content = []
+
+    # LaTeX header and setup for the table
+    latex_content.append(r'\begin{table}[!htbp]')
+    latex_content.append(r'    \centering')
+    latex_content.append(r'    \makebox[\linewidth]{')
+    latex_content.append(r'    \begin{tabular}{l*{10}{c} r}')
+    latex_content.append(r'        \multirow{2}{*}{\thead{Type of Error}} & \multicolumn{10}{c}{\textbf{Occurrences / Attempt}} & \multirow{2}{*}{\thead{Total}} \\')
+    latex_content.append(r'        \cmidrule(lr){2-11}')
+    latex_content.append(LONGEST_DESCRIPTION_LENGTH * ' ' + '         & 1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9  & 10 & ' + r'\\')
+    latex_content.append(r'        \midrule')
+
+    for i, section in enumerate(ERRORS.items()):
+        if i != 0:
+            latex_content.append(rf'        \vspace{{-0.3cm}}\\')
+
+        latex_content.append(rf'        \textbf{{{section[0]}}} \vspace{{0.15cm}}\\')
+        for j, error_type in enumerate(section[1]):
+            formatted_error_type = error_type.ljust(LONGEST_DESCRIPTION_LENGTH)
+            error_id_and_type = rf'        {formatted_error_type}'
             error_values = generate_attempt_data(error_type, parsed_data)
             latex_content.append(error_id_and_type + error_values)
         latex_content.append(r'')

@@ -1,0 +1,95 @@
+```bdd
+model OfficeChairECommerce using Widgets
+
+entity ProductCatalog is Widget {
+    actions: view
+    properties: productPicture, productName, productPrice
+}
+
+entity ProductDetailsPage is Widget {
+    actions: view, addToCart, addToWishlist, buy
+    properties: productName, productPrice, productDescription, productReviews
+}
+
+entity ShoppingCart is Widget {
+    actions: viewCart, checkout
+    properties: items, totalCost
+}
+
+entity Wishlist is Widget {
+    actions: viewWishlist, addProductToCart
+    properties: wishedItems
+}
+
+Scenario: viewHomeCatalog
+Given the BrowserWindow "Home" is displayed
+    which means
+        Given the ProductCatalog "MyCatalog" is shown
+When I view the ProductCatalog "MyCatalog"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the ProductCatalog "MyCatalog" is shown
+Then the BrowserWindow "Home" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+
+Scenario: viewProductDetails
+Given the BrowserWindow "Home" is displayed
+    which means
+        Given the ProductCatalog "MyCatalog" is shown
+When I click on the Product "Office Chair Deluxe" from the ProductCatalog "MyCatalog"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Product Details"
+        Then the ProductDetailsPage "Office Chair Deluxe" is shown
+Then the ProductDetailsPage "Office Chair Deluxe" is displayed
+    which means
+        Given the ProductDetailsPage "Office Chair Deluxe" is shown
+
+Scenario: addToCartFromProductDetails
+Given the ProductDetailsPage "Office Chair Deluxe" is displayed
+    which means
+        Given the ProductDetailsPage "Office Chair Deluxe" is shown
+When I addToCart the Product "Office Chair Deluxe" from the ProductDetailsPage "Office Chair Deluxe"
+    which means
+        Given the ProductDetailsPage "Office Chair Deluxe" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "Product added to cart" is displayed
+Then the ShoppingCart "MyCart" contains the Product "Office Chair Deluxe"
+    which means
+        Given the ShoppingCart "MyCart" is viewed
+        When I viewCart the ShoppingCart "MyCart"
+        Then the Product "Office Chair Deluxe" is in the ShoppingCart "MyCart"
+
+Scenario: addToWishlistFromProductDetails
+Given the ProductDetailsPage "Office Chair Deluxe" is displayed
+    which means
+        Given the ProductDetailsPage "Office Chair Deluxe" is shown
+When I addToWishlist the Product "Office Chair Deluxe" from the ProductDetailsPage "Office Chair Deluxe"
+    which means
+        Given the ProductDetailsPage "Office Chair Deluxe" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "Product added to wishlist" is displayed
+Then the Wishlist "MyWishlist" contains the Product "Office Chair Deluxe"
+    which means
+        Given the Wishlist "MyWishlist" is viewed
+        When I viewWishlist the Wishlist "MyWishlist"
+        Then the Product "Office Chair Deluxe" is in the Wishlist "MyWishlist"
+
+Scenario: checkoutCart
+Given the ShoppingCart "MyCart" contains items
+    which means
+        Given the ShoppingCart "MyCart" is viewed
+When I checkout the ShoppingCart "MyCart"
+    which means
+        Given the ShoppingCart "MyCart" is viewed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "Checkout" is displayed
+Then the ShoppingCart "MyCart" is empty
+    which means
+        Given the ShoppingCart "MyCart" is viewed
+        When I viewCart the ShoppingCart "MyCart"
+        Then the ShoppingCart "MyCart" does not contain any items
+```
+This DSL defines a model for an e-commerce site specializing in high-end office chairs. It covers scenarios for viewing a product catalog on the homepage, viewing detailed product information, adding items to a shopping cart and wishlist, and checking out the shopping cart.

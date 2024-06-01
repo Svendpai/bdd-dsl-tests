@@ -1,0 +1,83 @@
+```bdd
+model EcommerceWebsite
+
+entity Catalog {
+  properties:
+    items
+}
+
+entity Item {
+  properties:
+    picture,
+    name,
+    price
+}
+
+entity ShoppingCart {
+  properties:
+    items
+}
+
+entity Wishlist {
+  properties:
+    items
+}
+
+Scenario: Browse catalog - initial display
+Given the items of the Catalog "MyCatalog" are empty
+When I go to the BrowserWindow "Home"
+Then the items of the Catalog "MyCatalog" are empty
+  which means
+    Given the BrowserWindow "Home" is displayed
+    Then the number of the List "Catalog Items" is 0
+
+Scenario: Add item to cart - successful
+Given the items of the Catalog "MyCatalog" contain "Executive Chair"
+And the items of the ShoppingCart "MyCart" are empty
+When I go to the BrowserWindow "Home"
+And I click on the Item "Executive Chair" in the List "Catalog Items"
+Then the items of the ShoppingCart "MyCart" contain "Executive Chair"
+  which means
+    Given the BrowserWindow "Home" is displayed
+    Then the number of the List "Cart Items" is 1
+
+Scenario: Add another item to cart - successful
+Given the items of the Catalog "MyCatalog" contain "Executive Chair"
+And the items of the ShoppingCart "MyCart" contain "Executive Chair"
+When I go to the BrowserWindow "Home"
+And I click on the Item "Executive Chair" in the List "Catalog Items"
+Then the items of the ShoppingCart "MyCart" contain 2 of "Executive Chair"
+  which means
+    Given the BrowserWindow "Home" is displayed
+    Then the number of the List "Cart Items" is 2
+
+Scenario: Remove item from cart - successful
+Given the items of the ShoppingCart "MyCart" contain 2 of "Executive Chair"
+When I go to the BrowserWindow "Cart"
+And I click on the Button "Remove" for the Item "Executive Chair" in the List "Cart Items"
+Then the items of the ShoppingCart "MyCart" contain 1 of "Executive Chair"
+  which means
+    Given the BrowserWindow "Cart" is displayed
+    Then the number of the List "Cart Items" is 1
+
+Scenario: Go to full details page - successful
+Given the items of the Catalog "MyCatalog" contain "Executive Chair"
+When I go to the BrowserWindow "Home"
+And I click on the Item "Executive Chair" in the List "Catalog Items"
+Then the BrowserWindow "Item Details" is displayed
+  which means
+    Given the BrowserWindow "Home" is displayed
+    Then the value of the Image "Item Picture" is the picture of the Item "Executive Chair"
+    And the value of the TextField "Item Name" is the name of the Item "Executive Chair"
+    And the value of the TextField "Item Price" is the price of the Item "Executive Chair"
+
+Scenario: Add item to wishlist - successful
+Given the items of the Wishlist "MyWishlist" are empty
+And the items of the Catalog "MyCatalog" contain "Executive Chair"
+When I go to the BrowserWindow "Home"
+And I click on the Button "Add to Wishlist" for the Item "Executive Chair" in the List "Catalog Items"
+Then the items of the Wishlist "MyWishlist" contain "Executive Chair"
+  which means
+    Given the BrowserWindow "Home" is displayed
+    Then the number of the List "Wishlist Items" is 1
+```

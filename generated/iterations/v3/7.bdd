@@ -1,0 +1,106 @@
+```bdd
+model OfficeChairsEcommerce using Widgets
+
+entity Product {
+    actions: viewDetails, addToCart, addToWishlist
+    properties: name, price, picture
+}
+
+entity ProductDetailsPage is Widget {
+    actions: view, buy
+    properties: name, price, description, reviews
+}
+
+entity Cart {
+    actions: addProduct, checkout
+    properties: items, total
+}
+
+entity Wishlist {
+    actions: addProduct
+    properties: items
+}
+
+Scenario: viewProductDetails
+Given the name of the Product "MyProduct" is "Ergonomic Chair"
+And the price of the Product "MyProduct" is "250"
+And the picture of the Product "MyProduct" is "ergonomic_chair.jpg"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I view the Product "MyProduct"
+        Then the Text "Name" is "Ergonomic Chair"
+        And the Text "Price" is "$250"
+        And the Image "Product Picture" is "ergonomic_chair.jpg"
+When I viewDetails the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        Then the BrowserWindow "ProductDetailsPage" is displayed
+Then the name of the ProductDetailsPage "MyProductDetailsPage" is "Ergonomic Chair"
+And the price of the ProductDetailsPage "MyProductDetailsPage" is "250"
+And the description of the ProductDetailsPage "MyProductDetailsPage" is displayed
+And the reviews of the ProductDetailsPage "MyProductDetailsPage" are displayed
+    which means
+        Given the BrowserWindow "ProductDetailsPage" is displayed
+        When I view the ProductDetailsPage "MyProductDetailsPage"
+        Then the Text "Name" is "Ergonomic Chair"
+        And the Text "Price" is "$250"
+        And the Text "Description" is displayed
+        And the Grid "Reviews" is displayed
+
+Scenario: addToCart
+Given the Product "MyProduct" is viewed
+    which means
+        Given the BrowserWindow "ProductDetailsPage" is displayed
+        When I view the ProductDetailsPage "MyProductDetailsPage"
+        Then the Button "Add to Cart" is available
+When I addToCart the Product "MyProduct"
+    which means
+        Given the BrowserWindow "ProductDetailsPage" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "Product added to cart" is displayed
+Then the items of the Cart "MyCart" include "Ergonomic Chair"
+And the total of the Cart "MyCart" is updated
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the Cart "MyCart"
+        Then the Text "Items" includes "Ergonomic Chair"
+        And the Text "Total" is updated
+
+Scenario: checkoutCart
+Given the items of the Cart "MyCart" include "Ergonomic Chair"
+And the total of the Cart "MyCart" is "250"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the Cart "MyCart"
+        Then the Text "Items" includes "Ergonomic Chair"
+        And the Text "Total" is "$250"
+When I checkout the Cart "MyCart"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "CheckoutPage" is displayed
+Then the Cart "MyCart" is void
+And the Notification "Checkout complete" is displayed
+    which means
+        Given the BrowserWindow "CheckoutPage" is displayed
+        When I view the Notification "Checkout complete"
+        Then the Text "Message" is "Checkout complete"
+
+Scenario: addToWishlist
+Given the Product "MyProduct" is viewed
+    which means
+        Given the BrowserWindow "ProductDetailsPage" is displayed
+        When I view the ProductDetailsPage "MyProductDetailsPage"
+        Then the Button "Add to Wishlist" is available
+When I addToWishlist the Product "MyProduct"
+    which means
+        Given the BrowserWindow "ProductDetailsPage" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "Product added to wishlist" is displayed
+Then the items of the Wishlist "MyWishlist" include "Ergonomic Chair"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I view the Wishlist "MyWishlist"
+        Then the Text "Items" includes "Ergonomic Chair"
+```

@@ -1,0 +1,106 @@
+```bdd
+model EcommerceChairs using Widgets
+
+entity Product {
+    actions: view, addToCart, addToWishlist, buy
+    states: inCart, inWishlist, purchased
+    properties: name, price, pictureUrl, details, reviews
+}
+
+entity Catalog is Widget {
+    actions: view
+    properties: products
+}
+
+entity ProductCard is Widget {
+    properties: product
+
+    actions: view [on], click [on]
+    states: viewed, clicked
+}
+
+entity Cart is Widget {
+    properties: products
+    actions: checkout
+    states: checkedOut
+}
+
+entity Wishlist is Widget {
+    properties: products
+}
+
+entity CheckoutPage is Widget {
+}
+
+Scenario: ViewProductDetailedInfo
+Given the products of the Catalog "MyCatalog" are all the Product "MyProducts"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And the products of the Catalog "MyCatalog" are shown
+        And the product-image of the ProductCard "MyProductCard" is displayed
+        And the product-name of the ProductCard "MyProductCard" is displayed
+        And the product-price of the ProductCard "MyProductCard" is displayed
+When I view on the ProductCard "MyProductCard"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And the ProductCard "MyProductCard" is clicked
+        Then the product-details of the ProductPage "MyProductPage" are displayed
+        And the product-reviews of the ProductPage "MyProductPage" are displayed
+Then the details of the Product "MyProduct" are displayed
+And the reviews of the Product "MyProduct" are displayed
+    which means
+        Given the BrowserWindow "Product Page" is displayed
+        Then the product-details of the ProductPage "MyProductPage" are displayed
+        And the product-reviews of the ProductPage "MyProductPage" are displayed
+
+Scenario: AddProductToCart
+Given the products of the Catalog "MyCatalog" are all the Product "MyProducts"
+    which means
+        Given the BrowserWindow "Home" is displayed 
+        And the products of the Catalog "MyCatalog" are shown
+When I addToCart the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And the ProductCard "MyProductCard" is clicked
+        When I click on the Button "Add to Cart"
+        Then the notification "MyProduct was added to cart" is displayed
+        And the value of the Tooltip "Items in Cart" is 1
+Then the Product "MyProduct" is inCart
+And the products of the Cart "MyCart" are the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+        Then the ProductCard "MyProductCard" is displayed in the Grid "CartGrid"
+        
+Scenario: AddProductToWishlist 
+Given the products of the Catalog "MyCatalog" are all the Product "MyProducts"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And the products of the Catalog "MyCatalog" are shown  
+When I addToWishlist the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed 
+        And the ProductCard "MyProductCard" is clicked
+        When I click on the Button "Add to Wishlist"
+        Then the notification "MyProduct was added to wishlist" is displayed
+Then the Product "MyProduct" is inWishlist  
+And the products of the Wishlist "MyWishlist" are the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        Then the ProductCard "MyProductCard" is displayed in the Grid "WishlistGrid"
+        
+Scenario: CheckoutFromCart
+Given the Product "MyProduct" is inCart
+And the products of the Cart "MyCart" are the Product "MyProduct"
+    which means 
+        Given the BrowserWindow "Shopping Cart" is displayed
+        Then the ProductCard "MyProductCard" is displayed in the Grid "CartGrid"  
+When I checkout on the Cart "MyCart" 
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+        When I click on the Button "Checkout"
+        Then the CheckoutPage "MyCheckoutPage" is displayed
+Then the Product "MyProduct" is purchased
+    which means
+        Given the BrowserWindow "Order Confirmation" is displayed
+        Then the notification "Thank you for your purchase" is displayed
+```

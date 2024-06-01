@@ -1,0 +1,167 @@
+```bdd
+model ECommerce using Widgets
+
+entity Product {
+    actions: click, addToCart, addToWishlist, buy
+    states: inCart, inWishlist, purchased
+    properties: name, price, image
+}
+
+entity Catalog {
+    actions: displayProducts
+    states: void
+    properties: items
+}
+
+entity Cart {
+    actions: checkout, removeProduct
+    states: void
+    properties: items
+}
+
+entity Wishlist {
+    actions: removeProduct
+    states: void
+    properties: items
+}
+
+entity ProductDetails {
+    actions: viewReviews
+    states: void
+    properties: details, reviews
+}
+
+Scenario: ViewCatalog
+Given the Catalog "MyCatalog" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        Then the Grid "Products" is displayed
+When I displayProducts on the Catalog "MyCatalog"
+    which means
+        Given the Grid "Products" is displayed
+        Then the products of the Catalog "MyCatalog" are displayed
+Then the items of the Catalog "MyCatalog" are displayed
+    which means
+        Given the BrowserWindow "Home" is displayed  
+        Then the Grid "Products" displays the items of the Catalog "MyCatalog"
+
+Scenario: ViewProductDetails
+Given the Catalog "MyCatalog" is displayed
+And the items of the Catalog "MyCatalog" are displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        Then the Grid "Products" displays the items of the Catalog "MyCatalog" 
+When I click on the Product "HighEndChair1"
+    which means
+        Given the Grid "Products" is displayed
+        When I click on the cell for the Product "HighEndChair1"
+        Then the BrowserWindow "ProductDetails" is displayed
+Then the ProductDetails "HighEndChair1" are displayed
+    which means  
+        Given the BrowserWindow "ProductDetails" is displayed
+        Then the TextField "ProductName" displays "HighEndChair1"
+        And the Image "ProductImage" displays the image of the Product "HighEndChair1"
+        And the TextField "ProductPrice" displays the price of the Product "HighEndChair1"
+        And the TextArea "ProductDescription" displays the details of the Product "HighEndChair1"
+
+Scenario: AddProductToCart
+Given the ProductDetails "HighEndChair1" are displayed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        Then the TextField "ProductName" displays "HighEndChair1" 
+        And the Image "ProductImage" displays the image of the Product "HighEndChair1"
+        And the TextField "ProductPrice" displays the price of the Product "HighEndChair1"
+        And the TextArea "ProductDescription" displays the details of the Product "HighEndChair1"
+When I addToCart the Product "HighEndChair1"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "Added to Cart" is displayed
+Then the Product "HighEndChair1" is inCart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        Then the Grid "CartItems" displays the Product "HighEndChair1"
+        
+Scenario: AddProductToWishlist        
+Given the ProductDetails "HighEndChair1" are displayed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        Then the TextField "ProductName" displays "HighEndChair1"
+        And the Image "ProductImage" displays the image of the Product "HighEndChair1" 
+        And the TextField "ProductPrice" displays the price of the Product "HighEndChair1"
+        And the TextArea "ProductDescription" displays the details of the Product "HighEndChair1"
+When I addToWishlist the Product "HighEndChair1" 
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "Added to Wishlist" is displayed  
+Then the Product "HighEndChair1" is inWishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        Then the Grid "WishlistItems" displays the Product "HighEndChair1"
+        
+Scenario: RemoveProductFromCart
+Given the Product "HighEndChair1" is inCart
+    which means  
+        Given the BrowserWindow "Cart" is displayed
+        Then the Grid "CartItems" displays the Product "HighEndChair1"
+When I removeProduct the Product "HighEndChair1" from the Cart "MyCart"
+    which means
+        Given the BrowserWindow "Cart" is displayed 
+        When I click on the Button "Remove" for the Product "HighEndChair1"
+        Then the Notification "Removed from Cart" is displayed
+Then the Product "HighEndChair1" is not inCart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        Then the Grid "CartItems" does not display the Product "HighEndChair1" 
+        
+Scenario: RemoveProductFromWishlist
+Given the Product "HighEndChair1" is inWishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        Then the Grid "WishlistItems" displays the Product "HighEndChair1"
+When I removeProduct the Product "HighEndChair1" from the Wishlist "MyWishlist"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I click on the Button "Remove" for the Product "HighEndChair1" 
+        Then the Notification "Removed from Wishlist" is displayed
+Then the Product "HighEndChair1" is not inWishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        Then the Grid "WishlistItems" does not display the Product "HighEndChair1"
+        
+Scenario: PurchaseProduct
+Given the Product "HighEndChair1" is inCart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        Then the Grid "CartItems" displays the Product "HighEndChair1"  
+When I checkout the Cart "MyCart"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click on the Button "Checkout"
+        And I fill in my payment details
+        Then the Notification "Purchase Successful" is displayed
+Then the Product "HighEndChair1" is purchased
+    which means
+        Given the BrowserWindow "PurchaseConfirmation" is displayed
+        Then the Text "Thank you for your purchase" is displayed
+        And the Product "HighEndChair1" is not displayed in the Grid "CartItems"
+        
+Scenario: ViewProductReviews  
+Given the ProductDetails "HighEndChair1" are displayed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed 
+        Then the TextField "ProductName" displays "HighEndChair1"
+        And the Image "ProductImage" displays the image of the Product "HighEndChair1"
+        And the TextField "ProductPrice" displays the price of the Product "HighEndChair1" 
+        And the TextArea "ProductDescription" displays the details of the Product "HighEndChair1"
+When I viewReviews for the Product "HighEndChair1"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Link "View Reviews"
+        Then the Modal "ProductReviews" is displayed
+Then the reviews of the Product "HighEndChair1" are displayed
+    which means
+        Given the Modal "ProductReviews" is displayed
+        Then the Grid "Reviews" displays the reviews of the Product "HighEndChair1"
+```

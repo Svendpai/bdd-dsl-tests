@@ -1,0 +1,117 @@
+```bdd
+model ECommerceWebsite using Widgets
+
+entity Product {
+    actions: viewDetails, addToCart, addToWishlist
+    states: void
+    properties: picture, name, price
+}
+
+entity ShoppingCart {
+    actions: viewCart, checkout
+    states: void
+    properties: itemCount
+}
+
+entity Wishlist {
+    actions: viewWishlist, checkout
+    states: void
+    properties: itemCount
+}
+
+Scenario: View product details - successful
+Given the BrowserWindow "Home" is displayed
+    which means
+        Given the Catalog "MyCatalog" is displayed
+        Then all Products are shown
+When I click on the Product "MyProduct"
+    which means
+        Given the Catalog "MyCatalog" is displayed
+        When I click on the Product "MyProduct"
+        Then the BrowserWindow "ProductDetails" is displayed
+Then the value of the TextField "ProductName" is "MyProduct"
+And the value of the TextField "ProductPrice" is "100"
+And the value of the TextField "ProductPicture" is "MyProductPicture"
+
+Scenario: Add product to cart - successful
+Given the BrowserWindow "ProductDetails" is displayed
+    which means
+        Given the Catalog "MyCatalog" is displayed
+        When I click on the Product "MyProduct"
+        Then the BrowserWindow "ProductDetails" is displayed
+When I addToCart the Product "MyProduct"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "MyProduct has been added to your cart" is displayed
+Then the ShoppingCart "MyShoppingCart" is not void
+And the itemCount of the ShoppingCart "MyShoppingCart" is 1
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "ShoppingCart"
+        Then the value of the TextField "ItemCount" is "1"
+
+Scenario: Add product to wishlist - successful
+Given the BrowserWindow "ProductDetails" is displayed
+    which means
+        Given the Catalog "MyCatalog" is displayed
+        When I click on the Product "MyProduct"
+        Then the BrowserWindow "ProductDetails" is displayed
+When I addToWishlist the Product "MyProduct"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "MyProduct has been added to your wishlist" is displayed
+Then the Wishlist "MyWishlist" is not void
+And the itemCount of the Wishlist "MyWishlist" is 1
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Wishlist"
+        Then the value of the TextField "ItemCount" is "1"
+
+Scenario: View shopping cart - successful
+Given the BrowserWindow "Home" is displayed
+    which means
+        Given the Catalog "MyCatalog" is displayed
+        Then all Products are shown
+When I viewCart the ShoppingCart "MyShoppingCart"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Button "View Cart"
+        Then the BrowserWindow "ShoppingCart" is displayed
+
+Scenario: View wishlist - successful
+Given the BrowserWindow "Home" is displayed
+    which means
+        Given the Catalog "MyCatalog" is displayed
+        Then all Products are shown
+When I viewWishlist the Wishlist "MyWishlist"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Button "View Wishlist"
+        Then the BrowserWindow "Wishlist" is displayed
+
+Scenario: Checkout from shopping cart - successful
+Given the BrowserWindow "ShoppingCart" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "ShoppingCart"
+        Then the BrowserWindow "ShoppingCart" is displayed
+When I checkout the ShoppingCart "MyShoppingCart"
+    which means
+        Given the BrowserWindow "ShoppingCart" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "Checkout" is displayed
+
+Scenario: Checkout from wishlist - successful
+Given the BrowserWindow "Wishlist" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Wishlist"
+        Then the BrowserWindow "Wishlist" is displayed
+When I checkout the Wishlist "MyWishlist"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "Checkout" is displayed
+```

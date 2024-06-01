@@ -1,0 +1,116 @@
+```bdd
+model OfficeChairEcommerce using Widgets
+
+entity Product is Widget {
+    actions: click
+    properties: picture, name, price
+}
+
+entity ProductDetail is Widget {
+    actions: click, addToCart, addToWishlist
+    properties: description, reviews, price, availability
+}
+
+entity ShoppingCart is Widget {
+    actions: checkout, removeItem
+    properties: items, totalPrice
+}
+
+entity Wishlist is Widget {
+    actions: addProduct, removeProduct
+    properties: items
+}
+
+Scenario: viewProductsOnHomePage
+Given the BrowserWindow "Home" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the BrowserWindow "Home" is displayed
+When I view the Grid "ProductCatalog"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I view the Grid "ProductCatalog"
+        Then the Grid "ProductCatalog" is displayed
+Then the picture, name, price of each Product "MyProduct" are shown
+    which means
+        Given the Grid "ProductCatalog" is displayed
+        When I view the Product "MyProduct"
+        Then the value of the Image "ProductPicture" is "picture URL"
+        And the value of the Text "ProductName" is "product name"
+        And the value of the Text "ProductPrice" is "product price"
+
+Scenario: viewProductDetails
+Given the BrowserWindow "Home" is displayed
+And the Grid "ProductCatalog" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I view the Grid "ProductCatalog"
+        Then the Grid "ProductCatalog" is displayed
+When I click on the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        Then the BrowserWindow "ProductDetails" is displayed
+Then the description, reviews, price, availability of the ProductDetail "MyProductDetail" are shown
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the ProductDetail "MyProductDetail"
+        Then the value of the TextArea "ProductDescription" is "detailed description"
+        And the value of the Text "ProductReviews" is "customer reviews"
+        And the value of the Text "ProductPrice" is "product price"
+        And the value of the Text "ProductAvailability" is "in stock"
+
+Scenario: addToCartFromDetails
+Given the description, reviews, price, availability of the ProductDetail "MyProductDetail" are shown
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the ProductDetail "MyProductDetail"
+        Then the description, reviews, price, availability of the ProductDetail "MyProductDetail" are shown
+When I addToCart the ProductDetail "MyProductDetail"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Cart"
+        Then the BrowserWindow "ShoppingCart" is displayed
+Then the Product "MyProduct" is in the items of the ShoppingCart "MyShoppingCart"
+    which means
+        Given the BrowserWindow "ShoppingCart" is displayed
+        When I view the ShoppingCart "MyShoppingCart"
+        Then the value of the Grid "CartItems" contains "MyProduct"
+
+Scenario: removeFromCart
+Given the Product "MyProduct" is in the items of the ShoppingCart "MyShoppingCart"
+    which means
+        Given the BrowserWindow "ShoppingCart" is displayed
+        When I view the ShoppingCart "MyShoppingCart"
+        Then the value of the Grid "CartItems" contains "MyProduct"
+When I removeItem the Product "MyProduct" from the ShoppingCart "MyShoppingCart"
+    which means
+        Given the BrowserWindow "ShoppingCart" is displayed
+        When I click on the Button "Remove from Cart"
+        Then the BrowserWindow "ShoppingCart" is displayed
+Then the Product "MyProduct" is not in the items of the ShoppingCart "MyShoppingCart"
+    which means
+        Given the BrowserWindow "ShoppingCart" is displayed
+        When I view the ShoppingCart "MyShoppingCart"
+        Then the value of the Grid "CartItems" does not contain "MyProduct"
+
+Scenario: checkoutShoppingCart
+Given the items of the ShoppingCart "MyShoppingCart" are not empty
+    which means
+        Given the BrowserWindow "ShoppingCart" is displayed
+        When I view the ShoppingCart "MyShoppingCart"
+        Then the value of the Grid "CartItems" is not empty
+When I checkout the ShoppingCart "MyShoppingCart"
+    which means
+        Given the BrowserWindow "ShoppingCart" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "CheckoutPage" is displayed
+Then the ShoppingCart "MyShoppingCart" is empty
+    which means
+       
+
+ Given the BrowserWindow "CheckoutPage" is displayed
+        When I view the ShoppingCart "MyShoppingCart"
+        Then the value of the Grid "CartItems" is empty
+```

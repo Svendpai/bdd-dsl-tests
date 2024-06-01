@@ -1,0 +1,124 @@
+```bdd
+model OfficeChairShop using Widgets
+
+entity Product is Widget {
+    actions:
+        click
+    states: 
+        displayed
+    properties: 
+        name,
+        price,
+        image,
+        detailsPage
+}
+
+entity Cart is Widget {
+    actions:
+        addProduct,
+        viewCart,
+        checkout
+    states: 
+        hasItems,
+        empty
+    properties: 
+        items,
+        totalPrice
+}
+
+entity Wishlist is Widget {
+    actions:
+        addProduct,
+        viewWishlist,
+        moveToCart
+    states: 
+        hasItems,
+        empty
+    properties: 
+        items
+}
+
+entity ProductDetailsPage is Widget {
+    actions:
+        addProductToCart,
+        addProductToWishlist
+    states: 
+        displayed
+    properties: 
+        productName,
+        productPrice,
+        productDescription,
+        productReviews
+}
+
+Scenario: viewProductDetails
+Given the Product "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        Then the ProductDetailsPage "MyProduct" is displayed
+When I click the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        Then the BrowserWindow "ProductDetailsPage" is displayed
+Then the ProductDetailsPage "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "ProductDetailsPage" is displayed
+        Then the Text "productName, productPrice, productDescription, productReviews" of the ProductDetailsPage "MyProduct" is shown
+
+Scenario: addToCartFromDetailsPage
+Given the ProductDetailsPage "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "ProductDetailsPage" is displayed
+        When I go to the BrowserWindow "ProductDetailsPage"
+        Then the ProductDetailsPage "MyProduct" is displayed
+When I addProductToCart the ProductDetailsPage "MyProduct"
+    which means
+        Given the ProductDetailsPage "MyProduct" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "Product added to cart" is displayed
+Then the items of the Cart "MyCart" is "MyProduct"
+And the Cart "MyCart" is hasItems
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I viewCart the Cart "MyCart"
+        Then the value of the Field "items" is "MyProduct"
+
+Scenario: addToWishlistFromDetailsPage
+Given the ProductDetailsPage "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "ProductDetailsPage" is displayed
+        When I go to the BrowserWindow "ProductDetailsPage"
+        Then the ProductDetailsPage "MyProduct" is displayed
+When I addProductToWishlist the ProductDetailsPage "MyProduct"
+    which means
+        Given the ProductDetailsPage "MyProduct" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "Product added to wishlist" is displayed
+Then the items of the Wishlist "MyWishlist" is "MyProduct"
+And the Wishlist "MyWishlist" is hasItems
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I viewWishlist the Wishlist "MyWishlist"
+        Then the value of the Field "items" is "MyProduct"
+
+Scenario: checkoutCart
+Given the items of the Cart "MyCart" is "MyProduct"
+And the Cart "MyCart" is hasItems
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I viewCart the Cart "MyCart"
+        Then the value of the Field "items" is "MyProduct"
+When I checkout the Cart "MyCart"
+    which means
+        Given the Cart "MyCart" is hasItems
+        When I click on the Button "Checkout"
+        Then the Notification "Checkout complete, thank you for your purchase!" is displayed
+Then the Cart "MyCart" is empty
+And the totalPrice of the Cart "MyCart" is 0
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I viewCart the Cart "MyCart"
+        Then the value of the Field "totalPrice" is "0"
+```

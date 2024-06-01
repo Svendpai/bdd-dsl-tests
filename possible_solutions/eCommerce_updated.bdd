@@ -1,0 +1,183 @@
+model ECommerce using widgets
+
+entity Item {
+    actions:
+    	click,
+    	view details,
+    	review item,
+    	remove review
+    states: 
+    	inCart, 
+    	inWishlist, 
+    	reviewed, 
+    	purchased
+    properties: 
+    	picture, 
+    	name, 
+    	price, 
+    	details, 
+    	rating*
+}
+
+entity Cart {
+    actions: 
+    	view cart,
+    	checkout,
+    	add item [to]
+    states: 
+    	empty
+    properties: 
+    	items*
+}
+
+entity Wishlist {
+    actions: 
+    	view wishlist, 
+    	add item [to]
+    states: 
+    	empty
+    properties: 
+    	items*
+}
+
+Scenario: View Item details
+Given the name of the Item "123" is "Herman Miller Aeron"
+And the price of the Item "123" is 1800
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click on the Item "123"
+        Then the BrowserWindow "Herman Miller Aeron" is displayed
+When I view details of the Item "123"
+    which means
+    	Given the BrowserWindow "Home Page" is displayed
+        When I click on the Item "123"
+        Then the value of the TextField "Name" is "Herman Miller Aeron"
+        And the value of the TextField "Price" is "1800"
+Then the name of the Item "123" is "Herman Miller Aeron"
+And the price of the Item "123" is 1800
+	which means
+    	Given the BrowserWindow "Home Page" is displayed
+        When I click on the Item "123"
+        Then the value of the TextField "Name" is "Herman Miller Aeron"
+        And the value of the TextField "Price" is "1800"	
+
+Scenario: Add Item to Cart
+Given the Item "123" is not inCart
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click the Button "Cart"
+        And I view the Cart "MyCart"
+        Then the BrowserWindow "Cart Page" is displayed
+        And the Item "123" is not inCart
+When I add the Item "123" to the Cart "MyCart"
+    which means
+        Given the BrowserWindow "Herman Miller Aeron" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "Herman Miller Aeron has been added to the Cart" is displayed
+Then the Item "123" is inCart
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click the Button "Cart"
+        And view the Cart "MyCart"
+        Then the BrowserWindow "Cart Page" is displayed
+        And the Item "123" is inCart
+
+Scenario: Checkout Cart
+Given the Cart "MyCart" is not empty
+    which means
+        Given the BrowserWindow "Cart Page" is displayed
+        When I view the Cart "MyCart"
+        Then the items of the Cart "MyCart" is not "None"
+When I checkout the Cart "MyCart"
+    which means
+        Given the BrowserWindow "Checkout Page" is displayed
+        And the Cart "MyCart" is not empty
+        When I click on the Button "Confirm Checkout"
+        Then the Notification "Checkout successful" is displayed
+Then the Cart "MyCart" is empty
+    which means
+        Given the BrowserWindow "Cart Page" is displayed
+        When I view the Cart "MyCart"
+        Then the items of the Cart "MyCart" is "None"
+        
+Scenario: Checkout Cart with one Item
+Given the items of the Cart "MyCart" is "123"
+And the Item "123" is not purchased
+	which means
+		Given the BrowserWindow "Cart Page" is displayed
+        When I view the Cart "MyCart"
+        Then the items of the Cart "MyCart" is "123"
+When I checkout the Cart "MyCart"
+    which means
+        Given the BrowserWindow "Checkout Page" is displayed
+        And the items of the Cart "MyCart" is not "None"
+        When I click on "Confirm Checkout"
+        Then the Notification "Checkout successful" is displayed
+Then the Cart "MyCart" is empty
+And the Item "123" is purchased
+    which means
+        Given the BrowserWindow "Cart Page" is displayed
+        When I view the Cart "MyCart"
+        Then the items of the Cart "MyCart" is "None"
+
+Scenario: Add Item to wishlist
+Given the Item "123" is not inWishlist
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click the Button "My Wishlist"
+        And view the Wishlist "MyWishlist"
+        Then the BrowserWindow "Wishlist Page" is displayed
+        And the Item "123" is not inWishlist
+When I add the Item "123" to the Wishlist "MyWishlist"
+    which means
+        Given the BrowserWindow "Herman Miller Aeron" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "Herman Miller Aeron has been added to your wishlist" is displayed
+Then the Item "123" is inWishlist
+    which means
+        Given the BrowserWindow "Home Page" is displayed
+        When I click the Button "Cart"
+        And view the Wishlist "MyWishlist"
+        Then the BrowserWindow "Wishlist Page" is displayed
+        And the Item "123" is inWishlist
+
+Scenario: Transfer an Item between wishlist - Cart
+Given the Item "123" is inWishlist
+And the Item "123" is not inCart
+    which means
+        Given the BrowserWindow "Wishlist Page" is displayed
+        When I view the Wishlist "MyWishlist"
+        Then the Item "123" is inWishlist
+        And the Item "123" is not inCart
+When I add the Item "123" to the Cart "MyCart"
+    which means
+        Given the BrowserWindow "Wishlist Page" is displayed
+        When I click on the Button "Add to Cart" for the Item "123"
+        Then the Notification "Herman Miller Aeron moved to Cart" is displayed
+Then the Item "123" is inCart
+And the Item "123" is not inWishlist
+    which means
+        Given the BrowserWindow "Cart Page" is displayed
+        When I view the Cart "MyCart"
+        Then the Item "123" is inCart
+        And the Item "123" is not inWishlist
+
+Scenario: Review an Item
+Given the Item "123" is purchased
+	which means
+		Given the items of the Cart "MyCart" is "123"
+		When I checkout the Cart "MyCart"
+		Then the Item "123" is purchased
+When I review the Item "123"
+	which means
+		Given the BrowserWindow "Herman Miller Aeron" is displayed
+		When I click on the Button "Add Review"
+		And type "123" in the TextField "Review"
+		And pick "9" in the RadioButton "Rating"
+		Then the value of the TextField "Your Rating" is "9"
+Then the Item "123" is reviewed
+	which means
+		Given the BrowserWindow "Home Page" is displayed
+		When I go to the BrowserWindow "Herman Miller Aeron"
+		Then the Item "123" is reviewed
+		And the value of the TextField "Your Rating" is "9"

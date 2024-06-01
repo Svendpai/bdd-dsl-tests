@@ -1,0 +1,124 @@
+```bdd
+model ECommerceChairs using Widgets
+
+entity Product {
+    actions: viewDetails, addToCart, addToWishlist, purchase, writeReview
+    states: addedToCart, addedToWishlist, purchased, reviewed
+    properties: name, price, coverArt, details, reviews
+}
+
+entity Catalog is Widget {
+    actions: view
+    states: viewed
+    properties: products
+}
+
+entity Cart {
+    actions: checkout, removeItem
+    states: checkedOut
+    properties: items
+}
+
+entity Wishlist {
+    actions: view
+    states: viewed
+    properties: items 
+}
+
+Scenario: ViewCatalogAndProductDetails
+Given the Catalog "MyCatalog" contains the Product "MyChair1", the Product "MyChair2"
+And the products of the Catalog "MyCatalog" are viewed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the Grid "Product List" is displayed
+        And the value of the Grid "Product List" shows the coverArt, name, and price of the Product "MyChair1", the Product "MyChair2"
+When I viewDetails the Product "MyChair1"
+    which means  
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyChair1" in the Grid "Product List"
+        Then the BrowserWindow "Product Details" is displayed
+        And the value of the TextField "Name" is the name of the Product "MyChair1"
+        And the value of the Image "Cover Art" is the coverArt of the Product "MyChair1"
+        And the value of the TextField "Price" is the price of the Product "MyChair1" 
+        And the value of the TextArea "Details" is the details of the Product "MyChair1"
+        And the Grid "Reviews" shows the reviews of the Product "MyChair1"
+Then the Product "MyChair1" is viewed
+
+Scenario: AddToCartAndCheckout  
+Given the Catalog "MyCatalog" contains the Product "MyChair1", the Product "MyChair2"  
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the Grid "Product List" is displayed
+        And the value of the Grid "Product List" shows the coverArt, name, and price of the Product "MyChair1", the Product "MyChair2" 
+When I addToCart the Product "MyChair1"
+    which means
+        Given the BrowserWindow "Home" is displayed 
+        When I click on the Button "Add to Cart" for the Product "MyChair1" in the Grid "Product List"
+        Then the Notification "Item added to cart" is displayed
+Then the Product "MyChair1" is addedToCart
+And the items of the Cart "MyCart" contains the Product "MyChair1"
+    which means  
+        Given the BrowserWindow "Cart" is displayed
+        When I click on the Link "View Cart"
+        Then the Grid "Cart Items" shows the coverArt, name, and price of the Product "MyChair1"
+When I checkout the Cart "MyCart"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click on the Button "Checkout" 
+        Then the BrowserWindow "Checkout" is displayed
+Then the Cart "MyCart" is checkedOut
+And the Product "MyChair1" is purchased
+    which means
+        Given the BrowserWindow "Confirmation" is displayed  
+        When I go to the BrowserWindow "Home"
+        Then the Notification "Thank you for your purchase!" is displayed
+
+Scenario: AddToWishlistAndViewWishlist
+Given the Catalog "MyCatalog" contains the Product "MyChair1", the Product "MyChair2"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home" 
+        Then the Grid "Product List" is displayed 
+        And the value of the Grid "Product List" shows the coverArt, name, and price of the Product "MyChair1", the Product "MyChair2"
+When I addToWishlist the Product "MyChair2"  
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Button "Add to Wishlist" for the Product "MyChair2" in the Grid "Product List"
+        Then the Notification "Item added to wishlist" is displayed  
+Then the Product "MyChair2" is addedToWishlist
+And the items of the Wishlist "MyWishlist" contains the Product "MyChair2"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I click on the Link "View Wishlist"
+        Then the Grid "Wishlist Items" shows the coverArt, name, and price of the Product "MyChair2"
+When I view the Wishlist "MyWishlist"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I click on the Link "View Wishlist"
+        Then the Grid "Wishlist Items" is displayed
+        And the value of the Grid "Wishlist Items" shows the coverArt, name, and price of the Product "MyChair2"
+Then the Wishlist "MyWishlist" is viewed
+
+Scenario: WriteProductReview
+Given the Product "MyChair1" is purchased
+    which means  
+        Given the BrowserWindow "Purchase History" is displayed
+        When I click on the Link "View Orders"
+        Then the Grid "Order History" shows the Product "MyChair1" with a state of purchased  
+When I writeReview the Product "MyChair1" 5 "Great chair!"
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        When I click on the Link "Write a Review" for the Product "MyChair1"
+        And I rate 5 stars in the RadioButton "Rating"
+        And I type "Great chair!" into the TextArea "Review Text"  
+        And I click on the Button "Submit Review"
+        Then the Notification "Review submitted" is displayed
+Then the reviews of the Product "MyChair1" contains "Great chair!"
+    which means
+        Given the BrowserWindow "Product Details" is displayed 
+        When I click on the Product "MyChair1" in the Grid "Product List"
+        Then the Grid "Reviews" shows the review "Great chair!" for the Product "MyChair1"
+And the Product "MyChair1" is reviewed
+```

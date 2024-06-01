@@ -1,0 +1,119 @@
+```bdd
+model eCommerceWebsite using Widgets
+
+entity Product {
+    actions: viewDetails, addToCart, addToWishlist
+    states: void
+    properties: name, price, picture
+}
+
+entity ShoppingCart {
+    actions: viewCart, checkout
+    states: void
+    properties: itemCount, totalPrice
+}
+
+entity Wishlist {
+    actions: viewWishlist, checkout
+    states: void
+    properties: itemCount, totalPrice
+}
+
+Scenario: View product details
+Given the Product "OfficeChair" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "OfficeChair"
+        Then the value of the TextField "ProductName" is "OfficeChair"
+        And the value of the TextField "ProductPrice" is "Price"
+When I viewDetails the Product "OfficeChair"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        Then the value of the TextField "ProductName" is "OfficeChair"
+        And the value of the TextField "ProductPrice" is "Price"
+Then the Product "OfficeChair" is void
+
+Scenario: Add product to cart
+Given the Product "OfficeChair" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "OfficeChair"
+        Then the value of the TextField "ProductName" is "OfficeChair"
+        And the value of the TextField "ProductPrice" is "Price"
+When I addToCart the Product "OfficeChair"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "OfficeChair has been added to your cart" is displayed
+Then the Product "OfficeChair" is void
+
+Scenario: Add product to wishlist
+Given the Product "OfficeChair" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "OfficeChair"
+        Then the value of the TextField "ProductName" is "OfficeChair"
+        And the value of the TextField "ProductPrice" is "Price"
+When I addToWishlist the Product "OfficeChair"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "OfficeChair has been added to your wishlist" is displayed
+Then the Product "OfficeChair" is void
+
+Scenario: View shopping cart
+Given the ShoppingCart "MyShoppingCart" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Button "View Cart"
+        Then the value of the TextField "ItemCount" is "0"
+        And the value of the TextField "TotalPrice" is "0"
+When I viewCart the ShoppingCart "MyShoppingCart"
+    which means
+        Given the BrowserWindow "ShoppingCart" is displayed
+        Then the value of the TextField "ItemCount" is "0"
+        And the value of the TextField "TotalPrice" is "0"
+Then the ShoppingCart "MyShoppingCart" is void
+
+Scenario: View wishlist
+Given the Wishlist "MyWishlist" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Button "View Wishlist"
+        Then the value of the TextField "ItemCount" is "0"
+        And the value of the TextField "TotalPrice" is "0"
+When I viewWishlist the Wishlist "MyWishlist"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        Then the value of the TextField "ItemCount" is "0"
+        And the value of the TextField "TotalPrice" is "0"
+Then the Wishlist "MyWishlist" is void
+
+Scenario: Checkout from shopping cart
+Given the ShoppingCart "MyShoppingCart" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Button "View Cart"
+        Then the value of the TextField "ItemCount" is "0"
+        And the value of the TextField "TotalPrice" is "0"
+When I checkout the ShoppingCart "MyShoppingCart"
+    which means
+        Given the BrowserWindow "ShoppingCart" is displayed
+        When I click on the Button "Checkout"
+        Then the Notification "Your order has been successfully placed" is displayed
+Then the ShoppingCart "MyShoppingCart" is void
+
+Scenario: Checkout from wishlist
+Given the Wishlist "MyWishlist" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Button "View Wishlist"
+        Then the value of the TextField "ItemCount" is "0"
+        And the value of the TextField "TotalPrice" is "0"
+When I checkout the Wishlist "MyWishlist"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I click on the Button "Checkout"
+        Then the Notification "Your order has been successfully placed" is displayed
+Then the Wishlist "MyWishlist" is void
+```

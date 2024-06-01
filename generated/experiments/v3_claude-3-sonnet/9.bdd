@@ -1,0 +1,124 @@
+```bdd
+model ECatalog using widgets
+
+entity Product is Widget {
+    actions: viewDetails, addToCart, addToWishlist
+    states: added, notAdded
+    properties: name, price, pictureURL, details, reviews
+}
+
+entity Catalog is Widget {
+    actions: browse
+    properties: products
+}
+
+entity ShoppingCart is Widget {
+    actions: addItem, removeItem, checkout
+    properties: items, total
+}
+
+entity Wishlist is Widget {
+    actions: addItem, removeItem
+    properties: items
+}
+
+Scenario: ViewProductCatalog
+Given the products of the Catalog "MyCatalog" are not added
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I browse the Catalog "MyCatalog"
+        Then the value of the Grid "Products" is not added
+When I viewDetails the Product "MyProduct"
+    which means 
+        Given the BrowserWindow "Home" is displayed
+        When I browse the Catalog "MyCatalog"
+        And I click on the Product "MyProduct"
+        Then the BrowserWindow "Product Details" is displayed
+Then the details of the Product "MyProduct" are shown
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        When I view the Product "MyProduct"
+        Then the value of the TextField "Details" is shown
+
+Scenario: AddProductToCart
+Given the Product "MyProduct" is notAdded
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I browse the Catalog "MyCatalog" 
+        Then the Product "MyProduct" is not added
+When I addToCart the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I browse the Catalog "MyCatalog"
+        And I click on the Button "Add to Cart" for the Product "MyProduct"
+        Then the Product "MyProduct" is added to the ShoppingCart "MyCart"
+Then the Product "MyProduct" is added to the ShoppingCart "MyCart"
+    which means  
+        Given the BrowserWindow "Shopping Cart" is displayed
+        When I view the ShoppingCart "MyCart"
+        Then the Product "MyProduct" is visible in the Grid "Cart Items"
+
+Scenario: AddProductToWishlist 
+Given the Product "MyProduct" is notAdded
+    which means
+        Given the BrowserWindow "Home" is displayed 
+        When I browse the Catalog "MyCatalog"
+        Then the Product "MyProduct" is not added  
+When I addToWishlist the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I browse the Catalog "MyCatalog" 
+        And I click on the Button "Add to Wishlist" for the Product "MyProduct"
+        Then the Product "MyProduct" is added to the Wishlist "MyWishlist"
+Then the Product "MyProduct" is added to the Wishlist "MyWishlist"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I view the Wishlist "MyWishlist"
+        Then the Product "MyProduct" is visible in the Grid "Wishlist Items"
+        
+Scenario: RemoveProductFromCart
+Given the Product "MyProduct" is added to the ShoppingCart "MyCart"
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+        When I view the ShoppingCart "MyCart"
+        Then the Product "MyProduct" is visible in the Grid "Cart Items"
+When I removeItem the Product "MyProduct" from the ShoppingCart "MyCart" 
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+        When I view the ShoppingCart "MyCart"
+        And I click on the Button "Remove" for the Product "MyProduct"
+        Then the Product "MyProduct" is removed from the ShoppingCart "MyCart"
+Then the Product "MyProduct" is notAdded to the ShoppingCart "MyCart"
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed 
+        When I view the ShoppingCart "MyCart"
+        Then the Product "MyProduct" is not visible in the Grid "Cart Items"
+
+Scenario: CheckoutFromCart
+Given the total of the ShoppingCart "MyCart" is 0
+And the items in the ShoppingCart "MyCart" are []
+    which means  
+        Given the BrowserWindow "Shopping Cart" is displayed
+        When I view the ShoppingCart "MyCart"
+        Then the value of the TextField "Total" is "0"
+        And the value of the Grid "Cart Items" is "[]"   
+When I addItem the Product "MyProduct" to the ShoppingCart "MyCart"
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+        When I view the ShoppingCart "MyCart"
+        And I click on the Button "Add to Cart" for the Product "MyProduct" 
+        Then the Product "MyProduct" is added to the ShoppingCart "MyCart"
+And I checkout the ShoppingCart "MyCart"
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed 
+        When I view the ShoppingCart "MyCart"
+        And I click on the Button "Checkout"
+        Then the BrowserWindow "Checkout" is displayed
+Then the total of the ShoppingCart "MyCart" is 100
+And the items in the ShoppingCart "MyCart" are [MyProduct]
+    which means
+        Given the BrowserWindow "Checkout" is displayed
+        When I view the ShoppingCart "MyCart"
+        Then the value of the TextField "Total" is "100" 
+        And the value of the Grid "Cart Items" contains "MyProduct"
+```

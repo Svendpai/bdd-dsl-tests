@@ -1,0 +1,85 @@
+```bdd
+model highEndOfficeChairs using widgets
+
+entity product {
+	actions: add to cart, add to wishlist, view details, buy
+	states: in cart, in wishlist, details viewed
+	properties: picture, name, price, more information, reviews
+}
+
+entity shoppingCart {
+	actions: checkout
+	states: checked out
+	properties: items
+}
+
+entity wishlist {
+	actions: void
+	states: void
+	properties: items
+}
+
+Scenario: Viewing product details
+Given the product "ErgoChair" is displayed on the home page
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Image of the product "ErgoChair"
+		Then the product "ErgoChair" details are viewed
+When I view details of the product "ErgoChair"
+	which means
+		Given the BrowserWindow "Product Details" for "ErgoChair" is displayed
+		Then the Text of the "More Information" is displayed
+		And the Grid of the "Reviews" is displayed
+Then the product "ErgoChair" details are viewed
+	which means
+		Given the BrowserWindow "Product Details" for "ErgoChair" is displayed
+		Then the Text of the "More Information" is displayed
+		And the Grid of the "Reviews" is displayed
+
+Scenario: Adding product to shopping cart
+Given the product "ErgoChair" details are viewed
+	which means
+		Given the BrowserWindow "Product Details" for "ErgoChair" is displayed
+		Then the Text of the "More Information" is displayed
+		And the Grid of the "Reviews" is displayed
+When I add the product "ErgoChair" to cart
+	which means
+		Given the BrowserWindow "Product Details" for "ErgoChair" is displayed
+		When I click on the Button "Add to Cart"
+		Then the Notification "ErgoChair added to your cart" is displayed
+Then the product "ErgoChair" is in cart
+	which means
+		Given the BrowserWindow "Cart" is displayed
+		Then the Image of the product "ErgoChair" is displayed in the Grid "Cart Items"
+
+Scenario: Adding product to wishlist
+Given the product "ErgoChair" details are viewed
+	which means
+		Given the BrowserWindow "Product Details" for "ErgoChair" is displayed
+		Then the Text of the "More Information" is displayed
+		And the Grid of the "Reviews" is displayed
+When I add the product "ErgoChair" to wishlist
+	which means
+		Given the BrowserWindow "Product Details" for "ErgoChair" is displayed
+		When I click on the Button "Add to Wishlist"
+		Then the Notification "ErgoChair added to your wishlist" is displayed
+Then the product "ErgoChair" is in wishlist
+	which means
+		Given the BrowserWindow "Wishlist" is displayed
+		Then the Image of the product "ErgoChair" is displayed in the Grid "Wishlist Items"
+
+Scenario: Checking out from shopping cart
+Given the product "ErgoChair" is in cart
+	which means
+		Given the BrowserWindow "Cart" is displayed
+		Then the Image of the product "ErgoChair" is displayed in the Grid "Cart Items"
+When I checkout from the shoppingCart
+	which means
+		Given the BrowserWindow "Cart" is displayed
+		When I click on the Button "Checkout"
+		Then the BrowserWindow "Checkout Confirmation" is displayed
+Then the shoppingCart is checked out
+	which means
+		Given the BrowserWindow "Order Confirmation" is displayed
+		Then the Text "Thank you for your purchase!" is displayed
+```

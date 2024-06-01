@@ -1,0 +1,101 @@
+```bdd
+model OfficeChairsStore using Widgets
+
+entity Product {
+    actions: viewDetails, addToCart, addToWishlist
+    states: inCart, inWishlist, displayed
+    properties: name, price, picture, details, reviews
+}
+
+entity Cart {
+    actions: checkout
+    states: checkedOut, notCheckedOut
+    properties: items, total
+}
+
+entity Wishlist {
+    actions: viewItems
+    states: itemsViewed
+    properties: items
+}
+
+entity DetailsPage is Widget {
+    actions: click [on]
+    states: viewed
+    properties: content
+}
+
+Scenario: viewProductDetails
+Given the name of the Product "MyProduct" is "ErgoChair"
+And the price of the Product "MyProduct" is "299"
+And the picture of the Product "MyProduct" is "ergoChair.jpg"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I viewDetails the Product "MyProduct"
+        Then the DetailsPage "ProductDetails" is viewed
+When I click on the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I viewDetails the Product "MyProduct"
+        Then the BrowserWindow "Details" is displayed
+Then the content of the DetailsPage "ProductDetails" is "Detailed information, reviews"
+    which means
+        Given the BrowserWindow "Details" is displayed
+        When I go to the BrowserWindow "Details"
+        Then the Text "Detailed information, reviews" is shown
+
+Scenario: addToCartFromHomePage
+Given the Product "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I view the Product "MyProduct"
+        Then the Image "MyProduct" is shown
+When I addToCart the Product "MyProduct"
+    which means
+        Given the Product "MyProduct" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "Product added to cart" is displayed
+Then the Product "MyProduct" is inCart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I go to the BrowserWindow "Cart"
+        Then the List "Cart items" contains "ErgoChair"
+
+Scenario: addToWishlistFromDetailsPage
+Given the Product "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I viewDetails the Product "MyProduct"
+        Then the Image "MyProduct" is shown
+When I addToWishlist the Product "MyProduct"
+    which means
+        Given the BrowserWindow "Details" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "Product added to wishlist" is displayed
+Then the Product "MyProduct" is inWishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I viewItems the Wishlist "MyWishlist"
+        Then the List "Wishlist items" contains "ErgoChair"
+
+Scenario: checkoutCart
+Given the total of the Cart "MyCart" is "299"
+And the items of the Cart "MyCart" are "ErgoChair"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I go to the BrowserWindow "Cart"
+        Then the List "Cart items" contains "ErgoChair"
+        And the Text "Total" is "299"
+When I checkout the Cart "MyCart"
+    which means
+        Given the BrowserWindow "Checkout" is displayed
+        When I click on the Button "Checkout"
+        Then the Notification "Checkout successful" is displayed
+Then the Cart "MyCart" is checkedOut
+    which means
+        Given the BrowserWindow "Checkout" is displayed
+        When I go to the BrowserWindow "Checkout"
+        Then the Text "Checkout status" is "Checked out"
+```
+
+This DSL code outlines scenarios for a high-end office chairs e-commerce website, detailing interactions with products on the home page, adding items to a cart and wishlist, and checking out.

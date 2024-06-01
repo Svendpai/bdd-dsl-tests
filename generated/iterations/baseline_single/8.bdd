@@ -1,0 +1,59 @@
+Based on the DSL grammar you provided and the requirements for an e-commerce website selling high-end office chairs, here is the DSL code to model the necessary entities, actions, and scenarios:
+
+```xtext
+model OfficeChairsStore
+
+entity "Product" {
+    actions:
+        view, add to cart, add to wishlist, checkout
+    states:
+        in catalog / not in catalog, in cart / not in cart, in wishlist / not in wishlist
+    properties:
+        picture, name, price, details, reviews
+}
+
+entity "User" {
+    actions:
+        browse, select, add to cart, add to wishlist, checkout
+    states:
+        logged in / not logged in
+}
+
+entity "Page" is Product {
+    actions:
+        display
+    states:
+        home / details
+}
+
+Scenario: ViewingCatalog
+    Given the User do not logged in
+    And the Product is in catalog
+    When the User browse
+    Then the Page is home
+    And the Product name, picture, and price is displayed
+
+Scenario: ViewingDetails
+    Given the User select the Product
+    When the User view
+    Then the Page is details
+    And the Product details and reviews is displayed
+
+Scenario: AddingToCart
+    Given the Product is not in cart
+    When the User add the Product to cart
+    Then the Product is in cart
+
+Scenario: AddingToWishlist
+    Given the Product is not in wishlist
+    When the User add the Product to wishlist
+    Then the Product is in wishlist
+
+Scenario: CheckingOut
+    Given the Product is in cart
+    When the User checkout
+    Then the Product is not in cart
+    And the User do not logged in
+```
+
+This code defines entities such as `Product`, `User`, and `Page` with their respective actions, states, and properties as per your requirements. It then outlines scenarios for viewing the catalog, viewing product details, adding products to the cart or wishlist, and checking out.

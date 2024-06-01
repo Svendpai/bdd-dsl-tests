@@ -1,0 +1,109 @@
+```bdd
+model OfficeChairStore using Widgets
+
+entity CatalogItem {
+    actions:
+        viewDetails
+    states:
+        onDisplay
+    properties:
+        picture, name, price
+}
+
+entity ProductPage {
+    actions:
+        addReview, addToCart, addToWishlist
+    states:
+        viewed
+    properties:
+        details, reviews, reviewInput
+}
+
+entity Cart {
+    actions:
+        checkout
+    states:
+        readyForCheckout, empty
+    properties:
+        items
+}
+
+entity Wishlist {
+    actions:
+        addProduct, removeProduct
+    states:
+        empty, containsItems
+    properties:
+        items
+}
+
+Scenario: viewProductDetails
+Given the CatalogItem "MyCatalogItem" is onDisplay
+    which means
+        Given the BrowserWindow "HomePage" is displayed
+        When I click on the Image "ProductImage" of the CatalogItem "MyCatalogItem"
+        Then the ProductPage "ProductDetailsPage" is viewed
+When I viewDetails the CatalogItem "MyCatalogItem"
+    which means
+        Given the ProductPage "ProductDetailsPage" is displayed
+        When I view the Text "ProductDetails"
+        Then the details of the ProductPage "ProductDetailsPage" are displayed
+Then the ProductPage "ProductDetailsPage" is viewed
+    which means
+        Given the BrowserWindow "HomePage" is displayed
+        When I click on the Image "ProductImage" of the CatalogItem "MyCatalogItem"
+        Then the ProductPage "ProductDetailsPage" is displayed
+
+Scenario: addReviewToProduct
+Given the ProductPage "ProductDetailsPage" is viewed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Text "ProductDetails"
+        Then the details of the ProductPage "ProductDetailsPage" are displayed
+When I addReview the ProductPage "ProductDetailsPage" "Excellent product"
+    which means
+        Given the TextArea "ReviewInput" is displayed
+        When I type "Excellent product" into the TextArea "ReviewInput"
+        And I click on the Button "SubmitReview"
+        Then the TextArea "ReviewInput" is empty
+        And the reviews of the ProductPage "ProductDetailsPage" include "Excellent product"
+Then the reviews of the ProductPage "ProductDetailsPage" include "Excellent product"
+    which means
+        Given the TextArea "ReviewInput" is displayed
+        When I view the Text "Reviews"
+        Then the Text "Reviews" includes "Excellent product"
+
+Scenario: addToCartFromProductPage
+Given the ProductPage "ProductDetailsPage" is viewed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Text "ProductDetails"
+        Then the details of the ProductPage "ProductDetailsPage" are displayed
+When I addToCart the ProductPage "ProductDetailsPage"
+    which means
+        Given the Button "AddToCart" is displayed
+        When I click on the Button "AddToCart"
+        Then the items of the Cart "MyCart" include the ProductPage "ProductDetailsPage"
+Then the Cart "MyCart" is readyForCheckout
+    which means
+        Given the BrowserWindow "CartPage" is displayed
+        When I view the List "CartItems"
+        Then the List "CartItems" includes items from the Cart "MyCart"
+
+Scenario: checkoutCart
+Given the Cart "MyCart" is readyForCheckout
+    which means
+        Given the BrowserWindow "CartPage" is displayed
+        When I view the List "CartItems"
+        Then the List "CartItems" includes items
+When I checkout the Cart "MyCart"
+    which means
+        Given the Button "Checkout" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "CheckoutPage" is displayed
+Then the Cart "MyCart" is empty
+    which means
+        Given the BrowserWindow "CartPage" is displayed
+        When I view the List "CartItems"
+        Then the List "CartItems" is empty
+```

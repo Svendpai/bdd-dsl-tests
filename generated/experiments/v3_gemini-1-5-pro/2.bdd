@@ -1,0 +1,190 @@
+```bdd
+model ECommerceOfficeChairs using widgets
+
+entity Product {
+	actions: viewDetails
+	states: available, unavailable
+	properties: name, picture, price
+}
+
+entity Catalog {
+	actions: viewProduct
+	states: void
+	properties: products
+}
+
+entity HomePage {
+	actions: viewCatalog
+	states: void
+	properties: catalog
+}
+
+entity ProductDetailsPage {
+	actions: addToCart, addToWishlist
+	states: void
+	properties: product, reviews
+}
+
+entity ShoppingCart {
+	actions: view, removeItem
+	states: void
+	properties: items
+}
+
+entity WishList {
+	actions: view, removeItem
+	states: void
+	properties: items
+}
+
+entity Checkout {
+	actions: pay
+	states: void
+	properties: items, totalPrice
+}
+
+Scenario: View the home page and see the catalog
+Given the catalog of the HomePage "MyHomePage" is not empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I viewCatalog the HomePage "MyHomePage"
+		Then the value of the Grid "Catalog" is "not empty"
+When I viewCatalog the HomePage "MyHomePage"
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I viewCatalog the HomePage "MyHomePage"
+		Then all products of the Catalog "MyCatalog" are available
+		And all products of the Catalog "MyCatalog" are shown
+		And the picture of all products of the Catalog "MyCatalog" is displayed
+		And the name of all products of the Catalog "MyCatalog" is displayed
+		And the price of all products of the Catalog "MyCatalog" is displayed
+
+Scenario: View a product's details
+Given the Product "Executive Chair" is available
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I viewCatalog the HomePage "MyHomePage"
+		Then the Product "Executive Chair" is available
+When I viewDetails the Product "Executive Chair"
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Product "Executive Chair"
+		Then the value of the Label "Product Name" is "Executive Chair"
+		And the picture of the Product "Executive Chair" is displayed
+		And the value of the TextField "Price" is "Price of Executive Chair"
+
+Scenario: Add a product to the cart
+Given the Product "Executive Chair" is available
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I viewCatalog the HomePage "MyHomePage"
+		Then the Product "Executive Chair" is available
+When I addToCart the Product "Executive Chair"
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Product "Executive Chair"
+		When I click on the Button "Add to Cart"
+		Then the value of the Grid "Cart" is "not empty"
+		And the Product "Executive Chair" is in the ShoppingCart "MyCart"
+
+Scenario: Add a product to the wishlist
+Given the Product "Executive Chair" is available
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I viewCatalog the HomePage "MyHomePage"
+		Then the Product "Executive Chair" is available
+When I addToWishlist the Product "Executive Chair"
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Product "Executive Chair"
+		When I click on the Button "Add to Wishlist"
+		Then the value of the Grid "Wishlist" is "not empty"
+		And the Product "Executive Chair" is in the WishList "MyWishlist"
+
+Scenario: View the shopping cart
+Given the ShoppingCart "MyCart" is not empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Cart"
+		Then the value of the Grid "Cart" is "not empty"
+When I view the ShoppingCart "MyCart"
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Cart"
+		Then all products of the ShoppingCart "MyCart" are shown
+		And the picture of all products of the ShoppingCart "MyCart" is displayed
+		And the name of all products of the ShoppingCart "MyCart" is displayed
+		And the price of all products of the ShoppingCart "MyCart" is displayed
+
+Scenario: View the wishlist
+Given the WishList "MyWishlist" is not empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Wishlist"
+		Then the value of the Grid "Wishlist" is "not empty"
+When I view the WishList "MyWishlist"
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Wishlist"
+		Then all products of the WishList "MyWishlist" are shown
+		And the picture of all products of the WishList "MyWishlist" is displayed
+		And the name of all products of the WishList "MyWishlist" is displayed
+		And the price of all products of the WishList "MyWishlist" is displayed
+
+Scenario: Remove an item from the cart
+Given the ShoppingCart "MyCart" is not empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Cart"
+		Then the value of the Grid "Cart" is "not empty"
+When I removeItem the Product "Executive Chair" from the ShoppingCart "MyCart"
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Cart"
+		When I click on the Button "Remove" for the Product "Executive Chair"
+		Then the value of the Grid "Cart" is "not empty"
+		And the Product "Executive Chair" is not in the ShoppingCart "MyCart"
+
+Scenario: Remove an item from the wishlist
+Given the WishList "MyWishlist" is not empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Wishlist"
+		Then the value of the Grid "Wishlist" is "not empty"
+When I removeItem the Product "Executive Chair" from the WishList "MyWishlist"
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Wishlist"
+		When I click on the Button "Remove" for the Product "Executive Chair"
+		Then the value of the Grid "Wishlist" is "not empty"
+		And the Product "Executive Chair" is not in the WishList "MyWishlist"
+
+Scenario: Proceed to checkout
+Given the ShoppingCart "MyCart" is not empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Cart"
+		Then the value of the Grid "Cart" is "not empty"
+When I pay for the ShoppingCart "MyCart"
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Cart"
+		When I click on the Button "Checkout"
+		Then the value of the TextField "Total Price" is "Sum of all prices of products in the ShoppingCart 'MyCart'"
+		And all products of the ShoppingCart "MyCart" are in the Checkout "MyCheckout"
+
+Scenario: Pay for the order
+Given the ShoppingCart "MyCart" is not empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Cart"
+		Then the value of the Grid "Cart" is "not empty"
+When I pay for the ShoppingCart "MyCart"
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "Cart"
+		When I click on the Button "Checkout"
+		When I click on the Button "Pay"
+		Then the ShoppingCart "MyCart" is void
+		And the Checkout "MyCheckout" is void
+```

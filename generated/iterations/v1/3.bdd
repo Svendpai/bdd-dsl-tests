@@ -1,0 +1,83 @@
+```bdd
+model highEndOfficeChairs using widgets
+
+entity product {
+	actions: view details, add to cart, add to wishlist
+	states: viewed, in cart, in wishlist
+	properties: name, price, picture, description, reviews
+}
+
+entity cart {
+	actions: checkout
+	states: checked out
+	properties: products*
+}
+
+entity wishlist {
+	actions: void
+	states: void
+	properties: products*
+}
+
+Scenario: Viewing product details
+Given the product "Ergonomic Executive Chair" is viewed
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Image "Ergonomic Executive Chair Picture"
+		Then the BrowserWindow "Product Details - Ergonomic Executive Chair" is displayed
+When I view details of the product "Ergonomic Executive Chair"
+	which means
+		Given the BrowserWindow "Product Details - Ergonomic Executive Chair" is displayed
+		When I look at the Text "Ergonomic Executive Chair Description"
+		And look at the Text "Ergonomic Executive Chair Reviews"
+Then the product "Ergonomic Executive Chair" details are shown
+	which means
+		Given the BrowserWindow "Product Details - Ergonomic Executive Chair" is displayed
+		Then the Text "Ergonomic Executive Chair Description" is visible
+		And the Text "Ergonomic Executive Chair Reviews" is visible
+
+Scenario: Adding product to cart
+Given the product "Ergonomic Executive Chair" is viewed
+	which means
+		Given the BrowserWindow "Product Details - Ergonomic Executive Chair" is displayed
+		When I look at the Text "Ergonomic Executive Chair Description"
+Then I add the product "Ergonomic Executive Chair" to cart
+	which means
+		Given the BrowserWindow "Product Details - Ergonomic Executive Chair" is displayed
+		When I click on the Button "Add to Cart - Ergonomic Executive Chair"
+Then the product "Ergonomic Executive Chair" is in cart
+	which means
+		Given the BrowserWindow "Cart" is displayed
+		When I look at the Grid "Cart Products"
+		Then the Text "Ergonomic Executive Chair" is in the Grid "Cart Products"
+
+Scenario: Checking out
+Given the product "Ergonomic Executive Chair" is in cart
+	which means
+		Given the BrowserWindow "Cart" is displayed
+		When I look at the Grid "Cart Products"
+		Then the Text "Ergonomic Executive Chair" is in the Grid "Cart Products"
+When I checkout the cart
+	which means
+		Given the BrowserWindow "Cart" is displayed
+		When I click on the Button "Checkout"
+Then the cart is checked out
+	which means
+		Given the BrowserWindow "Checkout Confirmation" is displayed
+		Then the Text "Thank you for your purchase!" is visible
+
+Scenario: Adding product to wishlist
+Given the product "Ergonomic Executive Chair" is viewed
+	which means
+		Given the BrowserWindow "Product Details - Ergonomic Executive Chair" is displayed
+		When I look at the Text "Ergonomic Executive Chair Description"
+Then I add the product "Ergonomic Executive Chair" to wishlist
+	which means
+		Given the BrowserWindow "Product Details - Ergonomic Executive Chair" is displayed
+		When I click on the Button "Add to Wishlist - Ergonomic Executive Chair"
+Then the product "Ergonomic Executive Chair" is in wishlist
+	which means
+		Given the BrowserWindow "Wishlist" is displayed
+		When I look at the Grid "Wishlist Products"
+		Then the Text "Ergonomic Executive Chair" is in the Grid "Wishlist Products"
+```

@@ -1,0 +1,89 @@
+```bdd
+model highEndOfficeChairs using widgets
+
+entity product {
+	actions: view, add to cart, add to wishlist
+	states: viewed, in cart, in wishlist
+	properties: picture, name, price, details, reviews
+}
+
+entity shoppingCart {
+	actions: checkout
+	states: checked out
+	properties: items*
+}
+
+entity wishlist {
+	actions: add item, remove item
+	states: item added, item removed
+	properties: items*
+}
+
+Scenario: Viewing product details
+Given the product "ErgoChair" is viewed
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the product "ErgoChair"
+		Then the TextField "Name" is "ErgoChair"
+		And the TextField "Price" is displayed
+		And the Image "Product Picture" is displayed
+When I view details of the product "ErgoChair"
+	which means
+		When I click on the Button "View Details"
+		Then the TextField "Details" is displayed
+		And the TextField "Reviews" is displayed
+Then the product "ErgoChair" is viewed
+	which means
+		Given the BrowserWindow "Product Details" is displayed
+		When I look at the product "ErgoChair"
+		Then the TextField "Details" is filled
+		And the TextField "Reviews" is filled
+
+Scenario: Adding product to shopping cart
+Given the product "ErgoChair" is viewed
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the product "ErgoChair"
+		Then the Button "Add to Cart" is enabled
+When I add the product "ErgoChair" to the cart
+	which means
+		When I click on the Button "Add to Cart"
+		Then the Notification "Product added to cart" is displayed
+Then the product "ErgoChair" is in cart
+	which means
+		Given the BrowserWindow "Shopping Cart" is displayed
+		When I look at the list "Cart Items"
+		Then the product "ErgoChair" is listed
+
+Scenario: Checking out from shopping cart
+Given the shoppingCart contains the product "ErgoChair"
+	which means
+		Given the BrowserWindow "Shopping Cart" is displayed
+		When I look at the list "Cart Items"
+		Then the product "ErgoChair" is listed
+When I checkout the shoppingCart
+	which means
+		When I click on the Button "Checkout"
+		Then the Notification "Checkout successful" is displayed
+Then the shoppingCart is checked out
+	which means
+		Given the BrowserWindow "Order Confirmation" is displayed
+		When I look at the page
+		Then the TextField "Order Status" is "Confirmed"
+
+Scenario: Adding product to wishlist
+Given the product "ErgoChair" is viewed
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the product "ErgoChair"
+		Then the Button "Add to Wishlist" is enabled
+When I add the product "ErgoChair" to the wishlist
+	which means
+		When I click on the Button "Add to Wishlist"
+		Then the Notification "Product added to wishlist" is displayed
+Then the product "ErgoChair" is in wishlist
+	which means
+		Given the BrowserWindow "Wishlist" is displayed
+		When I look at the list "Wishlist Items"
+		Then the product "ErgoChair" is listed
+```

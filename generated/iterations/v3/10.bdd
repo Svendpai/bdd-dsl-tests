@@ -1,0 +1,91 @@
+```bdd
+model OfficeChairStore using Widgets
+
+entity ProductCard is Widget {
+    actions: viewDetails
+    properties: picture, name, price
+}
+
+entity ProductPage is Widget {
+    actions: addReview, addToCart, addToWishlist
+    properties: description, reviews, availability
+}
+
+entity Cart is Widget {
+    actions: checkout
+    properties: items, total
+}
+
+entity Wishlist is Widget {
+    actions: addProduct, removeProduct
+    properties: items
+}
+
+Scenario: viewProductDetails
+Given the BrowserWindow "HomePage" is displayed
+    which means
+        Given the BrowserWindow "HomePage" is displayed
+        When I go to the BrowserWindow "HomePage"
+        Then the BrowserWindow "HomePage" is displayed
+When I viewDetails the ProductCard "MyProductCard"
+    which means
+        Given the BrowserWindow "HomePage" is displayed
+        When I click on the ProductCard "MyProductCard"
+        Then the BrowserWindow "ProductPage" is displayed
+Then the BrowserWindow "ProductPage" is displayed
+    which means
+        Given the BrowserWindow "ProductPage" is displayed
+        When I go to the BrowserWindow "ProductPage"
+        Then the BrowserWindow "ProductPage" is displayed
+
+Scenario: addToCartFromProductPage
+Given the BrowserWindow "ProductPage" is displayed
+    which means
+        Given the BrowserWindow "ProductPage" is displayed
+        When I go to the BrowserWindow "ProductPage"
+        Then the BrowserWindow "ProductPage" is displayed
+When I addToCart the ProductPage "MyProductPage"
+    which means
+        Given the BrowserWindow "ProductPage" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "Product added to cart" is displayed
+Then the items of the Cart "MyCart" are increased
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I go to the BrowserWindow "Cart"
+        Then the List "Items" in the Cart "MyCart" is increased
+
+Scenario: checkoutCart
+Given the items of the Cart "MyCart" are not empty
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I go to the BrowserWindow "Cart"
+        Then the List "Items" in the Cart "MyCart" is not empty
+When I checkout the Cart "MyCart"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "CheckoutPage" is displayed
+Then the Cart "MyCart" is empty
+    which means
+        Given the BrowserWindow "CheckoutPage" is displayed
+        When I go to the BrowserWindow "CheckoutPage"
+        Then the List "Items" in the Cart "MyCart" is empty
+
+Scenario: addToWishlistFromProductPage
+Given the BrowserWindow "ProductPage" is displayed
+    which means
+        Given the BrowserWindow "ProductPage" is displayed
+        When I go to the BrowserWindow "ProductPage"
+        Then the BrowserWindow "ProductPage" is displayed
+When I addToWishlist the ProductPage "MyProductPage"
+    which means
+        Given the BrowserWindow "ProductPage" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "Product added to wishlist" is displayed
+Then the items of the Wishlist "MyWishlist" are increased
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I go to the BrowserWindow "Wishlist"
+        Then the List "Items" in the Wishlist "MyWishlist" is increased
+```

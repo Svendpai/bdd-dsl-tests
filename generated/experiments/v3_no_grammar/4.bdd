@@ -1,0 +1,109 @@
+```bdd
+model OfficeChairECommerce using Widgets
+
+entity ProductItem is Widget {
+    actions:
+        click
+    states:
+        viewed
+    properties:
+        picture, name, price
+}
+
+entity ProductDetails is Widget {
+    actions:
+        addToCart, addToWishlist, view
+    states:
+        displayed
+    properties:
+        fullDetails, reviews
+}
+
+entity ShoppingCart is Widget {
+    actions:
+        checkout
+    states:
+        checkedOut
+    properties:
+        items
+}
+
+entity Wishlist is Widget {
+    actions:
+        addItems
+    states:
+        itemsAdded
+    properties:
+        items
+}
+
+Scenario: viewProductDetails
+Given the ProductItem "MyProductItem" is viewed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the ProductItem "MyProductItem"
+        Then the ProductDetails "MyProductDetails" is displayed
+When I view the ProductDetails "MyProductDetails"
+    which means
+        Given the ProductDetails "MyProductDetails" is displayed
+        When I go to the ProductDetails "MyProductDetails"
+        Then the fullDetails of the ProductDetails "MyProductDetails" are shown
+        And the reviews of the ProductDetails "MyProductDetails" are shown
+Then the ProductDetails "MyProductDetails" is displayed
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        When I view the ProductDetails "MyProductDetails"
+        Then the fullDetails of the ProductDetails "MyProductDetails" are shown
+        And the reviews of the ProductDetails "MyProductDetails" are shown
+
+Scenario: addItemToCart
+Given the ProductItem "MyProductItem" is viewed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the ProductItem "MyProductItem"
+        Then the ProductDetails "MyProductDetails" is displayed
+When I addToCart the ProductDetails "MyProductDetails"
+    which means
+        Given the ProductDetails "MyProductDetails" is displayed
+        When I click on the Button "Add to Cart"
+        Then the items of the ShoppingCart "MyShoppingCart" are increased
+Then the items of the ShoppingCart "MyShoppingCart" are increased
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+        When I go to the BrowserWindow "Shopping Cart"
+        Then the items of the ShoppingCart "MyShoppingCart" are listed
+
+Scenario: checkoutShoppingCart
+Given the items of the ShoppingCart "MyShoppingCart" are increased
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+        When I go to the BrowserWindow "Shopping Cart"
+        Then the items of the ShoppingCart "MyShoppingCart" are listed
+When I checkout the ShoppingCart "MyShoppingCart"
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+        When I click on the Button "Checkout"
+        Then the ShoppingCart "MyShoppingCart" is checkedOut
+Then the ShoppingCart "MyShoppingCart" is checkedOut
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+        When I go to the BrowserWindow "Checkout Confirmation"
+        Then the Notification "Your order has been successfully processed" is displayed
+
+Scenario: addItemToWishlist
+Given the ProductItem "MyProductItem" is viewed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the ProductItem "MyProductItem"
+        Then the ProductDetails "MyProductDetails" is displayed
+When I addToWishlist the ProductDetails "MyProductDetails"
+    which means
+        Given the ProductDetails "MyProductDetails" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the items of the Wishlist "MyWishlist" are increased
+Then the items of the Wishlist "MyWishlist" are increased
+    which means
+        Given the Wishlist "MyWishlist" is displayed
+        When I go to the BrowserWindow "Wishlist"
+        Then the items of the Wishlist "MyWishlist" are listed
+```

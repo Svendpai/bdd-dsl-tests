@@ -1,0 +1,91 @@
+```bdd
+model ECommerceChairs using Widgets
+
+entity Product {
+    actions: browse, view, addToCart, addToWishlist
+    states: displayed, viewed, inCart, inWishlist
+    properties: name, price, image, details, reviews
+}
+
+entity Catalog is Widget {
+    actions: browse
+    states: displayed
+    properties: products
+}
+
+entity Cart {
+    actions: checkout, view
+    states: empty/notEmpty
+    properties: items
+}
+
+entity Wishlist {
+    actions: view
+    states: empty/notEmpty
+    properties: items
+}
+
+Scenario: View catalog and product details
+Given the products of the Catalog "MyCatalog" are displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Catalog"
+        Then the products of the Catalog "MyCatalog" are displayed
+When I view the Product "HighEndChair1"
+    which means 
+        Given the BrowserWindow "Catalog" is displayed
+        When I click on the Product "HighEndChair1"
+        Then the BrowserWindow "ProductDetails" is displayed
+Then the Product "HighEndChair1" is viewed
+And the details of the Product "HighEndChair1" are displayed
+And the reviews of the Product "HighEndChair1" are displayed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        Then the value of the Label "Product Details" is the details of the Product "HighEndChair1"
+        And the reviews of the Product "HighEndChair1" are displayed
+
+Scenario: Add product to cart
+Given the Product "HighEndChair1" is viewed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+When I addToCart the Product "HighEndChair1"
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "Product added to cart" is displayed
+Then the Product "HighEndChair1" is inCart
+And the Cart is notEmpty
+    which means 
+        Given the BrowserWindow "Cart" is displayed
+        Then the Cart contains the Product "HighEndChair1"
+        
+Scenario: Add product to wishlist        
+Given the Product "HighEndChair1" is viewed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+When I addToWishlist the Product "HighEndChair1" 
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed 
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "Product added to wishlist" is displayed
+Then the Product "HighEndChair1" is inWishlist
+And the Wishlist is notEmpty
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        Then the Wishlist contains the Product "HighEndChair1"
+        
+Scenario: Checkout from cart
+Given the Cart contains the Product "HighEndChair1"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        Then the Cart contains the Product "HighEndChair1" 
+When I checkout the Cart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "Checkout" is displayed
+Then the Cart is empty
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        Then the Cart does not contain any products
+```

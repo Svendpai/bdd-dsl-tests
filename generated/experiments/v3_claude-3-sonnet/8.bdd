@@ -1,0 +1,151 @@
+```bdd
+model ECommerceSite using Widgets
+
+entity Page {
+    actions: view, navigate
+    states: displayed
+    properties: url, title
+}
+
+entity Product is Widget {
+    actions: click [on], view, add to cart, add to wishlist
+    states: viewed, in cart, in wishlist
+    properties: name, price, image, details
+}
+
+entity Catalog is Widget {
+    properties: products*
+}
+
+entity Cart {
+    actions: view, add, remove, checkout
+    states: viewed
+    properties: items*
+}
+
+entity Wishlist {
+    actions: view, add, remove
+    states: viewed
+    properties: items*  
+}
+
+entity CheckoutProcess is Widget {
+    actions: complete, cancel
+    states: completed, cancelled
+}
+
+Scenario: Browse Product Catalog - successful
+Given the Page "Home" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        Then the Catalog "MyCatalog" is available
+When I view the Catalog "MyCatalog"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click [on] the Catalog "MyCatalog"
+        Then the Catalog "MyCatalog" is displayed
+Then I assure the Page "Home" is displayed
+And the products of the Catalog "MyCatalog" are available
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click [on] the Catalog "MyCatalog"
+        Then the products of the Catalog "MyCatalog" are displayed
+
+Scenario: View Product Details - successful
+Given the Page "Home" is displayed
+And the products of the Catalog "MyCatalog" are available
+    which means 
+        Given the BrowserWindow "Home" is displayed
+        When I click [on] the Catalog "MyCatalog"
+        Then the products of the Catalog "MyCatalog" are displayed
+When I click [on] the Product "#28971"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click [on] the Product "#28971"
+        Then the Page "Product Details" is displayed
+Then the Page "Product Details" is displayed
+And the details of the Product "#28971" are available
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        Then the details of the Product "#28971" are shown
+
+Scenario: Add Product to Cart - successful  
+Given the Page "Product Details" is displayed
+And the details of the Product "#28971" are available
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        Then the details of the Product "#28971" are shown  
+When I add the Product "#28971" to cart
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        When I click [on] the Button "Add to Cart"
+        Then the Notification "Item added to cart" is displayed
+Then the Product "#28971" is in cart
+    which means 
+        Given the BrowserWindow "Cart" is displayed
+        Then the Product "#28971" is shown in the Cart "MyCart"
+        
+Scenario: Add Product to Wishlist - successful
+Given the Page "Product Details" is displayed  
+And the details of the Product "#28971" are available
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        Then the details of the Product "#28971" are shown
+When I add the Product "#28971" to wishlist
+    which means 
+        Given the BrowserWindow "Product Details" is displayed
+        When I click [on] the Button "Add to Wishlist"
+        Then the Notification "Item added to wishlist" is displayed  
+Then the Product "#28971" is in wishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed 
+        Then the Product "#28971" is shown in the Wishlist "MyWishlist"
+
+Scenario: View Cart - successful
+Given the Product "#28971" is in cart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        Then the Product "#28971" is shown in the Cart "MyCart"
+When I view the Cart "MyCart" 
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click [on] the Link "View Cart"
+        Then the Cart "MyCart" is displayed
+Then the Cart "MyCart" is viewed
+And the items in the Cart "MyCart" are available
+    which means 
+        Given the BrowserWindow "Cart" is displayed
+        Then the items in the Cart "MyCart" are shown
+        
+Scenario: Checkout from Cart - successful 
+Given the Cart "MyCart" is viewed
+And the items in the Cart "MyCart" are available
+    which means
+        Given the BrowserWindow "Cart" is displayed  
+        Then the items in the Cart "MyCart" are shown
+When I checkout from the Cart "MyCart"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click [on] the Button "Proceed to Checkout" 
+        Then the Page "Checkout" is displayed
+Then the CheckoutProcess "MyCheckout" is available
+    which means
+        Given the BrowserWindow "Checkout" is displayed
+        Then the CheckoutProcess "MyCheckout" is shown
+        
+Scenario: Complete Checkout - successful
+Given the CheckoutProcess "MyCheckout" is available 
+    which means 
+        Given the BrowserWindow "Checkout" is displayed
+        Then the CheckoutProcess "MyCheckout" is shown
+When I complete the CheckoutProcess "MyCheckout"
+    which means
+        Given the BrowserWindow "Checkout" is displayed  
+        When I click [on] the Button "Place Order"
+        Then the Notification "Order placed successfully" is displayed
+Then the CheckoutProcess "MyCheckout" is completed 
+And the Cart "MyCart" is void
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        Then the Cart "MyCart" is empty
+```

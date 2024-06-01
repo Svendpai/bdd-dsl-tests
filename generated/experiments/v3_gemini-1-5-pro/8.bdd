@@ -1,0 +1,170 @@
+```bdd
+model EcommerceWebsite
+
+entity CatalogItem {
+	properties:
+		picture,
+		name,
+		price
+}
+
+entity Catalog {
+	actions:
+		viewItem
+	properties:
+		items
+}
+
+entity ProductPage {
+	actions:
+		addToCart,
+		addToWishlist
+	properties:
+		picture,
+		name,
+		price,
+		description,
+		reviews
+}
+
+entity Cart {
+	actions:
+		removeItem
+	properties:
+		items
+}
+
+entity Wishlist {
+	actions:
+		removeItem
+	properties:
+		items
+}
+
+entity Checkout {
+	actions:
+		pay
+	properties:
+		items,
+		totalPrice
+}
+
+Scenario: View the catalog
+Given the BrowserWindow "Home" is displayed
+Then the Catalog "MyCatalog" is displayed
+And all items of the Catalog "MyCatalog" are not viewed
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I viewItem the CatalogItem "MyCatalogItem 1"
+		Then the ProductPage "MyProductPage 1" is displayed
+		And the picture of the ProductPage "MyProductPage 1" is the picture of the CatalogItem "MyCatalogItem 1"
+		And the name of the ProductPage "MyProductPage 1" is the name of the CatalogItem "MyCatalogItem 1"
+		And the price of the ProductPage "MyProductPage 1" is the price of the CatalogItem "MyCatalogItem 1"
+		And the description of the ProductPage "MyProductPage 1" is not displayed
+		And the reviews of the ProductPage "MyProductPage 1" are not displayed
+		When I go to the BrowserWindow "Home"
+		Then the Catalog "MyCatalog" is displayed
+		And all items of the Catalog "MyCatalog" are not viewed
+
+Scenario: Add an item to the cart
+Given the BrowserWindow "Home" is displayed
+And the Cart "MyCart" is empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "View Cart"
+		Then the Cart "MyCart" is displayed
+		And the items of the Cart "MyCart" are empty
+When I viewItem the CatalogItem "MyCatalogItem 1"
+Then the ProductPage "MyProductPage 1" is displayed
+And the picture of the ProductPage "MyProductPage 1" is the picture of the CatalogItem "MyCatalogItem 1"
+And the name of the ProductPage "MyProductPage 1" is the name of the CatalogItem "MyCatalogItem 1"
+And the price of the ProductPage "MyProductPage 1" is the price of the CatalogItem "MyCatalogItem 1"
+And the description of the ProductPage "MyProductPage 1" is not displayed
+And the reviews of the ProductPage "MyProductPage 1" are not displayed
+When I addToCart the ProductPage "MyProductPage 1"
+Then the Cart "MyCart" is not empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "View Cart"
+		Then the Cart "MyCart" is displayed
+		And the items of the Cart "MyCart" contain the CatalogItem "MyCatalogItem 1"
+
+Scenario: Add an item to the wishlist
+Given the BrowserWindow "Home" is displayed
+And the Wishlist "MyWishlist" is empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "View Wishlist"
+		Then the Wishlist "MyWishlist" is displayed
+		And the items of the Wishlist "MyWishlist" are empty
+When I viewItem the CatalogItem "MyCatalogItem 1"
+Then the ProductPage "MyProductPage 1" is displayed
+And the picture of the ProductPage "MyProductPage 1" is the picture of the CatalogItem "MyCatalogItem 1"
+And the name of the ProductPage "MyProductPage 1" is the name of the CatalogItem "MyCatalogItem 1"
+And the price of the ProductPage "MyProductPage 1" is the price of the CatalogItem "MyCatalogItem 1"
+And the description of the ProductPage "MyProductPage 1" is not displayed
+And the reviews of the ProductPage "MyProductPage 1" are not displayed
+When I addToWishlist the ProductPage "MyProductPage 1"
+Then the Wishlist "MyWishlist" is not empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "View Wishlist"
+		Then the Wishlist "MyWishlist" is displayed
+		And the items of the Wishlist "MyWishlist" contain the CatalogItem "MyCatalogItem 1"
+
+Scenario: Remove an item from the cart
+Given the BrowserWindow "Home" is displayed
+And the Cart "MyCart" contains the CatalogItem "MyCatalogItem 1"
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I viewItem the CatalogItem "MyCatalogItem 1"
+		Then the ProductPage "MyProductPage 1" is displayed
+		And the picture of the ProductPage "MyProductPage 1" is the picture of the CatalogItem "MyCatalogItem 1"
+		And the name of the ProductPage "MyProductPage 1" is the name of the CatalogItem "MyCatalogItem 1"
+		And the price of the ProductPage "MyProductPage 1" is the price of the CatalogItem "MyCatalogItem 1"
+		And the description of the ProductPage "MyProductPage 1" is not displayed
+		And the reviews of the ProductPage "MyProductPage 1" are not displayed
+		When I addToCart the ProductPage "MyProductPage 1"
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "View Cart"
+		Then the Cart "MyCart" is displayed
+		And the items of the Cart "MyCart" contain the CatalogItem "MyCatalogItem 1"
+When I click on the Button "View Cart"
+Then the Cart "MyCart" is displayed
+And the items of the Cart "MyCart" contain the CatalogItem "MyCatalogItem 1"
+When I removeItem the CatalogItem "MyCatalogItem 1" from the Cart "MyCart"
+Then the Cart "MyCart" is empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "View Cart"
+		Then the Cart "MyCart" is displayed
+		And the items of the Cart "MyCart" are empty
+
+Scenario: Remove an item from the wishlist
+Given the BrowserWindow "Home" is displayed
+And the Wishlist "MyWishlist" contains the CatalogItem "MyCatalogItem 1"
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I viewItem the CatalogItem "MyCatalogItem 1"
+		Then the ProductPage "MyProductPage 1" is displayed
+		And the picture of the ProductPage "MyProductPage 1" is the picture of the CatalogItem "MyCatalogItem 1"
+		And the name of the ProductPage "MyProductPage 1" is the name of the CatalogItem "MyCatalogItem 1"
+		And the price of the ProductPage "MyProductPage 1" is the price of the CatalogItem "MyCatalogItem 1"
+		And the description of the ProductPage "MyProductPage 1" is not displayed
+		And the reviews of the ProductPage "MyProductPage 1" are not displayed
+		When I addToWishlist the ProductPage "MyProductPage 1"
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "View Wishlist"
+		Then the Wishlist "MyWishlist" is displayed
+		And the items of the Wishlist "MyWishlist" contain the CatalogItem "MyCatalogItem 1"
+When I click on the Button "View Wishlist"
+Then the Wishlist "MyWishlist" is displayed
+And the items of the Wishlist "MyWishlist" contain the CatalogItem "MyCatalogItem 1"
+When I removeItem the CatalogItem "MyCatalogItem 1" from the Wishlist "MyWishlist"
+Then the Wishlist "MyWishlist" is empty
+	which means
+		Given the BrowserWindow "Home" is displayed
+		When I click on the Button "View Wishlist"
+		Then the Wishlist "MyWishlist" is displayed
+		And the items of the Wishlist "MyWishlist" are empty
+```

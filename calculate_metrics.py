@@ -1,8 +1,5 @@
 import json
 from typing import Dict, Any
-# import tiktoken
-# import numpy as np
-# from numpy.linalg import norm
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import os
@@ -13,17 +10,10 @@ import argparse
 from jarowinkler import *
 import difflib
 
-# from gensim.models import Word2Vec
-# from nltk.tokenize import sent_tokenize, word_tokenize
 
-# import nltk
-# nltk.download('punkt')
-
-
-# ENCODING = tiktoken.get_encoding("cl100k_base")
-COMPILER_PATH = "./compiler/compiler.jar"
-WIDGETS_PATH = "./base/widgets.bdd"
-DSL_AST_EXTRACTOR_PATH = os.path.join(".","compiler", "DSL_AST_Extractor_3.jar")
+COMPILER_PATH = os.path.join(".","compiler", "compiler.jar")
+WIDGETS_PATH = os.path.join(".","base", "widgets.bdd")
+DSL_AST_EXTRACTOR_PATH = os.path.join(".","compiler", "DSL_AST_Extractor.jar")
 
 # Create wrapper for measuring the time it takes to run the function
 def timer(func):
@@ -37,12 +27,6 @@ def timer(func):
     return wrapper
 
 
-def load_json_file(file_path: str) -> Dict[str, Any]:
-    """Load a JSON file and return its content."""
-    with open(file_path, "r", encoding="utf-8") as json_file:
-        return json.load(json_file)
-
-
 def load_text_file(file_path: str) -> str:
     """Load a text file and return its content as a string."""
     with open(file_path, "r", encoding="utf-8") as prompt_file:
@@ -50,7 +34,18 @@ def load_text_file(file_path: str) -> str:
     
 
 def save_json(data: Dict[str, Any], output_path: str) -> None:
-    """Save the errors to a file."""
+    """Save the errors to a file.
+    
+    Parameters:
+
+    data (Dict[str, Any]): The data to save.
+    output_path (str): The path to save the data to.
+
+    Returns:
+
+    None
+    
+    """
     with open(output_path, "w", encoding="utf-8") as output_file:
         output_file.write(data)
 
@@ -95,13 +90,33 @@ def get_tfidf_stopwords_similarity(s1: str, s2: str) -> float:
 
 @timer
 def get_levenshtein_distance(s1: str, s2: str) -> int:
-    """Calculate the Levenshtein distance between two strings."""
+    """Calculate the Levenshtein distance between two strings.
+    
+    Parameters:
+
+    s1 (str): The first string.
+    s2 (str): The second string.
+
+    Returns:
+
+    int: The Levenshtein distance between the two strings.
+    """
     return Levenshtein.distance(s1, s2)
 
 
 @timer
 def get_token_levenshtein_distance(s1, s2):
-    """Calculate the Levenshtein distance between two strings based on tokens (words)."""
+    """Calculate the Levenshtein distance between two strings based on tokens (words).
+    
+    Parameters:
+
+    s1 (str): The first string.
+    s2 (str): The second string.
+
+    Returns:
+
+    int: The Levenshtein distance between the two strings based on tokens.
+    """
     # Split the strings into tokens based on whitespace
     tokens1 = s1.split()
     tokens2 = s2.split()
@@ -138,14 +153,59 @@ def get_token_levenshtein_distance(s1, s2):
 
 @timer
 def get_longest_common_subsequence(s1: str, s2: str) -> int:
-    """Get the longest common subsequence of two strings."""
+    """Get the longest common subsequence of two strings.
+    
+    Parameters:
+    
+    s1 (str): The first string.
+    s2 (str): The second string.
+    
+    Returns:
+    
+    int: The length of the longest common subsequence of the two strings.
+    """
     match = difflib.SequenceMatcher(None, s1, s2)
     lcs = "".join(s1[x[0]:x[0]+x[2]] for x in match.get_matching_blocks()[:-1])
     return lcs
 
 
+def get_longest_common_subsequence_length(s1: str, s2: str) -> int:
+    """Get the length of the longest common subsequence of two strings.
+    
+    Parameters:
+    
+    s1 (str): The first string.
+    s2 (str): The second string.
+    
+    Returns:
+    
+    int: The length of the longest common subsequence of the two strings.
+    """
+    
+    lcs = get_longest_common_subsequence(s1, s2)
+
+    if len(s2) <= 1:
+        divisor = len(s1)
+    else:
+        divisor = min(len(s1), len(s2))
+
+    return len(lcs) / divisor
+
+
 @timer
-def get_jaccard_similarity(s1: str, s2: str):
+def get_jaccard_similarity(s1: str, s2: str) -> float:
+    """Calculate the Jaccard similarity between two strings.
+
+    Parameters:
+
+    s1 (str): The first string.
+    s2 (str): The second string.
+
+    Returns:
+
+    float: The Jaccard similarity between the two strings.
+    """
+
     a = set(s1.split())
     b = set(s2.split())
     c = a.intersection(b)
@@ -154,12 +214,33 @@ def get_jaccard_similarity(s1: str, s2: str):
 
 @timer
 def get_jaro_winkler_similarity(s1: str, s2: str) -> float:
+    """Calculate the Jaro-Winkler similarity between two strings.
+
+    Parameters:
+
+    s1 (str): The first string.
+    s2 (str): The second string.
+
+    Returns:
+
+    float: The Jaro-Winkler similarity between the two strings.
+    """
     return jarowinkler_similarity(s1, s2)
 
 
 @timer
 def get_bag_of_words_similarity(s1: str, s2: str) -> float:
-    """Calculate the similarity between two strings based on the bag of words model."""
+    """Calculate the similarity between two strings based on the bag of words model.
+    
+    Parameters:
+    
+    s1 (str): The first string.
+    s2 (str): The second string.
+    
+    Returns:
+    
+    float: The similarity between the two strings based on the bag of words model.
+    """
     vectorizer = CountVectorizer().fit_transform([s1, s2])
     vectors = vectorizer.toarray()
     similarity = cosine_similarity(vectors)
@@ -168,27 +249,45 @@ def get_bag_of_words_similarity(s1: str, s2: str) -> float:
 
 @timer
 def get_ast(file_path: str) -> None:
-    """Get the abstract syntax tree of all files with a specific extension within a folder."""
+    """Get the abstract syntax tree of all files with a specific extension within a folder.
+    
+    Parameters:
+    
+    file_path (str): The path to the file.
+    
+    Returns:
+    
+    None
+    """
     completed_process = subprocess.run(["java", "-jar", DSL_AST_EXTRACTOR_PATH, file_path], stdout=subprocess.PIPE, text=True)
     return completed_process.stdout
 
 
 def get_similarity_score(possible_solution_path: str, generated_solution_path: str) -> Dict[str, Any]:
-    """Get the similarity score of the generated .bdd file compared to the possible solution .bdd file."""
+    """Get the similarity score of the generated .bdd file compared to the possible solution .bdd file.
+    
+    Parameters:
+    
+    possible_solution_path (str): The path to the possible solution .bdd file.
+    generated_solution_path (str): The path to the generated solution .bdd file.
+    
+    Returns:
+    
+    Dict[str, Any]: A dictionary containing the similarity scores.
+    """
     possible_solution = load_text_file(possible_solution_path)
     generated_solution = load_text_file(generated_solution_path)
 
+    # not optimized for speed, cache the possible solution ast for better performance
     possible_solution_ast = get_ast(possible_solution_path)
     generated_solution_ast = get_ast(generated_solution_path)
-    print(possible_solution_ast)
 
     ast_tfidf_similarity = get_tfidf_similarity(possible_solution_ast, generated_solution_ast)
     ast_tfidf_stopwords_similarity = get_tfidf_stopwords_similarity(possible_solution_ast, generated_solution_ast)
     ast_levenstein_distance = get_levenshtein_distance(possible_solution_ast, generated_solution_ast)
     ast_jaccard_similarity = get_jaccard_similarity(possible_solution_ast, generated_solution_ast)
     ast_levenshtein_token_distance = get_token_levenshtein_distance(possible_solution_ast, generated_solution_ast)
-    ast_longest_common_subsequence = get_longest_common_subsequence(possible_solution_ast, generated_solution_ast)
-    ast_length_of_longest_common_subsequence = len(ast_longest_common_subsequence) / min(len(possible_solution_ast), len(generated_solution_ast))
+    ast_length_of_longest_common_subsequence = get_longest_common_subsequence_length(possible_solution_ast, generated_solution_ast)
     ast_jaro_winkler_similarity = get_jaro_winkler_similarity(possible_solution_ast, generated_solution_ast)
     ast_bag_of_words_similarity = get_bag_of_words_similarity(possible_solution_ast, generated_solution_ast)
 
@@ -197,8 +296,7 @@ def get_similarity_score(possible_solution_path: str, generated_solution_path: s
     levenshtein_distance = get_levenshtein_distance(possible_solution, generated_solution)
     jaccard_similarity = get_jaccard_similarity(possible_solution, generated_solution)
     levenshtein_token_distance = get_token_levenshtein_distance(possible_solution, generated_solution)
-    longest_common_subsequence = get_longest_common_subsequence(possible_solution, generated_solution)
-    length_of_longest_common_subsequence = len(longest_common_subsequence) / min(len(possible_solution), len(generated_solution))
+    length_of_longest_common_subsequence = get_longest_common_subsequence_length(possible_solution, generated_solution)
     jaro_winkler_similarity = get_jaro_winkler_similarity(possible_solution, generated_solution)
     bag_of_words_similarity = get_bag_of_words_similarity(possible_solution, generated_solution)
 
@@ -225,6 +323,17 @@ def get_similarity_score(possible_solution_path: str, generated_solution_path: s
 
 
 def get_score_of_generated_data(ground_truth_bdd_path: str, generated_folder_path: str) -> str:
+    """Get the similarity scores of the generated data compared to the ground truth data.
+
+    Parameters:
+
+    ground_truth_bdd_path (str): The path to the ground truth .bdd file.
+    generated_folder_path (str): The path to the folder containing the generated .bdd files.
+
+    Returns:
+    
+    str (JSON): The similarity scores of the generated data compared to the ground truth data.
+    """
 
     scores = {}
     for version in os.listdir(generated_folder_path):
@@ -247,6 +356,16 @@ def get_score_of_generated_data(ground_truth_bdd_path: str, generated_folder_pat
 
 
 def clean_llm_ouput(dsl_file_path: str) -> str:
+    """Clean the output of the LLM model by removing everything after the last "```" in the file.
+
+    Parameters:
+
+    dsl_file_path (str): The path to the .bdd file.
+
+    Returns:
+
+    str: The cleaned content of the file.
+    """
     with open(dsl_file_path, 'r') as dsl_file:
         lines = dsl_file.readlines()
 
@@ -272,7 +391,19 @@ def clean_llm_ouput(dsl_file_path: str) -> str:
 
 @timer
 def compile_model(dsl_file_path: str, compiler_path: str = COMPILER_PATH, widgets_path: str = WIDGETS_PATH, clean_output: bool = True) -> list[str]:
-    """Compile the given .bdd file using the BDD-DSL compiler and return the output as a list of strings."""
+    """Compile the given .bdd file using the BDD-DSL compiler and return the output as a list of strings.
+    
+    Parameters:
+    
+    dsl_file_path (str): The path to the .bdd file.
+    compiler_path (str): The path to the compiler .jar file.
+    widgets_path (str): The path to the widgets .bdd file.
+    clean_output (bool): Whether to clean the output of the LLM model.
+    
+    Returns:
+    
+    list[str]: The output of the compiler as a list of strings.
+    """
     temp_dir = "temp"
     temp_dir_path = os.path.join(os.getcwd(), temp_dir)
 

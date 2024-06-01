@@ -1,0 +1,107 @@
+```bdd
+model ECommerceWebsite using Widgets
+
+entity Product {
+    actions: viewDetails, addToCart, addToWishlist
+    states: void
+    properties: name, picture, price
+}
+
+entity ShoppingCart {
+    actions: viewCart, checkout
+    states: void
+    properties: items
+}
+
+entity Wishlist {
+    actions: viewWishlist, removeFromWishlist, addToCart
+    states: void
+    properties: items
+}
+
+Scenario: View Product Details
+Given the BrowserWindow "Home" is displayed
+    which means
+        Given the Catalog "ProductCatalog" is displayed
+        And all the Products in the Catalog "ProductCatalog" are void
+        And the value of the TextField "Catalog" is "ProductCatalog"
+When I viewDetails the Product "OfficeChair"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And the Catalog "ProductCatalog" is displayed
+        And the Product "OfficeChair" is displayed
+        And the value of the TextField "Product Name" is "OfficeChair"
+        And the value of the TextField "Product Picture" is "OfficeChairPicture"
+        And the value of the TextField "Product Price" is "$500"
+Then the BrowserWindow "ProductDetails" is displayed
+    which means
+        Given the Product "OfficeChair" is displayed
+        And the value of the TextField "Product Name" is "OfficeChair"
+        And the value of the TextField "Product Picture" is "OfficeChairPicture"
+        And the value of the TextField "Product Price" is "$500"
+
+Scenario: Add Product to Cart
+Given the BrowserWindow "Home" is displayed
+    which means
+        Given the Catalog "ProductCatalog" is displayed
+        And all the Products in the Catalog "ProductCatalog" are void
+        And the value of the TextField "Catalog" is "ProductCatalog"
+When I addToCart the Product "OfficeChair"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And the Catalog "ProductCatalog" is displayed
+        And the Product "OfficeChair" is displayed
+        And the value of the TextField "Add to Cart" is "OfficeChair"
+        And the value of the TextField "Product Name" is "OfficeChair"
+Then the Product "OfficeChair" is added to the ShoppingCart
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+        And the value of the TextField "Cart Items" contains "OfficeChair"
+
+Scenario: View Cart and Checkout
+Given the BrowserWindow "Home" is displayed
+    which means
+        Given the ShoppingCart "MyShoppingCart" is void
+When I viewCart the ShoppingCart "MyShoppingCart"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And the ShoppingCart "MyShoppingCart" is displayed
+        And the value of the TextField "Cart Items" is empty
+Then the BrowserWindow "ShoppingCart" is displayed
+    which means
+        Given the ShoppingCart "MyShoppingCart" is displayed
+When I checkout the ShoppingCart "MyShoppingCart"
+    which means
+        Given the BrowserWindow "ShoppingCart" is displayed
+        And the value of the TextField "Total Price" is "$500"
+        And I click on the Button "Checkout"
+Then the BrowserWindow "Checkout" is displayed
+    which means
+        Given the BrowserWindow "Checkout" is displayed
+        And the value of the TextField "Total Price" is "$500"
+
+Scenario: Add Product to Wishlist and Remove
+Given the BrowserWindow "Home" is displayed
+    which means
+        Given the Wishlist "MyWishlist" is void
+When I addToWishlist the Product "OfficeChair"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And the Catalog "ProductCatalog" is displayed
+        And the Product "OfficeChair" is displayed
+        And the value of the TextField "Add to Wishlist" is "OfficeChair"
+        And the value of the TextField "Product Name" is "OfficeChair"
+Then the Product "OfficeChair" is added to the Wishlist "MyWishlist"
+    which means
+        Given the Wishlist "MyWishlist" is displayed
+        And the value of the TextField "Wishlist Items" contains "OfficeChair"
+When I removeFromWishlist the Product "OfficeChair"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        And the value of the TextField "Wishlist Items" contains "OfficeChair"
+        And I click on the Button "Remove from Wishlist"
+Then the Product "OfficeChair" is removed from the Wishlist "MyWishlist"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        And the value of the TextField "Wishlist Items" is empty
+```  

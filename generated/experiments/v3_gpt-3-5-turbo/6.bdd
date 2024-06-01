@@ -1,0 +1,58 @@
+```bdd
+model OfficeChairECommerce using Widgets
+
+entity Product {
+    actions: viewDetails, addToCart, addToWishlist
+    states: void
+    properties: picture, name, price
+}
+
+Scenario: View Product Details
+Given the BrowserWindow "Home" is displayed
+    which means
+        Given the value of the TextField "Catalog" is "Displayed"
+        And the value of the TextField "Picture" is "Shown"
+        And the value of the TextField "Name" is "Shown"
+        And the value of the TextField "Price" is "Shown"
+When I click on the Product "MyProduct"
+Then the BrowserWindow "ProductDetails" is displayed
+    which means
+        Given the value of the TextField "Product Details" is "Displayed"
+        And the value of the TextField "Picture" is "Shown"
+        And the value of the TextField "Name" is "Shown"
+        And the value of the TextField "Price" is "Shown"
+        And the value of the TextField "Description" is "Shown"
+        And the value of the TextField "Reviews" is "Shown"
+        And the value of the Button "Add to Cart" is "Enabled"
+        And the value of the Button "Add to Wishlist" is "Enabled"
+
+Scenario: Add Product to Cart
+Given the BrowserWindow "Home" is displayed
+    which means
+        Given the value of the TextField "Catalog" is "Displayed"
+        And the value of the TextField "Picture" is "Shown"
+        And the value of the TextField "Name" is "Shown"
+        And the value of the TextField "Price" is "Shown"
+When I click on the Product "MyProduct"
+And I click on the Button "Add to Cart"
+Then the value of the TextField "Cart" is "Updated"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        And the value of the TextField "Product" is "Shown"
+        And the value of the TextField "Quantity" is "Updated"
+        And the value of the TextField "Total Price" is "Updated"
+
+Scenario: Add Product to Wishlist
+Given the BrowserWindow "Home" is displayed
+    which means
+        Given the value of the TextField "Catalog" is "Displayed"
+        And the value of the TextField "Picture" is "Shown"
+        And the value of the TextField "Name" is "Shown"
+        And the value of the TextField "Price" is "Shown"
+When I click on the Product "MyProduct"
+And I click on the Button "Add to Wishlist"
+Then the value of the TextField "Wishlist" is "Updated"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        And the value of the TextField "Product" is "Shown"
+```

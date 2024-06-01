@@ -1,0 +1,125 @@
+```bdd
+model ECommerce using Widgets
+
+entity Product {
+    actions: viewDetails, addToCart, addToWishlist
+    states: inCart, inWishlist
+    properties: name, price, coverArt
+}
+
+entity Catalog {
+    actions: displayProducts
+    states: void
+    properties: products
+}
+
+entity ShoppingCart is Widget {
+    actions: checkout, emptyCart
+    states: void
+    properties: cartItems, total
+}
+
+entity Wishlist is Widget {
+    actions: viewItems
+    states: void
+    properties: wishlistItems
+}
+
+Scenario: ViewCatalogOnHomepage
+Given the Catalog "MyCatalog" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the Catalog "MyCatalog" is displayed
+Then the products of the Catalog "MyCatalog" are [Product "Chair1", Product "Chair2", Product "Chair3"]
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the Grid "ProductList" is displayed
+        And the value of the Grid "ProductList" is [
+            [Product "Chair1", coverArt, price],
+            [Product "Chair2", coverArt, price],
+            [Product "Chair3", coverArt, price]
+        ]
+
+Scenario: ViewProductDetails
+Given the Catalog "MyCatalog" is displayed
+And the Product "Chair1" is not inCart
+And the Product "Chair1" is not inWishlist
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the Catalog "MyCatalog" is displayed
+        And the Grid "ProductList" is displayed
+        And the Button "Add to Cart" for the Product "Chair1" is not clicked
+        And the Button "Add to Wishlist" for the Product "Chair1" is not clicked
+When I viewDetails the Product "Chair1"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "Chair1"
+        Then the BrowserWindow "ProductDetails" is displayed
+Then the BrowserWindow "ProductDetails" is displayed
+    which means
+        Given the BrowserWindow "ProductDetails" is displayed
+        When I view the Product "Chair1"
+        Then the value of the TextField "Name" is "Chair1"
+        And the value of the TextField "Price" is "100"
+        And the Image "ProductImage" is displayed
+
+Scenario: AddProductToCart
+Given the Product "Chair1" is not inCart
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the Button "Add to Cart" for the Product "Chair1" is not clicked
+When I addToCart the Product "Chair1"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Button "Add to Cart" for the Product "Chair1"
+        Then the Notification "Added to Cart" is displayed
+Then the Product "Chair1" is inCart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I go to the BrowserWindow "Cart"
+        Then the Grid "CartItems" is displayed
+        And the value of the Grid "CartItems" contains [Product "Chair1", price]
+
+Scenario: AddProductToWishlist 
+Given the Product "Chair2" is not inWishlist
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the Button "Add to Wishlist" for the Product "Chair2" is not clicked
+When I addToWishlist the Product "Chair2"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Button "Add to Wishlist" for the Product "Chair2" 
+        Then the Notification "Added to Wishlist" is displayed
+Then the Product "Chair2" is inWishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I go to the BrowserWindow "Wishlist"
+        Then the Grid "WishlistItems" is displayed
+        And the value of the Grid "WishlistItems" contains [Product "Chair2", coverArt, price]
+        
+Scenario: CheckoutFromCart
+Given the Product "Chair1" is inCart
+    which means 
+        Given the BrowserWindow "Cart" is displayed
+        When I go to the BrowserWindow "Cart"
+        Then the Grid "CartItems" is displayed
+        And the value of the Grid "CartItems" contains [Product "Chair1", price]
+When I checkout the ShoppingCart "MyCart"
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "Checkout" is displayed
+Then the ShoppingCart "MyCart" is void
+And the total of the ShoppingCart "MyCart" is 0
+    which means
+        Given the BrowserWindow "Cart" is displayed 
+        When I go to the BrowserWindow "Cart"
+        Then the value of the TextField "Total" is "0"
+        And the Grid "CartItems" is displayed
+        And the value of the Grid "CartItems" is []
+```

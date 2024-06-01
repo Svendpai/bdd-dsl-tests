@@ -1,0 +1,150 @@
+```bdd
+model ECommerceWebsite using Widgets
+
+entity Product {
+    actions: viewDetails, addToCart, addToWishlist
+    states: void
+    properties: name, picture, price
+}
+
+entity ShoppingCart {
+    actions: viewCart, removeFromCart, checkout
+    states: void
+    properties: totalPrice
+}
+
+entity Wishlist {
+    actions: viewWishlist, removeFromWishlist, moveToCart
+    states: void
+    properties: totalItems
+}
+
+Scenario: View Product Details - successful
+Given the Product "OfficeChair" is available
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And the Product "OfficeChair" is shown
+        And the Product "OfficeChair" is available
+When I viewDetails the Product "OfficeChair"
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        And the value of the TextField "Product Name" is "OfficeChair"
+        And the value of the Image "Product Picture" is "OfficeChair"
+        And the value of the TextField "Product Price" is "<price>"
+Then the BrowserWindow "Product Details" is displayed
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        And the value of the TextField "Product Name" is "OfficeChair"
+        And the value of the Image "Product Picture" is "OfficeChair"
+        And the value of the TextField "Product Price" is "<price>"
+
+Scenario: Add Product to Cart - successful
+Given the Product "OfficeChair" is available
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And the Product "OfficeChair" is shown
+        And the Product "OfficeChair" is available
+When I addToCart the Product "OfficeChair"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And the Product "OfficeChair" is shown
+        And I click on the Button "Add to Cart"
+Then the Product "OfficeChair" is in the ShoppingCart
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+        And the Product "OfficeChair" is shown in the ShoppingCart
+
+Scenario: Add Product to Wishlist - successful
+Given the Product "OfficeChair" is available
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And the Product "OfficeChair" is shown
+        And the Product "OfficeChair" is available
+When I addToWishlist the Product "OfficeChair"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And the Product "OfficeChair" is shown
+        And I click on the Button "Add to Wishlist"
+Then the Product "OfficeChair" is in the Wishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        And the Product "OfficeChair" is shown in the Wishlist
+
+Scenario: Remove Product from Cart - successful
+Given the Product "OfficeChair" is in the ShoppingCart
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+        And the Product "OfficeChair" is shown in the ShoppingCart
+When I removeFromCart the Product "OfficeChair"
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+        And I click on the Button "Remove from Cart"
+Then the Product "OfficeChair" is not in the ShoppingCart
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+        And the Product "OfficeChair" is not shown in the ShoppingCart
+
+Scenario: Remove Product from Wishlist - successful
+Given the Product "OfficeChair" is in the Wishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        And the Product "OfficeChair" is shown in the Wishlist
+When I removeFromWishlist the Product "OfficeChair"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        And I click on the Button "Remove from Wishlist"
+Then the Product "OfficeChair" is not in the Wishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        And the Product "OfficeChair" is not shown in the Wishlist
+
+Scenario: Move Product from Wishlist to Cart - successful
+Given the Product "OfficeChair" is in the Wishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        And the Product "OfficeChair" is shown in the Wishlist
+When I moveToCart the Product "OfficeChair"
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        And I click on the Button "Move to Cart"
+Then the Product "OfficeChair" is in the ShoppingCart
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+        And the Product "OfficeChair" is shown in the ShoppingCart
+
+Scenario: View Cart - successful
+Given the ShoppingCart is not void
+    which means
+        Given the BrowserWindow "Home" is displayed
+When I viewCart the ShoppingCart
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And I click on the Button "View Cart"
+Then the BrowserWindow "Shopping Cart" is displayed
+    which means
+        Given the BrowserWindow "Shopping Cart" is displayed
+
+Scenario: View Wishlist - successful
+Given the Wishlist is not void
+    which means
+        Given the BrowserWindow "Home" is displayed
+When I viewWishlist the Wishlist
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And I click on the Button "View Wishlist"
+Then the BrowserWindow "Wishlist" is displayed
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+
+Scenario: Checkout Cart - successful
+Given the ShoppingCart is not void
+    which means
+        Given the BrowserWindow "Home" is displayed
+When I checkout the ShoppingCart
+    which means
+        Given the BrowserWindow "Home" is displayed
+        And I click on the Button "Checkout"
+Then the BrowserWindow "Checkout" is displayed
+    which means
+        Given the BrowserWindow "Checkout" is displayed
+```

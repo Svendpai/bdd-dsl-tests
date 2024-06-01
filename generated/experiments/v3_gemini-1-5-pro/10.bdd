@@ -1,0 +1,87 @@
+```bdd
+model EcommerceWebsite
+
+entity Item {
+  actions: click
+  properties:
+    name,
+    price,
+    picture
+}
+
+entity Catalog {
+  properties:
+    items
+}
+
+entity ProductDetailsPage {
+  properties:
+    item
+}
+
+entity ShoppingCart {
+  actions: addItem, removeItem
+  properties:
+    items
+}
+
+entity Wishlist {
+  actions: addItem, removeItem
+  properties:
+    items
+}
+
+Scenario: Browse catalog - initial display
+Given the items of the Catalog "MyCatalog" are all Items
+  which means
+    Given the BrowserWindow "Home" is displayed
+  Then the name of the first Item in the Catalog "MyCatalog" is displayed
+  And the price of the first Item in the Catalog "MyCatalog" is displayed
+  And the picture of the first Item in the Catalog "MyCatalog" is displayed
+
+Scenario: Browse catalog - click on item
+Given the items of the Catalog "MyCatalog" are all Items
+  which means
+    Given the BrowserWindow "Home" is displayed
+  When I click on the first Item in the Catalog "MyCatalog"
+  Then the BrowserWindow "Product Details" is displayed
+  And the name of the first Item in the Catalog "MyCatalog" is displayed on the ProductDetailsPage "MyProductDetailsPage"
+  And the price of the first Item in the Catalog "MyCatalog" is displayed on the ProductDetailsPage "MyProductDetailsPage"
+  And the picture of the first Item in the Catalog "MyCatalog" is displayed on the ProductDetailsPage "MyProductDetailsPage"
+
+Scenario: Add item to cart
+Given the items of the Catalog "MyCatalog" are all Items
+  which means
+    Given the BrowserWindow "Home" is displayed
+When I click on the first Item in the Catalog "MyCatalog"
+  Then the BrowserWindow "Product Details" is displayed
+When I addItem the first Item in the Catalog "MyCatalog" to the ShoppingCart "MyShoppingCart"
+  Then the items of the ShoppingCart "MyShoppingCart" include the first Item in the Catalog "MyCatalog"
+
+Scenario: Remove item from cart
+Given the items of the ShoppingCart "MyShoppingCart" include the first Item in the Catalog "MyCatalog"
+  which means
+    Given the BrowserWindow "Home" is displayed
+    When I click on the first Item in the Catalog "MyCatalog"
+    Then I addItem the first Item in the Catalog "MyCatalog" to the ShoppingCart "MyShoppingCart"
+When I removeItem the first Item in the Catalog "MyCatalog" from the ShoppingCart "MyShoppingCart"
+  Then the items of the ShoppingCart "MyShoppingCart" do not include the first Item in the Catalog "MyCatalog"
+
+Scenario: Add item to wishlist
+Given the items of the Catalog "MyCatalog" are all Items
+  which means
+    Given the BrowserWindow "Home" is displayed
+When I click on the first Item in the Catalog "MyCatalog"
+  Then the BrowserWindow "Product Details" is displayed
+When I addItem the first Item in the Catalog "MyCatalog" to the Wishlist "MyWishlist"
+  Then the items of the Wishlist "MyWishlist" include the first Item in the Catalog "MyCatalog"
+
+Scenario: Remove item from wishlist
+Given the items of the Wishlist "MyWishlist" include the first Item in the Catalog "MyCatalog"
+  which means
+    Given the BrowserWindow "Home" is displayed
+    When I click on the first Item in the Catalog "MyCatalog"
+    Then I addItem the first Item in the Catalog "MyCatalog" to the Wishlist "MyWishlist"
+When I removeItem the first Item in the Catalog "MyCatalog" from the Wishlist "MyWishlist"
+  Then the items of the Wishlist "MyWishlist" do not include the first Item in the Catalog "MyCatalog"
+```

@@ -1,0 +1,109 @@
+```bdd
+model HighEndChairsStore using Widgets
+
+entity CatalogPage is Widget {
+    actions: view
+    properties: itemPicture, itemName, itemPrice
+}
+
+entity ProductDetailsPage is Widget {
+    actions: click
+    properties: detailedInfo, reviews, purchaseOption
+}
+
+entity ShoppingCart is Widget {
+    actions: add, remove, checkout
+    properties: items, totalCost
+}
+
+entity Wishlist is Widget {
+    actions: add, remove
+    properties: items
+}
+
+entity ProductItem is Widget {
+    actions: select, addToCart, addToWishlist
+    properties: picture, name, price
+}
+
+entity ProductDetail is Widget {
+    actions: view, buy
+    properties: description, price, reviews
+}
+
+entity ReviewSection is Widget {
+    actions: view
+    properties: reviewList
+}
+
+Scenario: viewProductDetails
+Given the CatalogPage "MyCatalog" is displayed
+    which means
+        Given the BrowserWindow "HomePage" is displayed
+        When I view the CatalogPage "MyCatalog"
+        Then the CatalogPage "MyCatalog" is shown
+When I click on the ProductItem "ChairModelX"
+    which means
+        Given the ProductItem "ChairModelX" is shown on the CatalogPage "MyCatalog"
+        When I click on the ProductItem "ChairModelX"
+        Then the ProductDetailsPage "DetailChairModelX" is shown
+Then the ProductDetailsPage "DetailChairModelX" is displayed
+    which means
+        Given the ProductDetail "DetailChairModelX" is shown
+        When I view the ProductDetail "DetailChairModelX"
+        Then the description of the ProductDetail "DetailChairModelX" is displayed,
+        And the reviews of the ProductDetail "DetailChairModelX" are displayed,
+        And the buy option of the ProductDetail "DetailChairModelX" is available
+
+Scenario: addToShoppingCart
+Given the ProductDetailsPage "DetailChairModelX" is displayed
+    which means
+        Given the BrowserWindow "DetailPage" is displayed
+        When I view the ProductDetailsPage "DetailChairModelX"
+        Then the ProductDetail "DetailChairModelX" is shown
+When I addToCart the ProductItem "ChairModelX"
+    which means
+        Given the ShoppingCart "MyCart" is shown
+        When I click on the Button "Add to Cart"
+        Then the ShoppingCart "MyCart" is updated
+Then the items of the ShoppingCart "MyCart" include the ProductItem "ChairModelX"
+    which means
+        Given the ShoppingCart "MyCart" is displayed
+        When I view the ShoppingCart "MyCart"
+        Then the items of the ShoppingCart "MyCart" are listed,
+        And the totalCost of the ShoppingCart "MyCart" is updated
+
+Scenario: checkoutShoppingCart
+Given the ShoppingCart "MyCart" contains the ProductItem "ChairModelX"
+    which means
+        Given the ShoppingCart "MyCart" is displayed
+        When I view the ShoppingCart "MyCart"
+        Then the items of the ShoppingCart "MyCart" are listed
+When I checkout the ShoppingCart "MyCart"
+    which means
+        Given the ShoppingCart "MyCart" is displayed
+        When I click on the Button "Checkout"
+        Then the ShoppingCart "MyCart" is emptied
+Then the ShoppingCart "MyCart" is empty
+    which means
+        Given the ShoppingCart "MyCart" is displayed
+        When I view the ShoppingCart "MyCart"
+        Then the totalCost of the ShoppingCart "MyCart" is "0"
+
+Scenario: addToWishlist
+Given the ProductDetailsPage "DetailChairModelX" is displayed
+    which means
+        Given the BrowserWindow "DetailPage" is displayed
+        When I view the ProductDetailsPage "DetailChairModelX"
+        Then the ProductDetail "DetailChairModelX" is shown
+When I addToWishlist the ProductItem "ChairModelX"
+    which means
+        Given the Wishlist "MyWishlist" is shown
+        When I click on the Button "Add to Wishlist"
+        Then the Wishlist "MyWishlist" is updated
+Then the items of the Wishlist "MyWishlist" include the ProductItem "ChairModelX"
+    which means
+        Given the Wishlist "MyWishlist" is displayed
+        When I view the Wishlist "MyWishlist"
+        Then the items of the Wishlist "MyWishlist" are listed
+```

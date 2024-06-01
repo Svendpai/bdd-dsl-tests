@@ -1,0 +1,105 @@
+```bdd
+model ECommerceOfficeChairs using Widgets
+
+entity Product {
+    actions: click, add [to], remove [from]
+    states: available / unavailable, inCart / notInCart, inWishlist / notInWishlist
+    properties: name, priceTag, profilePicture, reviewText*
+}
+
+entity Cart {
+    actions: check out
+    states: empty / filled
+    properties: items*
+}
+
+entity Wishlist {
+    actions: empty
+    states: empty / filled
+    properties: items*
+}
+
+Scenario: Viewing product details
+Given the Product "MyProduct" is available
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        Then the Product "MyProduct" is displayed
+When I click on the Product "MyProduct"
+    which means
+        Given the Product "MyProduct" is available
+        When I click on the Image "MyProduct"
+        Then the BrowserWindow "Product Details" is displayed
+Then the profilePicture, name, priceTag, reviewText* of the Product "MyProduct" are displayed
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        Then the Image "ProfilePicture", Text "ProductName", Label "PriceTag", TextArea "ReviewText" are shown
+
+Scenario: Adding item to shopping cart
+Given the Product "MyProduct" is notInCart
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        Then the Button "Add to Cart" is enabled
+When I add the Product "MyProduct" to the Cart "MyCart"
+    which means
+        Given the Button "Add to Cart" is clicked
+        When I click on the Button "Add to Cart"
+        Then the Notification "Product added to cart" is displayed
+Then the Product "MyProduct" is inCart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I go to the BrowserWindow "Cart"
+        Then the List "Cart Items" contains the Product "MyProduct"
+
+Scenario: Removing item from shopping cart
+Given the Product "MyProduct" is inCart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I go to the BrowserWindow "Cart"
+        Then the List "Cart Items" contains the Product "MyProduct"
+When I remove the Product "MyProduct" from the Cart "MyCart"
+    which means
+        Given the Button "Remove from Cart" is clicked
+        When I click on the Button "Remove from Cart"
+        Then the Notification "Product removed from cart" is displayed
+Then the Product "MyProduct" is notInCart
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I go to the BrowserWindow "Cart"
+        Then the List "Cart Items" does not contain the Product "MyProduct"
+
+Scenario: Checking out from shopping cart
+Given the Cart "MyCart" is filled
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I go to the BrowserWindow "Cart"
+        Then the Button "Check out" is enabled
+When I check out the Cart "MyCart"
+    which means
+        Given the Button "Check out" is clicked
+        When I click on the Button "Check out"
+        Then the ModalWindow "Checkout Confirmation" is displayed
+Then the Cart "MyCart" is empty
+    which means
+        Given the ModalWindow "Checkout Confirmation" is confirmed
+        When I confirm the ModalWindow "Checkout Confirmation"
+        Then the Notification "Checkout successful" is displayed
+
+Scenario: Adding item to wishlist
+Given the Product "MyProduct" is notInWishlist
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I click on the Product "MyProduct"
+        Then the Button "Add to Wishlist" is enabled
+When I add the Product "MyProduct" to the Wishlist "MyWishlist"
+    which means
+        Given the Button "Add to Wishlist" is clicked
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "Product added to wishlist" is displayed
+Then the Product "MyProduct" is inWishlist
+    which means
+        Given the BrowserWindow "Wishlist" is displayed
+        When I go to the BrowserWindow "Wishlist"
+        Then the List "Wishlist Items" contains the Product "MyProduct"
+```

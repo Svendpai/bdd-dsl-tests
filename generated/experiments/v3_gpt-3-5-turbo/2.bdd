@@ -1,0 +1,56 @@
+```bdd
+model ECommerceWebsite using Widgets
+
+entity Product {
+    actions: viewDetails, addToCart, addToWishlist
+    states: void
+    properties: name, picture, price
+}
+
+entity ShoppingCart {
+    actions: checkout
+    states: open, closed
+    properties: items, totalAmount
+}
+
+entity Wishlist {
+    actions: checkout
+    states: open, closed
+    properties: items, totalAmount
+}
+
+Scenario: View Product Details
+Given the BrowserWindow "Home" is displayed
+When I click on the Product "MyProduct"
+Then the BrowserWindow "ProductDetails" is displayed
+
+Scenario: Add Product to Cart
+Given the BrowserWindow "ProductDetails" is displayed
+When I click on the Button "Add to Cart"
+Then the value of the TextField "Cart Items" is increased by 1
+
+Scenario: Add Product to Wishlist
+Given the BrowserWindow "ProductDetails" is displayed
+When I click on the Button "Add to Wishlist"
+Then the value of the TextField "Wishlist Items" is increased by 1
+
+Scenario: View Shopping Cart
+Given the BrowserWindow "Home" is displayed
+When I click on the Button "Shopping Cart"
+Then the BrowserWindow "ShoppingCart" is displayed
+
+Scenario: Checkout from Shopping Cart
+Given the BrowserWindow "ShoppingCart" is displayed
+When I click on the Button "Checkout"
+Then the BrowserWindow "Checkout" is displayed
+
+Scenario: View Wishlist
+Given the BrowserWindow "Home" is displayed
+When I click on the Button "Wishlist"
+Then the BrowserWindow "Wishlist" is displayed
+
+Scenario: Checkout from Wishlist
+Given the BrowserWindow "Wishlist" is displayed
+When I click on the Button "Checkout"
+Then the BrowserWindow "Checkout" is displayed
+```

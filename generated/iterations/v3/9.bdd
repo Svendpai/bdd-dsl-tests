@@ -1,0 +1,94 @@
+```bdd
+model OfficeChairStore using widgets
+
+entity Product {
+    actions: click, add to cart, add to wishlist
+    states: displayed, selected, inCart, inWishlist
+    properties: name, price, picture, description, reviews
+}
+
+entity Cart {
+    actions: view, checkout
+    states: empty, containsItems
+    properties: products
+}
+
+entity Wishlist {
+    actions: view, add items, remove items
+    states: empty, containsItems
+    properties: products
+}
+
+Scenario: viewHomeCatalog
+Given the Product "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I view the Grid "Catalog"
+        Then the Image "Product Picture" is displayed,
+        And the Label "Product Name" is displayed,
+        And the Label "Product Price" is displayed
+When I click on the Product "MyProduct"
+    which means
+        Given the Product "MyProduct" is displayed
+        When I click on the Image "Product Picture"
+        Then the BrowserWindow "Product Details" is displayed
+Then the Product "MyProduct" is selected
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        When I view the Text "Product Description"
+        Then the Text "Product Reviews" is displayed,
+        And the Button "Add to Cart" is displayed,
+        And the Button "Add to Wishlist" is displayed
+
+Scenario: addItemToCart
+Given the Product "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I view the Grid "Catalog"
+        Then the Button "Add to Cart" is displayed
+When I click on the Button "Add to Cart"
+    which means
+        Given the Button "Add to Cart" is displayed
+        When I click on the Button "Add to Cart"
+        Then the Notification "Item added to cart" is displayed
+Then the Product "MyProduct" is inCart
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I view the Cart "MyCart"
+        Then the Image "Product Picture" is displayed
+
+Scenario: addItemToWishlist
+Given the Product "MyProduct" is displayed
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I view the Grid "Catalog"
+        Then the Button "Add to Wishlist" is displayed
+When I click on the Button "Add to Wishlist"
+    which means
+        Given the Button "Add to Wishlist" is displayed
+        When I click on the Button "Add to Wishlist"
+        Then the Notification "Item added to wishlist" is displayed
+Then the Product "MyProduct" is inWishlist
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I view the Wishlist "MyWishlist"
+        Then the Image "Product Picture" is displayed
+
+Scenario: checkoutCart
+Given the Cart "MyCart" containsItems
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the Cart "MyCart"
+        Then the Button "Checkout" is displayed
+When I click on the Button "Checkout"
+    which means
+        Given the Button "Checkout" is displayed
+        When I click on the Button "Checkout"
+        Then the BrowserWindow "Checkout Page" is displayed,
+        And the TextField "Total Amount" is displayed
+Then the Cart "MyCart" is empty
+    which means
+        Given the BrowserWindow "Cart" is displayed
+        When I view the Cart "MyCart"
+        Then the Text "Your cart is empty" is displayed
+```

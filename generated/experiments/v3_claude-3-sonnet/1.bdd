@@ -1,0 +1,145 @@
+```bdd
+model EcommerceChairs using Widgets
+
+entity Product {
+    actions: clickOnProduct, addToCart, addToWishlist, buy
+    states: inCart, inWishlist, purchased
+    properties: name, price, imageUrl, details, reviews
+}
+
+entity Home is Widget {
+    actions: view
+    states: displayed
+    properties: catalogProducts
+}
+
+entity ProductDetails is Widget {
+    actions: view
+    states: displayed
+}
+
+entity Cart {
+    actions: addProduct, removeProduct, checkout
+    states: productAdded, productRemoved, checkedOut
+    properties: products
+}
+
+entity Wishlist {
+    actions: addProduct, removeProduct
+    states: productAdded, productRemoved
+    properties: products
+}
+
+Scenario: ViewHomePageCatalog
+Given the Home "MyHomePage" is displayed
+    which means 
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the Home "MyHomePage" is displayed
+When I view the Home "MyHomePage"
+    which means
+        Given the Home "MyHomePage" is displayed
+        When I click on the Widget Home "MyHomePage"
+        Then the value of the Grid "Product Catalog" is the catalogProducts of the Home "MyHomePage"
+Then the value of the Grid "Product Catalog" is the catalogProducts of the Home "MyHomePage"
+    which means
+        Given the Home "MyHomePage" is displayed    
+        Then the value of the Grid "Product Catalog" shows name, price, imageUrl for all catalogProducts of the Home "MyHomePage"
+
+Scenario: ViewProductDetails
+Given the Home "MyHomePage" is displayed
+And the Grid "Product Catalog" shows name, price, imageUrl for all catalogProducts of the Home "MyHomePage"
+    which means
+        Given the BrowserWindow "Home" is displayed
+        When I go to the BrowserWindow "Home"
+        Then the value of the Grid "Product Catalog" shows name, price, imageUrl for all catalogProducts of the Home "MyHomePage" 
+When I clickOnProduct the Product "LeatherChair123"
+    which means
+        Given the Home "MyHomePage" is displayed
+        When I click on the Grid "Product Catalog" for the Product "LeatherChair123"
+        Then the ProductDetails "LeatherChairDetails" is displayed
+Then the ProductDetails "LeatherChairDetails" is displayed
+And the value of the ProductDetails "LeatherChairDetails" shows name, price, imageUrl, details, reviews for the Product "LeatherChair123"
+    which means 
+        Given the ProductDetails "LeatherChairDetails" is displayed
+        Then the value of the TextField "Product Name" is the name of the Product "LeatherChair123"
+        And the value of the TextField "Price" is the price of the Product "LeatherChair123" 
+        And the value of the Image "Product Image" is the imageUrl of the Product "LeatherChair123"
+        And the value of the TextArea "Product Details" is the details of the Product "LeatherChair123"
+        And the value of the Grid "Product Reviews" shows the reviews of the Product "LeatherChair123"
+        
+Scenario: AddProductToCart
+Given the ProductDetails "LeatherChairDetails" is displayed  
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        When I go to the BrowserWindow "Product Details"
+        Then the ProductDetails "LeatherChairDetails" is displayed
+When I addToCart the Product "LeatherChair123"
+    which means
+        Given the ProductDetails "LeatherChairDetails" is displayed
+        When I click on the Button "Add to Cart" for the Product "LeatherChair123"
+        Then the Product "LeatherChair123" is inCart
+        And the Notification "Added to Cart" is displayed
+Then the Product "LeatherChair123" is inCart
+And the value of the Dropdown "Cart" shows the products inCart
+    which means
+        Given the ProductDetails "LeatherChairDetails" is displayed
+        When I click on the Dropdown "Cart" 
+        Then the value of the Dropdown "Cart" shows name, price for all products inCart
+        
+Scenario: CheckoutFromCart  
+Given the Product "LeatherChair123" is inCart
+And the value of the Dropdown "Cart" shows the products inCart  
+    which means
+        Given the BrowserWindow "Product Details" is displayed 
+        When I click on the Dropdown "Cart"
+        Then the value of the Dropdown "Cart" shows name, price for the Product "LeatherChair123"
+When I checkout the Cart 
+    which means  
+        Given the value of the Dropdown "Cart" shows the products inCart
+        When I click on the Button "Checkout"
+        Then the Cart is checkedOut
+        And the Notification "Order Placed" is displayed
+Then the Cart is checkedOut 
+And the Product "LeatherChair123" is purchased
+    which means
+        Given the BrowserWindow "Confirmation" is displayed
+        Then the value of the TextField "Order Status" shows "Purchased" for the Product "LeatherChair123"
+        
+Scenario: AddProductToWishlist
+Given the ProductDetails "LeatherChairDetails" is displayed
+    which means 
+        Given the BrowserWindow "Product Details" is displayed
+        When I go to the BrowserWindow "Product Details"
+        Then the ProductDetails "LeatherChairDetails" is displayed  
+When I addToWishlist the Product "LeatherChair123"
+    which means
+        Given the ProductDetails "LeatherChairDetails" is displayed 
+        When I click on the Button "Add to Wishlist" for the Product "LeatherChair123"  
+        Then the Product "LeatherChair123" is inWishlist
+        And the Notification "Added to Wishlist" is displayed
+Then the Product "LeatherChair123" is inWishlist
+And the value of the Dropdown "Wishlist" shows the products inWishlist
+    which means
+        Given the ProductDetails "LeatherChairDetails" is displayed
+        When I click on the Dropdown "Wishlist"
+        Then the value of the Dropdown "Wishlist" shows name, price for all products inWishlist
+
+Scenario: BuyFromWishlist
+Given the Product "LeatherChair123" is inWishlist   
+And the value of the Dropdown "Wishlist" shows the products inWishlist
+    which means
+        Given the BrowserWindow "Product Details" is displayed
+        When I click on the Dropdown "Wishlist" 
+        Then the value of the Dropdown "Wishlist" shows name, price for the Product "LeatherChair123"
+When I buy the Product "LeatherChair123" from the Wishlist
+    which means
+        Given the value of the Dropdown "Wishlist" shows the products inWishlist
+        When I click on the Button "Buy" for the Product "LeatherChair123"
+        Then the Product "LeatherChair123" is purchased  
+        And the Notification "Order Placed" is displayed
+Then the Product "LeatherChair123" is purchased
+    which means 
+        Given the BrowserWindow "Confirmation" is displayed
+        Then the value of the TextField "Order Status" shows "Purchased" for the Product "LeatherChair123"
+```
